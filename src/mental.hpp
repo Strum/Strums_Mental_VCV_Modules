@@ -66,6 +66,10 @@ struct MentalButtonsWidget : ModuleWidget {
 	MentalButtonsWidget();
 };
 
+struct MentalSumsWidget : ModuleWidget {
+	MentalSumsWidget();
+};
+
 //struct MentalTemplateWidget : ModuleWidget {
 //	MentalTemplateWidget();
 //};
