@@ -1,0 +1,91 @@
+///////////////////////////////////////////////////
+//
+//   Buttons Widget for quilding new modules inside without changing module list
+//    before it's working.
+//   VCV Module
+//
+//   Strum 2017
+//
+///////////////////////////////////////////////////
+
+#include "mental.hpp"
+
+
+
+struct MentalButtons : Module {
+	enum ParamIds {
+    MOMENT,
+    BUTTON_PARAM = MOMENT + 7,
+		NUM_PARAMS = BUTTON_PARAM + 7
+	};  
+	enum InputIds {		  
+		NUM_INPUTS
+	};
+	enum OutputIds {
+    MOMENT_OUT,
+		OUTPUT = MOMENT_OUT +7,    
+		NUM_OUTPUTS = OUTPUT + 7
+	};
+
+  SchmittTrigger button_triggers[7];
+  //SchmittTrigger momentary_trigger;
+  float button_leds[8] = {0.0};  
+  bool button_states[8] = {0.0};
+  float moment_leds[7] = {0.0};
+  
+	MentalButtons() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
+	void step();
+};
+
+void MentalButtons::step()
+{
+  for  (int i = 0 ; i < 7 ; i++)
+  {
+    if (button_triggers[i].process(params[BUTTON_PARAM + i].value))
+    {
+		  button_states[i] = !button_states[i];
+	  }
+    button_leds[i] = button_states[i] ? 1.0 : 0.0;
+    outputs[OUTPUT + i].value = button_states[i];
+    if (params[MOMENT + i].value > 0.0)
+    {
+	    moment_leds[i] = 1.0;
+      outputs[MOMENT_OUT + i].value = 1.0;
+	  }
+    else
+    {
+	    moment_leds[i] = 0.0;
+      outputs[MOMENT_OUT + i].value = 0.0;
+	  }
+  }
+  
+}
+
+MentalButtonsWidget::MentalButtonsWidget() {
+	MentalButtons *module = new MentalButtons();
+	setModule(module);
+	box.size = Vec(15*4, 380);
+  
+	{
+		SVGPanel *panel = new SVGPanel();
+		panel->box.size = box.size;
+		panel->setBackground(SVG::load("plugins/mental/res/MentalButtons.svg"));
+		addChild(panel);
+	}
+	
+  int spacing = 25; 
+  int group_offset = 190;
+  int top_space = 15;
+  for (int i = 0; i < 7 ; i++)
+  {  
+    addOutput(createOutput<PJ301MPort>(Vec(33, top_space + spacing * i), module, MentalButtons::OUTPUT + i));
+    addParam(createParam<LEDButton>(Vec(5, top_space + 3 + spacing * i), module, MentalButtons::BUTTON_PARAM +i, 0.0, 1.0, 0.0));
+    addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(10, top_space + 8 + spacing * i), &module->button_leds[i]));
+  
+	  /// momentarys
+   addOutput(createOutput<PJ301MPort>(Vec(33, 10 + group_offset +  spacing * i), module, MentalButtons::MOMENT_OUT + i));
+   addParam(createParam<LEDButton>(Vec(5, 10 + 3 + group_offset +  spacing * i), module, MentalButtons::MOMENT + i, 0.0, 1.0, 0.0));
+   addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(10,10 + 8 + group_offset +  spacing * i), &module->moment_leds[i]));
+  }
+  
+}

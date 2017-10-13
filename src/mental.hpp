@@ -22,9 +22,9 @@ struct MentalMixerWidget : ModuleWidget {
 	MentalMixerWidget();
 };
 
-struct MentalTestWidget : ModuleWidget {
-	MentalTestWidget();
-};
+//struct MentalTestWidget : ModuleWidget {
+//	MentalTestWidget();
+//};
 
 struct MentalFoldWidget : ModuleWidget {
 	MentalFoldWidget();
@@ -42,9 +42,9 @@ struct MentalABSwitchesWidget : ModuleWidget {
 	MentalABSwitchesWidget();
 };
 
-struct MentalNoiseGateWidget : ModuleWidget {
-	MentalNoiseGateWidget();
-};
+//struct MentalNoiseGateWidget : ModuleWidget {
+//	MentalNoiseGateWidget();
+//};
 
 struct MentalQuantiserWidget : ModuleWidget {
 	MentalQuantiserWidget();
@@ -66,6 +66,6 @@ struct MentalButtonsWidget : ModuleWidget {
 	MentalButtonsWidget();
 };
 
-struct MentalTemplateWidget : ModuleWidget {
-	MentalTemplateWidget();
-};
+//struct MentalTemplateWidget : ModuleWidget {
+//	MentalTemplateWidget();
+//};
