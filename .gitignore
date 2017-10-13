@@ -1,0 +1,6 @@
+/build
+/src/backups
+plugin.dll
+/src/MentalTest.cpp
+/src/MentalTemplate.cpp
+/src/MentalNoiseGate.cpp
