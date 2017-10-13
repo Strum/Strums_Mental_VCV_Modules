@@ -70,6 +70,10 @@ struct MentalSumsWidget : ModuleWidget {
 	MentalSumsWidget();
 };
 
+struct MentalPitchShiftWidget : ModuleWidget {
+	MentalPitchShiftWidget();
+};
+
 //struct MentalTemplateWidget : ModuleWidget {
 //	MentalTemplateWidget();
 //};
