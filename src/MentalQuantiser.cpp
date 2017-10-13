@@ -8,6 +8,8 @@
 
 #include "mental.hpp"
 
+#include "dsp/digital.hpp"
+
 /////////////////////////////////////////////////
 struct MentalQuantiser : Module {
 	enum ParamIds {

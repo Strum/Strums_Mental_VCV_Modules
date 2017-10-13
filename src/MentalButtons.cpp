@@ -10,6 +10,7 @@
 
 #include "mental.hpp"
 
+#include "dsp/digital.hpp"
 
 
 struct MentalButtons : Module {
