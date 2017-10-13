@@ -65,7 +65,8 @@ MentalMultsWidget::MentalMultsWidget() {
 	{
 		SVGPanel *panel = new SVGPanel();
 		panel->box.size = box.size;
-		panel->setBackground(SVG::load("plugins/mental/res/MentalMults.svg"));
+		//panel->setBackground(SVG::load("plugins/mental/res/MentalMults.svg"));
+    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalMults.svg")));
 		addChild(panel);
 	}
 	

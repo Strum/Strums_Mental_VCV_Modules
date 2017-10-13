@@ -110,7 +110,8 @@ MentalQuantiserWidget::MentalQuantiserWidget() {
   {
 		SVGPanel *panel = new SVGPanel();
 		panel->box.size = box.size;
-		panel->setBackground(SVG::load("plugins/mental/res/MentalQuantiser.svg"));
+		//panel->setBackground(SVG::load("plugins/mental/res/MentalQuantiser.svg"));
+    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalQuantiser.svg")));
 		addChild(panel);
 	}
   int top_row = 75;

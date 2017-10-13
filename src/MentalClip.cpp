@@ -67,7 +67,8 @@ MentalClipWidget::MentalClipWidget() {
 	{
 		SVGPanel *panel = new SVGPanel();
 		panel->box.size = box.size;
-		panel->setBackground(SVG::load("plugins/mental/res/MentalClip.svg"));
+		//panel->setBackground(SVG::load("plugins/mental/res/MentalClip.svg"));
+    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalClip.svg")));
 		addChild(panel);
 	}
 

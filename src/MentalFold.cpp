@@ -67,7 +67,8 @@ MentalFoldWidget::MentalFoldWidget() {
 	{
 		SVGPanel *panel = new SVGPanel();
 		panel->box.size = box.size;
-		panel->setBackground(SVG::load("plugins/mental/res/MentalFold.svg"));
+		//panel->setBackground(SVG::load("plugins/mental/res/MentalFold.svg"));
+    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalFold.svg")));
 		addChild(panel);
 	}
 

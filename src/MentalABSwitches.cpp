@@ -79,7 +79,9 @@ MentalABSwitchesWidget::MentalABSwitchesWidget() {
   {
 		SVGPanel *panel = new SVGPanel();
 		panel->box.size = box.size;
-		panel->setBackground(SVG::load("plugins/mental/res/MentalABSwitches.svg"));
+		
+    //panel->setBackground(SVG::load("plugins/mental/res/MentalABSwitches.svg"));
+    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalABSwitches.svg")));
 		addChild(panel);
 	}
   int group_spacing = 85;

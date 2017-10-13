@@ -1,8 +1,6 @@
 ///////////////////////////////////////////////////
 //
-//   Buttons Widget for quilding new modules inside without changing module list
-//    before it's working.
-//   VCV Module
+//   Buttons VCV Module
 //
 //   Strum 2017
 //
@@ -30,8 +28,8 @@ struct MentalButtons : Module {
 
   SchmittTrigger button_triggers[7];
   //SchmittTrigger momentary_trigger;
-  float button_leds[8] = {0.0};  
-  bool button_states[8] = {0.0};
+  float button_leds[7] = {0.0};  
+  bool button_states[7] = {0.0};
   float moment_leds[7] = {0.0};
   
 	MentalButtons() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
@@ -70,7 +68,8 @@ MentalButtonsWidget::MentalButtonsWidget() {
 	{
 		SVGPanel *panel = new SVGPanel();
 		panel->box.size = box.size;
-		panel->setBackground(SVG::load("plugins/mental/res/MentalButtons.svg"));
+		//panel->setBackground(SVG::load("plugins/mental/res/MentalButtons.svg"));
+    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalButtons.svg")));
 		addChild(panel);
 	}
 	

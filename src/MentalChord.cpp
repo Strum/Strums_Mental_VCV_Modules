@@ -170,7 +170,8 @@ MentalChordWidget::MentalChordWidget() {
   {
 		SVGPanel *panel = new SVGPanel();
 		panel->box.size = box.size;
-		panel->setBackground(SVG::load("plugins/mental/res/MentalChord.svg"));
+		//panel->setBackground(SVG::load("plugins/mental/res/MentalChord.svg"));
+    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalChord.svg")));
 		addChild(panel);
 	}
   addParam(createParam<Davies1900hSmallBlackKnob>(Vec(3, 20), module, MentalChord::OFFSET_PARAM, 0.0, 1.0, 0.5));

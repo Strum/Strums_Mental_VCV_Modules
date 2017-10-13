@@ -75,7 +75,8 @@ MentalGatesWidget::MentalGatesWidget() {
   {
 		SVGPanel *panel = new SVGPanel();
 		panel->box.size = box.size;
-		panel->setBackground(SVG::load("plugins/mental/res/MentalGates.svg"));
+    //panel->setBackground(SVG::load(assetPlugin(plugin,"res/ShiftReg.svg")));
+		panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalGates.svg")));
 		addChild(panel);
 	}
   int group_spacing = 85;
