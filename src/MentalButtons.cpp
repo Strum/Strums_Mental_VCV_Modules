@@ -28,9 +28,9 @@ struct MentalButtons : Module {
 
   SchmittTrigger button_triggers[7];
   //SchmittTrigger momentary_trigger;
-  float button_leds[7] = {0.0};  
-  bool button_states[7] = {0.0};
-  float moment_leds[7] = {0.0};
+  float button_leds[7] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0};  
+  bool button_states[7] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+  float moment_leds[7] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0};
   
 	MentalButtons() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
 	void step();
