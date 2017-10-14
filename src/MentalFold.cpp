@@ -12,11 +12,13 @@
 struct MentalFold : Module {
 	enum ParamIds {
     THRESH_PARAM,
+    GAIN_PARAM,
     NUM_PARAMS
 	};
 	enum InputIds {
 		INPUT_1,
-    CV_INPUT,
+    THRESH_CV_INPUT,
+    GAIN_CV_INPUT,
     NUM_INPUTS
 	};
 	enum OutputIds {
@@ -28,19 +30,13 @@ struct MentalFold : Module {
 	void step();
 };
 
-/*
-MentalFold::MentalFold() {
-  params.resize(NUM_PARAMS);
-	inputs.resize(NUM_INPUTS);
-	outputs.resize(NUM_OUTPUTS);
-}*/
-
 /////////////////////////////////////////////////////
 void MentalFold::step() {
 
   float signal_in_1 = inputs[INPUT_1].value;
-  float threshold_fold = params[THRESH_PARAM].value * 6 + inputs[CV_INPUT].value;
-
+  float threshold_fold = params[THRESH_PARAM].value * 6 + inputs[THRESH_CV_INPUT].value;
+  
+  float gain = params[GAIN_PARAM].value * 5 + inputs[GAIN_CV_INPUT].value / 2;
 
   float modified2 = signal_in_1;
   if (abs(signal_in_1) > threshold_fold )
@@ -54,7 +50,7 @@ void MentalFold::step() {
     }
   }
 
-  outputs[OUTPUT_1].value = modified2;
+  outputs[OUTPUT_1].value = modified2 * gain;
 
 }
 
@@ -71,12 +67,14 @@ MentalFoldWidget::MentalFoldWidget() {
     panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalFold.svg")));
 		addChild(panel);
 	}
+  
+  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 20), module, MentalFold::THRESH_PARAM, 0.0, 1.0, 1.0));
+  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 80), module, MentalFold::GAIN_PARAM, 0.0, 1.0, 0.5));
+	
+  addInput(createInput<PJ301MPort>(Vec(3, 50), module, MentalFold::THRESH_CV_INPUT));
+  addInput(createInput<PJ301MPort>(Vec(3, 110), module, MentalFold::GAIN_CV_INPUT));
 
-  addParam(createParam<SynthTechAlco>(Vec(8, 30), module, MentalFold::THRESH_PARAM, 0.0, 1.0, 1.0));
-
-  addInput(createInput<PJ301MPort>(Vec(18, 87), module, MentalFold::CV_INPUT));
-	addInput(createInput<PJ301MPort>(Vec(3, 120), module, MentalFold::INPUT_1));
-
-  addOutput(createOutput<PJ301MPort>(Vec(33, 120), module, MentalFold::OUTPUT_1));
+  addInput(createInput<PJ301MPort>(Vec(3, 140), module, MentalFold::INPUT_1));
+  addOutput(createOutput<PJ301MPort>(Vec(33, 140), module, MentalFold::OUTPUT_1));
 
 }

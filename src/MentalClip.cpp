@@ -78,7 +78,6 @@ MentalClipWidget::MentalClipWidget() {
 
   addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 20), module, MentalClip::THRESH_PARAM, 0.0, 1.0, 1.0));
   addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 80), module, MentalClip::GAIN_PARAM, 0.0, 1.0, 0.5));
-
 	
   addInput(createInput<PJ301MPort>(Vec(3, 50), module, MentalClip::THRESH_CV_INPUT));
   addInput(createInput<PJ301MPort>(Vec(3, 110), module, MentalClip::GAIN_CV_INPUT));
