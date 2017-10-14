@@ -12,11 +12,13 @@
 struct MentalClip : Module {
 	enum ParamIds {
     THRESH_PARAM,
+    GAIN_PARAM,
     NUM_PARAMS
 	};
 	enum InputIds {
 		INPUT_1,
-    CV_INPUT,
+    THRESH_CV_INPUT,
+    GAIN_CV_INPUT,
     NUM_INPUTS
 	};
 	enum OutputIds {
@@ -39,7 +41,9 @@ MentalClip::MentalClip() {
 void MentalClip::step() {
 
   float signal_in = inputs[INPUT_1].value;
-  float threshold = params[THRESH_PARAM].value * 6 + inputs[CV_INPUT].value;
+  float threshold = params[THRESH_PARAM].value * 6 + inputs[THRESH_CV_INPUT].value/2;
+  
+  float gain = params[GAIN_PARAM].value * 5 + inputs[GAIN_CV_INPUT].value / 2;
 
 
   float clipped = signal_in;
@@ -54,7 +58,7 @@ void MentalClip::step() {
     }
   }
 
-  outputs[OUTPUT_1].value = clipped;
+  outputs[OUTPUT_1].value = clipped * gain;
 
 }
 
@@ -72,11 +76,14 @@ MentalClipWidget::MentalClipWidget() {
 		addChild(panel);
 	}
 
-  addParam(createParam<SynthTechAlco>(Vec(8, 30), module, MentalClip::THRESH_PARAM, 0.0, 1.0, 1.0));
+  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 20), module, MentalClip::THRESH_PARAM, 0.0, 1.0, 1.0));
+  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 80), module, MentalClip::GAIN_PARAM, 0.0, 1.0, 0.5));
 
-	addInput(createInput<PJ301MPort>(Vec(3, 120), module, MentalClip::INPUT_1));
-  addInput(createInput<PJ301MPort>(Vec(18, 87), module, MentalClip::CV_INPUT));
+	
+  addInput(createInput<PJ301MPort>(Vec(3, 50), module, MentalClip::THRESH_CV_INPUT));
+  addInput(createInput<PJ301MPort>(Vec(3, 110), module, MentalClip::GAIN_CV_INPUT));
 
-  addOutput(createOutput<PJ301MPort>(Vec(33, 120), module, MentalClip::OUTPUT_1));
+  addInput(createInput<PJ301MPort>(Vec(3, 140), module, MentalClip::INPUT_1));
+  addOutput(createOutput<PJ301MPort>(Vec(33, 140), module, MentalClip::OUTPUT_1));
 
 }
