@@ -3,4 +3,4 @@
 /src/MentalTest.cpp
 /src/MentalTemplate.cpp
 /src/MentalNoiseGate.cpp
-plugin.dll
+./plugin.dll
