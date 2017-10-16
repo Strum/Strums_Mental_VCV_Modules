@@ -25,5 +25,6 @@ void init(rack::Plugin *p) {
     createModel<MentalButtonsWidget>(plugin, "MentalButtons", "Mental Buttons");
     createModel<MentalSumsWidget>(plugin, "MentalSums", "Mental Sums");
     createModel<MentalPitchShiftWidget>(plugin, "MentalPitchShift", "Mental Pitch Shifter");
+    createModel<MentalClockDividerWidget>(plugin, "MentalClockDivider", "Mental Clock Divider");
     //createModel<MentalTemplateWidget>(plugin, "MentalTemplate", "Mental Template");
 }
