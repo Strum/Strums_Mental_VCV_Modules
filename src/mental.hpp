@@ -77,6 +77,11 @@ struct MentalPitchShiftWidget : ModuleWidget {
 struct MentalClockDividerWidget : ModuleWidget {
 	MentalClockDividerWidget();
 };
+
+struct MentalCartesianWidget : ModuleWidget {
+	MentalCartesianWidget();
+};
+
 //struct MentalTemplateWidget : ModuleWidget {
 //	MentalTemplateWidget();
 //};

@@ -64,3 +64,8 @@ Sums
 Clock Divider
   Based on autodafe's clock divider but I've simplified the code, made the gui
   smaller and added extra divisions 3,5,7 and 12
+  
+Cartesian Sequencer
+  Cartesian sequencer similar to make noise rene.
+
+
