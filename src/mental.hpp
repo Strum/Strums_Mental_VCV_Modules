@@ -1,6 +1,5 @@
 #include "rack.hpp"
 
-
 using namespace rack;
 
 extern Plugin *plugin;
@@ -80,6 +79,10 @@ struct MentalClockDividerWidget : ModuleWidget {
 
 struct MentalCartesianWidget : ModuleWidget {
 	MentalCartesianWidget();
+};
+
+struct MentalPatchMatrixWidget : ModuleWidget {
+	MentalPatchMatrixWidget();
 };
 
 //struct MentalTemplateWidget : ModuleWidget {
