@@ -12,7 +12,8 @@
 
 struct MentalCartesian : Module {
 	enum ParamIds {
-    KNOB_PARAM,
+    BUTTON_PARAM,
+    KNOB_PARAM  = BUTTON_PARAM + 16,
     OUT_QNT_SWITCH = KNOB_PARAM + 16,
 		NUM_PARAMS
 	};
@@ -30,10 +31,11 @@ struct MentalCartesian : Module {
 		NUM_INPUTS
 	};
 	enum OutputIds {
-		MAIN_OUT,
+		UNQUANT_OUT,
+    QUANT_OUT,
     ROW_OUT,
-    COLUMN_OUT,    
-		NUM_OUTPUTS
+    COLUMN_OUT = ROW_OUT + 4,    
+		NUM_OUTPUTS = COLUMN_OUT + 4
 	};
 
   SchmittTrigger leftTrigger;
@@ -45,17 +47,18 @@ struct MentalCartesian : Module {
   SchmittTrigger y_resetTrigger;
   
   SchmittTrigger quant_buttonTrigger;
-  bool quantised = false;
-  float quantised_led = 0.0;
-  float grid_lights[4][4];
-  
-  /*for {int i = 0; i < 4 ; i++}
-  {
-    for {int j = 0; j < 4 ; j++}
-    {
-      grid_lights[i][j] = 0.0;
-    }
-  }*/
+  SchmittTrigger button_triggers[4][4];
+    
+  float grid_lights[4][4]= {0.0,0.0,0.0,0.0,
+                            0.0,0.0,0.0,0.0,
+                            0.0,0.0,0.0,0.0,
+                            0.0,0.0,0.0,0.0,};
+                            
+  float button_lights[4][4]= {0.0,0.0,0.0,0.0,
+                            0.0,0.0,0.0,0.0,
+                            0.0,0.0,0.0,0.0,
+                            0.0,0.0,0.0,0.0,};
+    
   
   int x_position = 0;
   int y_position = 0;
@@ -71,7 +74,7 @@ void MentalCartesian::step() {
     bool step_left = false;
     bool step_up = false;
     bool step_down = false;
-    
+    grid_lights[x_position][y_position] = 1.0;
     // handle clock inputs
     if (inputs[RIGHT].active)
     {
@@ -133,6 +136,21 @@ void MentalCartesian::step() {
       step_up = false;	
       step_down = false;	
 	  }
+    // handle button triggers
+    for (int i = 0 ; i < 4 ; i++)
+    {
+      for (int j = 0 ; j < 4 ; j++)
+      {
+        if ((params[BUTTON_PARAM + i + j * 4].value))
+        {
+          button_lights[i][j] = 1.0;
+          grid_lights[x_position][y_position] = 0.0;
+          x_position = i;
+          y_position = j;
+          grid_lights[x_position][y_position] = 1.0;
+        } else button_lights[i][j] = 0.0;
+      }		  
+	  }    
     // change x and y    
     if (step_right)
     {
@@ -162,28 +180,25 @@ void MentalCartesian::step() {
       if (y_position < 0) y_position = 3;      
       grid_lights[x_position][y_position] = 1.0;
     }
-    if (quant_buttonTrigger.process(params[OUT_QNT_SWITCH].value))
-    {
-      quantised = !quantised;
-    }
-    quantised_led = quantised ? 1.0 : 0.0;
+    
     /// set outputs
     int which_knob = y_position * 4 + x_position;
     float main_out = params[KNOB_PARAM + which_knob].value;
-    if (quantised)
-    {
-      int oct = round(main_out);
-      float left = main_out - oct;
-      int semi = round(left * 12);
-      main_out = oct + semi/12.0;
-    }
-    outputs[MAIN_OUT].value = main_out;    
+    
+    int oct = round(main_out);
+    float left = main_out - oct;
+    int semi = round(left * 12);
+    float quant_out = oct + semi/12.0;
+    
+    outputs[UNQUANT_OUT].value = main_out;
+    outputs[QUANT_OUT].value = quant_out;     
 }
 
+////////////////////////////////
 MentalCartesianWidget::MentalCartesianWidget() {
 	MentalCartesian *module = new MentalCartesian();
 	setModule(module);
-	box.size = Vec(15*12, 380);
+	box.size = Vec(15*16, 380);
   
 	{
 		SVGPanel *panel = new SVGPanel();
@@ -194,9 +209,9 @@ MentalCartesianWidget::MentalCartesianWidget() {
  
   int top = 20;
   int left = 3;
-  int column_spacing = 30; 
-  int row_spacing = 30;
-  
+  int column_spacing = 25; 
+  int row_spacing = 25;
+  int button_offset = 140;
 	addInput(createInput<PJ301MPort>(Vec(left, top), module, MentalCartesian::LEFT));
   addInput(createInput<PJ301MPort>(Vec(left+column_spacing, top), module, MentalCartesian::RIGHT));
   addInput(createInput<PJ301MPort>(Vec(left+column_spacing * 2, top), module, MentalCartesian::X_CV));
@@ -209,20 +224,24 @@ MentalCartesianWidget::MentalCartesianWidget() {
     
   addInput(createInput<PJ301MPort>(Vec(left + column_spacing * 3, top + row_spacing * 2), module, MentalCartesian::RESET));
   
-  addOutput(createOutput<PJ301MPort>(Vec(150, 20), module, MentalCartesian::MAIN_OUT));
-  addParam(createParam<LEDButton>(Vec(150, 50), module, MentalCartesian::OUT_QNT_SWITCH, 0.0, 1.0, 0.0));
-	addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(150+5, 50+5), &module->quantised_led));
-	addOutput(createOutput<PJ301MPort>(Vec(150, 100), module, MentalCartesian::ROW_OUT));
-	addOutput(createOutput<PJ301MPort>(Vec(150, 130), module, MentalCartesian::COLUMN_OUT));
+  addOutput(createOutput<PJ301MPort>(Vec(213, 20), module, MentalCartesian::UNQUANT_OUT));  
+  //addParam(createParam<LEDButton>(Vec(213, 50), module, MentalCartesian::OUT_QNT_SWITCH, 0.0, 1.0, 0.0));
+	//addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(213+5, 50+5), &module->quantised_led));
+  addOutput(createOutput<PJ301MPort>(Vec(213, 50), module, MentalCartesian::QUANT_OUT));
+	addOutput(createOutput<PJ301MPort>(Vec(213, 100), module, MentalCartesian::ROW_OUT));
+	addOutput(createOutput<PJ301MPort>(Vec(213, 130), module, MentalCartesian::COLUMN_OUT));
   
   for ( int i = 0 ; i < 4 ; i++)
   {
     for ( int j = 0 ; j < 4 ; j++)
     {
-      addParam(createParam<Davies1900hSmallBlackKnob>(Vec(left+column_spacing * i, top + row_spacing * j + 150 ), module, MentalCartesian::KNOB_PARAM + i + j * 4, 0.0, 1.0, 0.0));
-      addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(left+column_spacing * i + 10, top + row_spacing * j + 150 + 10), &module->grid_lights[i][j]));
+      addParam(createParam<Trimpot>(Vec(left+column_spacing * i, top + row_spacing * j + 150 ), module, MentalCartesian::KNOB_PARAM + i + j * 4, 0.0, 1.0, 0.0));
+      addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(left+column_spacing * i + 4, top + row_spacing * j + 150 + 4), &module->grid_lights[i][j]));
+      addParam(createParam<LEDButton>(Vec(button_offset+left+column_spacing * i, top + row_spacing * j + 150 ), module, MentalCartesian::BUTTON_PARAM + i + j * 4, 0.0, 1.0, 0.0));
+      addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(button_offset+left+column_spacing * i + 5, top + row_spacing * j + 150 + 5), &module->button_lights[i][j]));
     }
-	}
-  
+    addOutput(createOutput<PJ301MPort>(Vec(left+column_spacing * i, top + row_spacing * 4 + 150 ), module, MentalCartesian::COLUMN_OUT + i));
+    addOutput(createOutput<PJ301MPort>(Vec(left+column_spacing * 4, top + row_spacing * i + 150 ), module, MentalCartesian::ROW_OUT + i));
+	}  
 	
 }
