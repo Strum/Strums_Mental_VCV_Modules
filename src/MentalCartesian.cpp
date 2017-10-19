@@ -46,12 +46,12 @@ struct MentalCartesian : Module {
     
   SchmittTrigger button_triggers[4][4];
     
-  float grid_lights[4][4]= {0.0,0.0,0.0,0.0,
+  float grid_lights[4][4] = {0.0,0.0,0.0,0.0,
                             0.0,0.0,0.0,0.0,
                             0.0,0.0,0.0,0.0,
                             0.0,0.0,0.0,0.0};
                             
-  float button_lights[4][4]= {0.0,0.0,0.0,0.0,
+  float button_lights[4][4] = {0.0,0.0,0.0,0.0,
                             0.0,0.0,0.0,0.0,
                             0.0,0.0,0.0,0.0,
                             0.0,0.0,0.0,0.0};
