@@ -67,5 +67,8 @@ Clock Divider
   
 Cartesian Sequencer
   Cartesian sequencer similar to make noise rene.
+  
+Patch Matrix
+  10 by 10 Patch matrix
 
 
