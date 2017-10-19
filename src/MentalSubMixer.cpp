@@ -56,24 +56,47 @@ void MentalSubMixer::step() {
   
   float ch1 = inputs[CH1_INPUT].value * params[CH1_PARAM].value * clampf(inputs[CH1_CV_INPUT].normalize(10.0) / 10.0, 0.0, 1.0);
 
-  float ch1_l = ch1 * (1-params[CH1_PAN_PARAM].value)* 2;
-  float ch1_r = ch1 * params[CH1_PAN_PARAM].value * 2;
+  float pan_cv_in_1 = inputs[CH1_PAN_INPUT].value/5;
+  float pan_position_1 = pan_cv_in_1 + params[CH1_PAN_PARAM].value;
+   
+  if (pan_position_1 < 0) pan_position_1 = 0;
+  if (pan_position_1 > 1) pan_position_1 = 1;  
+    
+  float ch1_l = ch1 * (1-pan_position_1)* 2;
+  float ch1_r = ch1 * pan_position_1 * 2;
 
 	float ch2 = inputs[CH2_INPUT].value * params[CH2_PARAM].value * clampf(inputs[CH2_CV_INPUT].normalize(10.0) / 10.0, -1.0, 1.0);
-
-  float ch2_l = ch2 * (1-params[CH2_PAN_PARAM].value)* 2 ;
-  float ch2_r = ch2 * params[CH2_PAN_PARAM].value * 2;
-
+  
+  float pan_cv_in_2 = inputs[CH2_PAN_INPUT].value/5;
+  float pan_position_2 = pan_cv_in_2 + params[CH2_PAN_PARAM].value;
+   
+  if (pan_position_2 < 0) pan_position_2 = 0;
+  if (pan_position_2 > 1) pan_position_2 = 1;  
+    
+  float ch2_l = ch2 * (1-pan_position_2)* 2;
+  float ch2_r = ch2 * pan_position_2 * 2;
+  
 	float ch3 = inputs[CH3_INPUT].value * params[CH3_PARAM].value * clampf(inputs[CH3_CV_INPUT].normalize(10.0) / 10.0, 0.0, 1.0);
 
-  float ch3_l = ch3 * (1-params[CH3_PAN_PARAM].value)* 2;
-  float ch3_r = ch3 * params[CH3_PAN_PARAM].value * 2;
-  
+  float pan_cv_in_3 = inputs[CH3_PAN_INPUT].value/5;
+  float pan_position_3 = pan_cv_in_3 + params[CH3_PAN_PARAM].value;
+   
+  if (pan_position_3 < 0) pan_position_3 = 0;
+  if (pan_position_3 > 1) pan_position_3 = 1;  
+    
+  float ch3_l = ch3 * (1-pan_position_3)* 2;
+  float ch3_r = ch3 * pan_position_3 * 2;
+    
   float ch4 = inputs[CH4_INPUT].value * params[CH4_PARAM].value * clampf(inputs[CH4_CV_INPUT].normalize(10.0) / 10.0, 0.0, 1.0);
 
-  float ch4_l = ch4 * (1-params[CH4_PAN_PARAM].value)* 2;
-  float ch4_r = ch4 * params[CH4_PAN_PARAM].value * 2;
-
+  float pan_cv_in_4 = inputs[CH4_PAN_INPUT].value/5;
+  float pan_position_4 = pan_cv_in_4 + params[CH4_PAN_PARAM].value;
+   
+  if (pan_position_4 < 0) pan_position_4 = 0;
+  if (pan_position_4 > 1) pan_position_4 = 1;  
+    
+  float ch4_l = ch4 * (1-pan_position_4)* 2;
+  float ch4_r = ch4 * pan_position_4 * 2;
 
 	float mix_l = (ch1_l + ch2_l + ch3_l + ch4_l) * params[MIX_PARAM].value * inputs[MIX_CV_INPUT].normalize(10.0) / 10.0;
   float mix_r = (ch1_r + ch2_r + ch3_r + ch4_r) * params[MIX_PARAM].value * inputs[MIX_CV_INPUT].normalize(10.0) / 10.0;
