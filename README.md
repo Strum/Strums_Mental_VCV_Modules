@@ -4,7 +4,8 @@ strum@softhome.net
 
 Simple but useful modules for VCVRack
 
-Version : 0.0.2
+Version : 0.4c
+Works with Rack 0.4.0
 
 Based largely on the fundamental modules but I have also used some code from other module
 developers and learned various ways of doing things from the other suites of modules as well.
@@ -16,59 +17,59 @@ Currently Compiles against the lastest code as of 13 Oct 2017.
 
 Module List
 
-Chord
+Chord - 
   Inspired by Q-Bit chord Eurorack module, takes input pitch and builds a chord
   from it based on various parameters and logic inputs.
 
-Gates
+Gates - 
   Manual or remotely controllable gates
 
-Logic
+Logic - 
   Various logic gates
 
-Mults
+Mults - 
   Simple 2*5 Multiples
 
-Muxes
+Muxes - 
   2 * 2 into 1 muxes and 1 4 into 1 mux
 
-Quantiser
+Quantiser - 
   Takes inputs pitchs and quantises to scale selected by buttons for each pitch
   Also functions as a pitch reference
 
-SubMixer
+SubMixer - 
   4 Channel stereo mixer with pan based on fundametal VCMixer
 
-A/B Switches
+A/B Switches - 
   A/B switches
 
-Buttons
+Buttons - 
   Buttons for controlling other modules manually
   7 On/off switches in the top section and 7 momentary buttons in the lower.
   
-Mixer
+Mixer - 
   12 Channel Mixer with 2 auxiliary sends and returns and channel mutes.
 
-Clipper
+Clipper - 
   Simple Clipping distortion
 
-Wave Folder
+Wave Folder - 
   Simple Waver folder
   
-Pitch Shifter
+Pitch Shifter - 
   Shift pitches by octaves or semitones
 
-Sums
+Sums - 
   2 * 5 into 1 summing mixers, useful for adding cvs for pitch and modulation   
 
-Clock Divider
+Clock Divider - 
   Based on autodafe's clock divider but I've simplified the code, made the gui
   smaller and added extra divisions 3,5,7 and 12
   
-Cartesian Sequencer
+Cartesian Sequencer - 
   Cartesian sequencer similar to make noise rene.
   
-Patch Matrix
+Patch Matrix - 
   10 by 10 Patch matrix
 
 
