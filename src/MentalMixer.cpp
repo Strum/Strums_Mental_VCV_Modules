@@ -60,6 +60,37 @@ struct MentalMixer : Module {
   
 	MentalMixer() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
 	void step();
+  
+  json_t *toJson()
+  {
+		json_t *rootJ = json_object();
+    
+    // mute states
+		json_t *mute_statesJ = json_array();
+		for (int i = 0; i < 12; i++)
+    {
+			json_t *mute_stateJ = json_integer((int) mute_states[i]);
+			json_array_append_new(mute_statesJ, mute_stateJ);
+		}
+		json_object_set_new(rootJ, "mutes", mute_statesJ);    
+    return rootJ;
+  }
+  
+  void fromJson(json_t *rootJ)
+  {
+    // mute states
+		json_t *mute_statesJ = json_object_get(rootJ, "mutes");
+		if (mute_statesJ)
+    {
+			for (int i = 0; i < 12; i++)
+      {
+				json_t *mute_stateJ = json_array_get(mute_statesJ, i);
+				if (mute_stateJ)
+					mute_states[i] = !!json_integer_value(mute_stateJ);
+			}
+		}  
+  }
+  
 };
 
 ///////////////////////////////////////////////////////////////////
