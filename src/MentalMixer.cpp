@@ -46,7 +46,9 @@ struct MentalMixer : Module {
   SchmittTrigger mute_triggers[12];
   float mute_lights[12] = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
   bool mute_states[12]= {1,1,1,1,1,1,1,1,1,1,1,1};
-  float channel_ins[12]; 
+  float channel_ins[12];
+  float pan_cv_ins[12];
+  float pan_positions[12]; 
   float channel_sends_1[12];
   float channel_sends_2[12];
   float channel_outs_l[12];
@@ -90,13 +92,18 @@ void MentalMixer::step() {
     channel_sends_1[i] = channel_ins[i] * params[AUX_1_PARAM + i].value * clampf(inputs[CH_VOL_INPUT + i].normalize(10.0) / 10.0, 0.0, 1.0);
     channel_sends_2[i] = channel_ins[i] * params[AUX_2_PARAM + i].value * clampf(inputs[CH_VOL_INPUT + i].normalize(10.0) / 10.0, 0.0, 1.0);
 
-    channel_outs_l[i] = channel_ins[i] * (1-params[PAN_PARAM + i].value)* 2;
-    channel_outs_r[i] = channel_ins[i] * params[PAN_PARAM + i].value * 2;
+    pan_cv_ins[i] = inputs[CH_PAN_INPUT + i].value/5;
+    pan_positions[i] = pan_cv_ins[i] + params[PAN_PARAM+i].value;   
+    if (pan_positions[i] < 0) pan_positions[i] = 0;
+    if (pan_positions[i] > 1) pan_positions[i] = 1;    
+    channel_outs_l[i]= channel_ins[i] * (1-pan_positions[i])* 2;
+    channel_outs_r[i]= channel_ins[i] * pan_positions[i] * 2;
+      
+    
     send_1_sum += channel_sends_1[i];
     send_2_sum += channel_sends_2[i];
     left_sum += channel_outs_l[i];
     right_sum += channel_outs_r[i];    
-    
   }
 	
 
