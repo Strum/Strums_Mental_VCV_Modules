@@ -97,8 +97,7 @@ void MentalMixer::step() {
     if (pan_positions[i] < 0) pan_positions[i] = 0;
     if (pan_positions[i] > 1) pan_positions[i] = 1;    
     channel_outs_l[i]= channel_ins[i] * (1-pan_positions[i])* 2;
-    channel_outs_r[i]= channel_ins[i] * pan_positions[i] * 2;
-      
+    channel_outs_r[i]= channel_ins[i] * pan_positions[i] * 2;      
     
     send_1_sum += channel_sends_1[i];
     send_2_sum += channel_sends_2[i];
