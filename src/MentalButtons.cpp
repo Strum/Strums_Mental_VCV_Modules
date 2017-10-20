@@ -41,12 +41,12 @@ struct MentalButtons : Module {
     
     // button states
 		json_t *button_statesJ = json_array();
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 7; i++)
+    {
 			json_t *button_stateJ = json_integer((int) button_states[i]);
 			json_array_append_new(button_statesJ, button_stateJ);
 		}
-		json_object_set_new(rootJ, "buttons", button_statesJ);
-    
+		json_object_set_new(rootJ, "buttons", button_statesJ);    
     return rootJ;
   }
   
