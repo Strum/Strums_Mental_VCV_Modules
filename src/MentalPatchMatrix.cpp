@@ -63,6 +63,43 @@ struct MentalPatchMatrix : Module {
   
 	MentalPatchMatrix() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
 	void step();
+  
+  json_t *toJson()
+  {
+		json_t *rootJ = json_object();
+    
+    // button states
+		json_t *button_statesJ = json_array();
+		for (int i = 0; i < 10; i++)
+    {
+			for (int j = 0; j < 10; j++)
+      {
+        json_t *button_stateJ = json_integer((int) switch_states[i][j]);
+			  json_array_append_new(button_statesJ, button_stateJ);
+      }
+		}
+		json_object_set_new(rootJ, "buttons", button_statesJ);
+    
+    return rootJ;
+  }
+  
+  void fromJson(json_t *rootJ)
+  {
+    // button states
+		json_t *button_statesJ = json_object_get(rootJ, "buttons");
+		if (button_statesJ)
+    {
+			for (int i = 0; i < 10; i++)
+      {
+        for (int j = 0; j < 10; j++)
+        {
+				  json_t *button_stateJ = json_array_get(button_statesJ, i*10 + j);
+				  if (button_stateJ)
+					  switch_states[i][j] = !!json_integer_value(button_stateJ);
+        }
+      }
+		}  
+  }  
 };
 
 ////// Step function
