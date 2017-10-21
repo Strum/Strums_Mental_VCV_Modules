@@ -62,8 +62,7 @@ struct MentalButtons : Module {
 				if (button_stateJ)
 					button_states[i] = !!json_integer_value(button_stateJ);
 			}
-		}
-  
+		}  
   }
 };
 
