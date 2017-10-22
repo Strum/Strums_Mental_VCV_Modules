@@ -85,3 +85,12 @@ struct MentalPatchMatrixWidget : ModuleWidget {
 struct MentalBinaryDecoderWidget : ModuleWidget {
 	MentalBinaryDecoderWidget();
 };
+
+struct MentalSwitch8Widget : ModuleWidget {
+	MentalSwitch8Widget();
+};
+
+struct MentalMux8Widget : ModuleWidget {
+	MentalMux8Widget();
+};
+
