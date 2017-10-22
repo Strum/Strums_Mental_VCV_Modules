@@ -21,9 +21,6 @@ struct MentalMixerWidget : ModuleWidget {
 	MentalMixerWidget();
 };
 
-//struct MentalTestWidget : ModuleWidget {
-//	MentalTestWidget();
-//};
 
 struct MentalFoldWidget : ModuleWidget {
 	MentalFoldWidget();
@@ -85,6 +82,6 @@ struct MentalPatchMatrixWidget : ModuleWidget {
 	MentalPatchMatrixWidget();
 };
 
-//struct MentalTemplateWidget : ModuleWidget {
-//	MentalTemplateWidget();
-//};
+struct MentalBinaryDecoderWidget : ModuleWidget {
+	MentalBinaryDecoderWidget();
+};

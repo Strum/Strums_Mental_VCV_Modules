@@ -12,7 +12,6 @@ void init(rack::Plugin *p) {
     createModel<MentalSubMixerWidget>(plugin, "MentalSubMixer", "Mental Sub Mixer");
     createModel<MentalMultsWidget>(plugin, "MentalMults", "Mental Mults");
     createModel<MentalMixerWidget>(plugin, "MentalMixer", "Mental Mixer");
-    //createModel<MentalTestWidget>(plugin, "MentalTest", "Mental Testbench");
     createModel<MentalFoldWidget>(plugin, "MentalFold", "Mental Wave Folder");
     createModel<MentalClipWidget>(plugin, "MentalClip", "Mental Wave Clipper");
     createModel<MentalGatesWidget>(plugin, "MentalGates", "Mental Gates");
@@ -27,6 +26,6 @@ void init(rack::Plugin *p) {
     createModel<MentalPitchShiftWidget>(plugin, "MentalPitchShift", "Mental Pitch Shifter");
     createModel<MentalClockDividerWidget>(plugin, "MentalClockDivider", "Mental Clock Divider");
     createModel<MentalCartesianWidget>(plugin, "MentalCartesian", "Mental Cartesian Sequencer");
-    createModel<MentalPatchMatrixWidget>(plugin, "MentalPatchMatrix", "Mental Patch Matrix");
-    //createModel<MentalTemplateWidget>(plugin, "MentalTemplate", "Mental Template");
+    createModel<MentalPatchMatrixWidget>(plugin, "MentalPatchMatrix", "Mental Patch Matrix"); 
+    createModel<MentalBinaryDecoderWidget>(plugin, "MentalBinaryDecoder", "Mental Binary Decoder");   
 }
