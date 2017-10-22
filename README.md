@@ -73,5 +73,12 @@ Cartesian Sequencer -
   
 Patch Matrix - 
   10 by 10 Patch matrix
+  
+Binary decoder - 
+  3 bit binary decoder true at one of 8 outputs dependent on logic state of the 3 inputs
+  
+8 way switch - based on binary decoder, switches a signal to one of 8 outputs based on 3 bit selector inputs
+
+8 to 1 Mux - The reverse of the 8 way switch, 8 inputs 1 out selected with 3 logic inputs
 
 
