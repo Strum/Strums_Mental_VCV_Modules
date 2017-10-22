@@ -27,5 +27,8 @@ void init(rack::Plugin *p) {
     createModel<MentalClockDividerWidget>(plugin, "MentalClockDivider", "Mental Clock Divider");
     createModel<MentalCartesianWidget>(plugin, "MentalCartesian", "Mental Cartesian Sequencer");
     createModel<MentalPatchMatrixWidget>(plugin, "MentalPatchMatrix", "Mental Patch Matrix"); 
-    createModel<MentalBinaryDecoderWidget>(plugin, "MentalBinaryDecoder", "Mental Binary Decoder");   
+    createModel<MentalBinaryDecoderWidget>(plugin, "MentalBinaryDecoder", "Mental Binary Decoder");
+    createModel<MentalSwitch8Widget>(plugin, "MentalSwitch8", "Mental 8 Way Switch");
+    createModel<MentalMux8Widget>(plugin, "MentalMux8", "Mental 8 to 1 Mux");    
+       
 }
