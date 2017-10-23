@@ -178,6 +178,7 @@ void MentalClockDivider::step()
 		{
        // sample rate has changed, update this.
 			lights[0] -= lights[0] / lightLambda / gSampleRate;
+      //lights[0] -= lights[0] / lightLambda / engineGetSampleRate();
 		}		
 	}
 	else
