@@ -81,4 +81,5 @@ Binary decoder -
 
 8 to 1 Mux - The reverse of the 8 way switch, 8 inputs 1 out selected with 3 logic inputs
 
+Dual Counters - for euclidean rhythms
 
