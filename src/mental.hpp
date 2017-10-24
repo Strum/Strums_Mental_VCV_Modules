@@ -94,3 +94,7 @@ struct MentalMux8Widget : ModuleWidget {
 	MentalMux8Widget();
 };
 
+struct MentalCountersWidget : ModuleWidget {
+	MentalCountersWidget();
+};
+
