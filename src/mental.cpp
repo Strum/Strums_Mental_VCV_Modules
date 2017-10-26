@@ -30,5 +30,7 @@ void init(rack::Plugin *p) {
     createModel<MentalBinaryDecoderWidget>(plugin, "MentalBinaryDecoder", "Mental Binary Decoder");
     createModel<MentalSwitch8Widget>(plugin, "MentalSwitch8", "Mental 8 Way Switch");
     createModel<MentalMux8Widget>(plugin, "MentalMux8", "Mental 8 to 1 Mux");
-    createModel<MentalCountersWidget>(plugin, "MentalCounters", "Mental Counters");       
+    createModel<MentalCountersWidget>(plugin, "MentalCounters", "Mental Counters");
+    createModel<MentalKnobsWidget>(plugin, "MentalKnobs", "Mental Knobs");
+    createModel<MentalGateMakerWidget>(plugin, "MentalGateMaker", "Mental Gate Maker");       
 }

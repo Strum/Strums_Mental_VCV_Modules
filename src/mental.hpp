@@ -8,7 +8,6 @@ extern Plugin *plugin;
 // module widgets
 ////////////////////
 
-
 struct MentalSubMixerWidget : ModuleWidget {
 	MentalSubMixerWidget();
 };
@@ -20,7 +19,6 @@ struct MentalMultsWidget : ModuleWidget {
 struct MentalMixerWidget : ModuleWidget {
 	MentalMixerWidget();
 };
-
 
 struct MentalFoldWidget : ModuleWidget {
 	MentalFoldWidget();
@@ -97,4 +95,13 @@ struct MentalMux8Widget : ModuleWidget {
 struct MentalCountersWidget : ModuleWidget {
 	MentalCountersWidget();
 };
+
+struct MentalKnobsWidget : ModuleWidget {
+	MentalKnobsWidget();
+};
+
+struct MentalGateMakerWidget : ModuleWidget {
+	MentalGateMakerWidget();
+};
+
 
