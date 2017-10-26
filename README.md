@@ -4,7 +4,7 @@ strum@softhome.net
 
 Simple but useful modules for VCVRack
 
-Version : 0.4d
+Version : 0.4f
 
 Works with Rack 0.4.0 only, api changes from 0.3 versions broke it and i didn't want to apply conditional compilation when
 in a few weeks noboby will be using version 0.3 anymore anyway. 
