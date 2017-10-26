@@ -4,7 +4,7 @@ strum@softhome.net
 
 Simple but useful modules for VCVRack
 
-Version : 0.4f
+Version : 0.4g
 
 Works with Rack 0.4.0 only, api changes from 0.3 versions broke it and i didn't want to apply conditional compilation when
 in a few weeks noboby will be using version 0.3 anymore anyway. 
@@ -83,3 +83,6 @@ Binary decoder -
 
 Dual Counters - for euclidean rhythms
 
+Knobs - Outputs constants continous or stepped by integer ro semitone, uni or bipolar
+
+Gate Maker - Counter with delay before opening and after closing, cycle or one shot mode - BETA
