@@ -32,5 +32,7 @@ void init(rack::Plugin *p) {
     createModel<MentalMux8Widget>(plugin, "MentalMux8", "Mental 8 to 1 Mux");
     createModel<MentalCountersWidget>(plugin, "MentalCounters", "Mental Counters");
     createModel<MentalKnobsWidget>(plugin, "MentalKnobs", "Mental Knobs");
-    createModel<MentalGateMakerWidget>(plugin, "MentalGateMaker", "Mental Gate Maker");       
+    createModel<MentalGateMakerWidget>(plugin, "MentalGateMaker", "Mental Gate Maker");    
+    createModel<MentalMasterClockWidget>(plugin, "MentalMasterClock", "MentalMasterClock");
+    createModel<MentalPatchNotesWidget>(plugin, "MentalPatchNotes", "MentalPatchNotes");      
 }
