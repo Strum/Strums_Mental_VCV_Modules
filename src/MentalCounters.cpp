@@ -45,8 +45,8 @@ struct MentalCounters : Module {
   int count_2 = 0;
   
 	MentalCounters();
-  // : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-	void step();
+  // : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+	void step() override;
 };
 
 MentalCounters::MentalCounters()
@@ -116,7 +116,7 @@ struct NumberDisplayWidget : TransparentWidget {
     font = Font::load(assetPlugin(plugin, "res/Segment7Standard.ttf"));
   };
 
-  void draw(NVGcontext *vg)
+  void draw(NVGcontext *vg) override
   {
     // Background
     NVGcolor backgroundColor = nvgRGB(0x00, 0x00, 0x00);
@@ -155,7 +155,7 @@ MentalCountersWidget::MentalCountersWidget() {
   
   int group_offset = 190;
   
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 20), module, MentalCounters::COUNT_NUM_PARAM, 0.0, 32.0, 0.0)); 
+  addParam(createParam<RoundSmallBlackKnob>(Vec(2, 20), module, MentalCounters::COUNT_NUM_PARAM, 0.0, 32.0, 0.0)); 
   addInput(createInput<PJ301MPort>(Vec(3, 90), module, MentalCounters::CLK_IN));
 	addInput(createInput<PJ301MPort>(Vec(3, 120), module, MentalCounters::RESET_IN));
   
@@ -170,7 +170,7 @@ MentalCountersWidget::MentalCountersWidget() {
 	addChild(display);
   
   /////////// counter 2
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 20 + group_offset), module, MentalCounters::COUNT_NUM_PARAM_2, 0.0, 32.0, 0.0)); 
+  addParam(createParam<RoundSmallBlackKnob>(Vec(2, 20 + group_offset), module, MentalCounters::COUNT_NUM_PARAM_2, 0.0, 32.0, 0.0)); 
   addInput(createInput<PJ301MPort>(Vec(3, 90 + group_offset), module, MentalCounters::CLK_IN_2));
 	addInput(createInput<PJ301MPort>(Vec(3, 120 + group_offset), module, MentalCounters::RESET_IN_2));
   

@@ -26,7 +26,7 @@ MentalPatchNotesWidget::MentalPatchNotesWidget() {
   patch_notes = new TextField();
   patch_notes->box.pos = Vec(5,20);
   patch_notes->box.size = Vec(200,340);
-  //patch_notes->multiline = true;
+  patch_notes->multiline = true;
   addChild(patch_notes); 
 }
 

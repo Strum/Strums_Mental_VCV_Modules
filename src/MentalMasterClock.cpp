@@ -52,7 +52,12 @@ struct MentalMasterClock : Module {
     SIXTEENTHS_OUT,
     BAR_OUT,       
 		NUM_OUTPUTS
-	};  
+	};
+  enum LightIds {
+		RESET_LED,
+    RUN_LED,
+		NUM_LIGHTS
+	}; 
   
   LFOGenerator clock;
   
@@ -61,7 +66,7 @@ struct MentalMasterClock : Module {
   SchmittTrigger bars_trig;
   
   SchmittTrigger run_button_trig;
-  float run_led = 1.0;
+  //float run_led = 1.0;
   bool running = true;
   
   int eighths_count = 0;
@@ -74,12 +79,12 @@ struct MentalMasterClock : Module {
   int eighths_count_limit = 2;
   int bars_count_limit = 16;
     
-  float reset_led = 0.0;  
+  //float reset_led = 0.0;  
   
-  MentalMasterClock(); // : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-	void step();
+  MentalMasterClock(); // : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+	void step() override;
   
-  json_t *toJson()
+  json_t *toJson() override
   {
 		json_t *rootJ = json_object();
     json_t *button_statesJ = json_array();
@@ -89,7 +94,7 @@ struct MentalMasterClock : Module {
     return rootJ;
   }
   
-  void fromJson(json_t *rootJ)
+  void fromJson(json_t *rootJ) override
   {
     json_t *button_statesJ = json_object_get(rootJ, "run");
 		if (button_statesJ)
@@ -106,6 +111,7 @@ MentalMasterClock::MentalMasterClock()
   params.resize(NUM_PARAMS);
 	inputs.resize(NUM_INPUTS);
 	outputs.resize(NUM_OUTPUTS);
+  lights.resize(NUM_LIGHTS);
   eighths_trig.setThresholds(0.0, 1.0);
   quarters_trig.setThresholds(0.0, 1.0);
   bars_trig.setThresholds(0.0, 1.0);
@@ -117,7 +123,8 @@ void MentalMasterClock::step()
     {
 		  running = !running;
 	  }
-    run_led = running ? 1.0 : 0.0;
+    //run_led = running ? 1.0 : 0.0;
+    lights[RUN_LED].value = running ? 1.0 : 0.0;
     
   tempo = std::round(params[TEMPO_PARAM].value);
   time_sig_top = std::round(params[TIMESIGTOP_PARAM].value);
@@ -130,7 +137,8 @@ void MentalMasterClock::step()
     eighths_count = 0;
     quarters_count = 0;
     bars_count = 0; 
-  }
+    lights[RESET_LED].value = 1.0;
+  } else lights[RESET_LED].value = 0.0;
   
   if (!running) 
   {
@@ -174,7 +182,7 @@ void MentalMasterClock::step()
     }
   }
   
-  clock.step(1.0 / gSampleRate);
+  clock.step(1.0 / engineGetSampleRate());
   outputs[SIXTEENTHS_OUT].value = 5.0 * clock.sqr();
  
   if (eighths_trig.process(clock.sqr()) && eighths_count <= eighths_count_limit)
@@ -217,7 +225,7 @@ struct NumberDisplayWidget : TransparentWidget {
     font = Font::load(assetPlugin(plugin, "res/Segment7Standard.ttf"));
   };
 
-  void draw(NVGcontext *vg)
+  void draw(NVGcontext *vg) override
   {
     // Background
     NVGcolor backgroundColor = nvgRGB(0x00, 0x00, 0x00);
@@ -255,9 +263,9 @@ MentalMasterClockWidget::MentalMasterClockWidget() {
 		addChild(panel);
 	}
    
-    addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 20), module, MentalMasterClock::TEMPO_PARAM, 40.0, 250.0, 120.0));
-    addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 50), module, MentalMasterClock::TIMESIGTOP_PARAM,2.0, 15.0, 4.0));
-    addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 80), module, MentalMasterClock::TIMESIGBOTTOM_PARAM,0.0, 3.0, 1.0));
+    addParam(createParam<RoundSmallBlackKnob>(Vec(2, 20), module, MentalMasterClock::TEMPO_PARAM, 40.0, 250.0, 120.0));
+    addParam(createParam<RoundSmallBlackKnob>(Vec(2, 50), module, MentalMasterClock::TIMESIGTOP_PARAM,2.0, 15.0, 4.0));
+    addParam(createParam<RoundSmallBlackKnob>(Vec(2, 80), module, MentalMasterClock::TIMESIGBOTTOM_PARAM,0.0, 3.0, 1.0));
      
     addOutput(createOutput<PJ301MPort>(Vec(90, 110), module, MentalMasterClock::BEAT_OUT)); 
     addOutput(createOutput<PJ301MPort>(Vec(90, 140), module, MentalMasterClock::BAR_OUT)); 
@@ -265,15 +273,17 @@ MentalMasterClockWidget::MentalMasterClockWidget() {
     addOutput(createOutput<PJ301MPort>(Vec(90, 200), module, MentalMasterClock::SIXTEENTHS_OUT)); 
     
    /* addParam(createParam<LEDButton>(Vec(5, 50+group_offset*i), module, MentalMasterClock::STEP_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(10, 55+group_offset*i), &module->button_leds[0][i]));
+    addChild(createLight<MediumLight<GreenLight>>(Vec(10, 55+group_offset*i), &module->button_leds[0][i]));
     addParam(createParam<LEDButton>(Vec(5, 75+group_offset*i), module, MentalMasterClock::BI_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(10, 80+group_offset*i), &module->button_leds[2][i])); */
+    addChild(createLight<MediumLight<GreenLight>>(Vec(10, 80+group_offset*i), &module->button_leds[2][i])); */
+    
+    //addChild(createLight<MediumLight<GreenRedLight>>(Vec(33, 125), module, MentalClockDivider::LIGHTS));
     
     addParam(createParam<LEDButton>(Vec(5, 140), module, MentalMasterClock::RESET_BUTTON, 0.0, 1.0, 0.0));
-    addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(10, 145), &module->reset_led));
+    addChild(createLight<MediumLight<GreenLight>>(Vec(10, 145), module, MentalMasterClock::RESET_LED));
     
     addParam(createParam<LEDButton>(Vec(5, 110), module, MentalMasterClock::RUN_SWITCH, 0.0, 1.0, 0.0));
-    addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(10, 115), &module->run_led));
+    addChild(createLight<MediumLight<GreenLight>>(Vec(10, 115), module, MentalMasterClock::RUN_LED));
     
   NumberDisplayWidget *display = new NumberDisplayWidget();
 	display->box.pos = Vec(35,20);

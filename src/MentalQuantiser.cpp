@@ -28,20 +28,25 @@ struct MentalQuantiser : Module {
       REF_OUT,
       NUM_OUTPUTS = REF_OUT + 12
 	};
+  enum LightIds {
+		BUTTON_LIGHTS,
+    OUTPUT_LIGHTS = BUTTON_LIGHTS + 12,
+		NUM_LIGHTS = OUTPUT_LIGHTS + 12
+	};
 
   SchmittTrigger button_triggers[12];
   
   bool button_states[12] = {true,true,true,true,true,true,true,true,true,true,true,true};
-  float button_lights[12] = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
-  float output_lights[12] = {0.0};
+  //float button_lights[12] = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+  //float output_lights[12] = {0.0};
   float quantised = 0.0;
   bool found = false;
   int last_found = 0;
    
-  MentalQuantiser() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-	void step();
+  MentalQuantiser() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+	void step() override;
   
-  json_t *toJson()
+  json_t *toJson() override
   {
 		json_t *rootJ = json_object();
     
@@ -56,7 +61,7 @@ struct MentalQuantiser : Module {
     return rootJ;
   }
   
-  void fromJson(json_t *rootJ)
+  void fromJson(json_t *rootJ) override
   {
     // button states
 		json_t *button_statesJ = json_object_get(rootJ, "buttons");
@@ -83,8 +88,10 @@ void MentalQuantiser::step() {
     {
 		  button_states[i] = !button_states[i];
 	  }
-	  button_lights[i] = button_states[i] ? 1.0 : 0.0;
-    output_lights[i]= 0;
+	  //button_lights[i] = button_states[i] ? 1.0 : 0.0;
+    lights[BUTTON_LIGHTS + i ].value  = (button_states[i]) ? 1.0 : 0.0;
+    //output_lights[i]= 0;
+    lights[OUTPUT_LIGHTS + i].value = 0.0;
   }
 
   // pitch offset
@@ -114,7 +121,8 @@ void MentalQuantiser::step() {
   {    
     found = true;    
     outputs[OUTPUT].value = quantised;
-    output_lights[semitone] = 1.0;
+    //output_lights[semitone] = 1.0;
+    lights[OUTPUT_LIGHTS + semitone].value  = 1.0;
   }     
 }
 
@@ -134,7 +142,7 @@ MentalQuantiserWidget::MentalQuantiserWidget() {
   int top_row = 50;
   int row_spacing = 25; 
 	
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(62, 15), module, MentalQuantiser::PITCH_PARAM, -6.5, 6.5, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(62, 15), module, MentalQuantiser::PITCH_PARAM, -6.5, 6.5, 0.0));
   addInput(createInput<PJ301MPort>(Vec(63, 45), module, MentalQuantiser::PITCH_INPUT));
   
   addInput(createInput<PJ301MPort>(Vec(3, top_row), module, MentalQuantiser::INPUT));
@@ -143,8 +151,8 @@ MentalQuantiserWidget::MentalQuantiserWidget() {
   for (int i = 0; i < 12 ; i++)
   {  
     addParam(createParam<LEDButton>(Vec(3, top_row + 30 + row_spacing * i), module, MentalQuantiser::BUTTON_PARAM + i, 0.0, 1.0, 0.0));
-	  addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(3+5, top_row + 30 + row_spacing * i + 5), &module->button_lights[i]));
-    addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(30+5, top_row + 30 + row_spacing * i + 5), &module->output_lights[i]));
+	  addChild(createLight<MediumLight<GreenLight>>(Vec(3+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::BUTTON_LIGHTS + i));
+    addChild(createLight<MediumLight<GreenLight>>(Vec(30+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::OUTPUT_LIGHTS + i));
     addOutput(createOutput<PJ301MPort>(Vec(63, top_row + 30 + row_spacing * i), module, MentalQuantiser::REF_OUT + i));    
   }
 }

@@ -24,6 +24,10 @@ struct MentalPatchMatrix : Module {
 		OUTPUTS,    
 		NUM_OUTPUTS = OUTPUTS + 10
 	};
+  enum LightIds {
+		SWITCH_LIGHTS,
+    NUM_LIGHTS = SWITCH_LIGHTS + 100
+	};
 
   SchmittTrigger switch_triggers[10][10];
   bool switch_states[10][10] = 
@@ -38,7 +42,7 @@ struct MentalPatchMatrix : Module {
   {0,0,0,0,0,0,0,0,0,0},
   {0,0,0,0,0,0,0,0,0,0}};
   
-  float switch_lights[10][10] = 
+  /*float switch_lights[10][10] = 
   {{0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
   {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
   {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
@@ -48,16 +52,16 @@ struct MentalPatchMatrix : Module {
   {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
   {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
   {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
-  {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}};
+  {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}};*/
     
   
   float input_values[10] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
   float sums[10] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}; 
   
-	MentalPatchMatrix() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-	void step();
+	MentalPatchMatrix() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+	void step() override;
   
-  json_t *toJson()
+  json_t *toJson() override
   {
 		json_t *rootJ = json_object();
     
@@ -76,7 +80,7 @@ struct MentalPatchMatrix : Module {
     return rootJ;
   }
   
-  void fromJson(json_t *rootJ)
+  void fromJson(json_t *rootJ) override
   {
     // button states
 		json_t *button_statesJ = json_object_get(rootJ, "buttons");
@@ -111,7 +115,8 @@ void MentalPatchMatrix::step() {
      {
 		   switch_states[i][j] = !switch_states[i][j];
 	   }
-	   switch_lights[i][j] = switch_states[i][j] ? 1.0 : 0.0;
+	   //switch_lights[i][j] = switch_states[i][j] ? 1.0 : 0.0;
+     lights[SWITCH_LIGHTS + i + j * 10].value  = (switch_states[i][j]) ? 1.0 : 0.0;
    }
   }
   // get inputs
@@ -159,7 +164,7 @@ MentalPatchMatrixWidget::MentalPatchMatrixWidget() {
    for(int j = 0 ; j < 10 ; j++ )
    {
      addParam(createParam<LEDButton>(Vec(35 + column_spacing * j, top_row + row_spacing * i), module, MentalPatchMatrix::SWITCHES + i + j * 10, 0.0, 1.0, 0.0));
-     addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(35 + column_spacing * j + 5, top_row + row_spacing * i + 5), &module->switch_lights[i][j]));
+     addChild(createLight<MediumLight<GreenLight>>(Vec(35 + column_spacing * j + 5, top_row + row_spacing * i + 5), module, MentalPatchMatrix::SWITCH_LIGHTS  + i + j * 10));
    }
 	}
   

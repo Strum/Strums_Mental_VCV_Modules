@@ -23,24 +23,29 @@ struct MentalMux8 : Module {
     OUTPUT,    
 		NUM_OUTPUTS
 	};
+  enum LightIds {
+    INPUT_LEDS,
+    NUM_LIGHTS = INPUT_LEDS + 8
+  };
   
   //float input_leds[3] = {0.0,0.0,0.0};  
-  float input_leds[8] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+  //float input_leds[8] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
   float in_1 = 0.0;
   float in_2 = 0.0;
   float in_4 = 0.0;
   
   int one, two, four, decoded;
   
-	MentalMux8() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-	void step();  
+	MentalMux8() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+	void step() override;  
 };
 
 void MentalMux8::step()
 {
   for ( int i = 0 ; i < 8 ; i ++)
   {
-    input_leds[i] = 0.0;    
+    //input_leds[i] = 0.0; 
+    lights[INPUT_LEDS + i].value = 0.0;   
   }
   outputs[OUTPUT].value = 0.0;
   
@@ -78,7 +83,8 @@ void MentalMux8::step()
   
   decoded = one + two + four;  
   outputs[OUTPUT].value = inputs[SIG_INPUT + decoded].value;
-  input_leds[decoded] = 1.0;  
+  //input_leds[decoded] = 1.0; 
+  lights[INPUT_LEDS + decoded].value = 1.0; 
 }
 
 MentalMux8Widget::MentalMux8Widget() {
@@ -103,7 +109,7 @@ MentalMux8Widget::MentalMux8Widget() {
   for (int i = 0; i < 8 ; i++)
   {  
    addInput(createInput<PJ301MPort>(Vec(3, top_space + spacing * i + 100), module, MentalMux8::SIG_INPUT + i));   	 
-   addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(33, top_space +  spacing * i + 8 + 100), &module->input_leds[i]));
+   addChild(createLight<MediumLight<GreenLight>>(Vec(33, top_space +  spacing * i + 8 + 100), module, MentalMux8::INPUT_LEDS + i));
   }
   
   addOutput(createOutput<PJ301MPort>(Vec(30, top_space + spacing), module, MentalMux8::OUTPUT));
