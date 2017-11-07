@@ -40,6 +40,10 @@ struct MentalGateMaker : Module {
     TRIG_OUT,    
 		NUM_OUTPUTS
 	};
+  enum LightIds {
+		CYCLE_BUTTON_LED,
+		NUM_LIGHTS
+	};
   
   SchmittTrigger clock_trigger;
   SchmittTrigger reset_trigger;
@@ -59,11 +63,11 @@ struct MentalGateMaker : Module {
   bool cycle_button_state = true;
   
   bool triggered = false;
-  float cycle_button_led = 0.0;
+  //float cycle_button_led = 0.0;
   bool mode = false;  
     
-  MentalGateMaker();//   : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-	void step();
+  MentalGateMaker();//   : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+	void step() override;
 };
 
 MentalGateMaker::MentalGateMaker()
@@ -71,6 +75,7 @@ MentalGateMaker::MentalGateMaker()
   params.resize(NUM_PARAMS);
 	inputs.resize(NUM_INPUTS);
 	outputs.resize(NUM_OUTPUTS);
+  lights.resize(NUM_LIGHTS);
 	clock_trigger.setThresholds(0.0, 1.0);
 	reset_trigger.setThresholds(0.0, 1.0);  
 }
@@ -90,13 +95,17 @@ void MentalGateMaker::step()
   if (inputs[CYCLE_IN].value || cycle_button_state)
   {
     cycle = true;
-    cycle_button_led = 1.0;
+    //cycle_button_led = 1.0;
+    lights[CYCLE_BUTTON_LED].value = 1.0;
     //count = 0;
-    //outputs[OUTPUT].value = 0; 
+    //outputs[OUTPUT].value = 0;
+    
   } else
   { 
     cycle = false;
-    cycle_button_led = 0.0;
+    //cycle_button_led = 0.0;
+    lights[CYCLE_BUTTON_LED].value = 0.0;
+    
   }
   delay = round(params[DELAY_PARAM].value); 
   count_on = round(params[COUNT_NUM_PARAM].value);
@@ -139,7 +148,7 @@ void MentalGateMaker::step()
     outputs[FINISH_OUT].value = 5.0; 
   }
   
-  //outputs[FINISH_OUT].value = end.process(1.0/gSampleRate) ? 5.0 : 0.0;
+  //outputs[FINISH_OUT].value = end.process(1.0/engineGetSampleRate) ? 5.0 : 0.0;
 }
 
 ////////////////////////////////////
@@ -152,7 +161,7 @@ struct NumberDisplayWidget : TransparentWidget {
     font = Font::load(assetPlugin(plugin, "res/Segment7Standard.ttf"));
   };
 
-  void draw(NVGcontext *vg)
+  void draw(NVGcontext *vg) override
   {
     // Background
     NVGcolor backgroundColor = nvgRGB(0x00, 0x00, 0x00);
@@ -204,7 +213,7 @@ MentalGateMakerWidget::MentalGateMakerWidget() {
     COUNT_CV,
     DELAY_CV,*/
 	
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 20), module, MentalGateMaker::COUNT_NUM_PARAM, 0.0, 32.0, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(2, 20), module, MentalGateMaker::COUNT_NUM_PARAM, 0.0, 32.0, 0.0));
   addInput(createInput<PJ301MPort>(Vec(33, 20), module, MentalGateMaker::COUNT_CV));
   NumberDisplayWidget *count_display = new NumberDisplayWidget();
 	count_display->box.pos = Vec(63,20);
@@ -212,7 +221,7 @@ MentalGateMakerWidget::MentalGateMakerWidget() {
 	count_display->value = &module->count_disp;
 	addChild(count_display);   
   
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 50), module, MentalGateMaker::DELAY_PARAM, 0.0, 32.0, 0.0)); 
+  addParam(createParam<RoundSmallBlackKnob>(Vec(2, 50), module, MentalGateMaker::DELAY_PARAM, 0.0, 32.0, 0.0)); 
   addInput(createInput<PJ301MPort>(Vec(33, 50), module, MentalGateMaker::DELAY_CV));
   NumberDisplayWidget *delay_display = new NumberDisplayWidget();
 	delay_display->box.pos = Vec(63,50);
@@ -220,7 +229,7 @@ MentalGateMakerWidget::MentalGateMakerWidget() {
 	delay_display->value = &module->delay;
 	addChild(delay_display);
   
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 80), module, MentalGateMaker::TAIL_PARAM, 0.0, 32.0, 0.0)); 
+  addParam(createParam<RoundSmallBlackKnob>(Vec(2, 80), module, MentalGateMaker::TAIL_PARAM, 0.0, 32.0, 0.0)); 
   addInput(createInput<PJ301MPort>(Vec(33, 80), module, MentalGateMaker::TAIL_CV));
   NumberDisplayWidget *tail_display = new NumberDisplayWidget();
 	tail_display->box.pos = Vec(63,80);
@@ -238,7 +247,7 @@ MentalGateMakerWidget::MentalGateMakerWidget() {
   
   
   addParam(createParam<LEDButton>(Vec(35, 170 + offset), module, MentalGateMaker::CYCLE_BUTTON, 0.0, 1.0, 0.0));
-  addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(35+5, 170 + offset + 5), &module->cycle_button_led));
+  addChild(createLight<MediumLight<GreenLight>>(Vec(35+5, 170 + offset + 5), module, MentalGateMaker::CYCLE_BUTTON_LED));
   addInput(createInput<PJ301MPort>(Vec(3, 170 + offset), module, MentalGateMaker::CYCLE_IN));  
   
   addOutput(createOutput<PJ301MPort>(Vec(93, 110), module, MentalGateMaker::OUTPUT)); 

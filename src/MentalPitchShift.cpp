@@ -45,7 +45,7 @@ struct MentalPitchShift : Module {
   float semitone_2_out = 0.0;
   
   
-	void step();
+	void step() override;
 };
 
 /*
@@ -84,10 +84,10 @@ MentalPitchShiftWidget::MentalPitchShiftWidget() {
 		addChild(panel);
 	}
 
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 20), module, MentalPitchShift::OCTAVE_SHIFT_1, -4.5, 4.5, 0.0));
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 80), module, MentalPitchShift::OCTAVE_SHIFT_2, -4.5, 4.5, 0.0));
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 140), module, MentalPitchShift::SEMITONE_SHIFT_1, -6.5, 6.5, 0.0));
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 200), module, MentalPitchShift::SEMITONE_SHIFT_2, -6.5, 6.5, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(2, 20), module, MentalPitchShift::OCTAVE_SHIFT_1, -4.5, 4.5, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(2, 80), module, MentalPitchShift::OCTAVE_SHIFT_2, -4.5, 4.5, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(2, 140), module, MentalPitchShift::SEMITONE_SHIFT_1, -6.5, 6.5, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(2, 200), module, MentalPitchShift::SEMITONE_SHIFT_2, -6.5, 6.5, 0.0));
 
   addInput(createInput<PJ301MPort>(Vec(3, 50), module, MentalPitchShift::OCTAVE_SHIFT_1_INPUT));
 	addInput(createInput<PJ301MPort>(Vec(3, 110), module, MentalPitchShift::OCTAVE_SHIFT_2_INPUT));

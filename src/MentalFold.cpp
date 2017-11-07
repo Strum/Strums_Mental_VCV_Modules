@@ -27,7 +27,7 @@ struct MentalFold : Module {
 	};
 
 	MentalFold() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-	void step();
+	void step() override;
 };
 
 /////////////////////////////////////////////////////
@@ -68,8 +68,8 @@ MentalFoldWidget::MentalFoldWidget() {
 		addChild(panel);
 	}
   
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 20), module, MentalFold::THRESH_PARAM, 0.0, 1.0, 1.0));
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 80), module, MentalFold::GAIN_PARAM, 0.0, 1.0, 0.5));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(2, 20), module, MentalFold::THRESH_PARAM, 0.0, 1.0, 1.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(2, 80), module, MentalFold::GAIN_PARAM, 0.0, 1.0, 0.5));
 	
   addInput(createInput<PJ301MPort>(Vec(3, 50), module, MentalFold::THRESH_CV_INPUT));
   addInput(createInput<PJ301MPort>(Vec(3, 110), module, MentalFold::GAIN_CV_INPUT));

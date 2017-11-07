@@ -48,7 +48,7 @@ struct MentalSubMixer : Module {
 	};
 
 	MentalSubMixer() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {};
-	void step();
+	void step() override;
 };
 
 
@@ -130,17 +130,17 @@ MentalSubMixerWidget::MentalSubMixerWidget() {
 	addOutput(createOutput<PJ301MPort>(Vec(93, 45), module, MentalSubMixer::MIX_OUTPUT_R));
   
 	
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(33,y_offset + 90), module, MentalSubMixer::CH1_PARAM, 0.0, 1.0, 0.0));
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(63,y_offset + 90), module, MentalSubMixer::CH1_PAN_PARAM, 0.0, 1.0, 0.5));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(33,y_offset + 90), module, MentalSubMixer::CH1_PARAM, 0.0, 1.0, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(63,y_offset + 90), module, MentalSubMixer::CH1_PAN_PARAM, 0.0, 1.0, 0.5));
   
-	addParam(createParam<Davies1900hSmallBlackKnob>(Vec(33,y_offset + 150), module, MentalSubMixer::CH2_PARAM, 0.0, 1.0, 0.0));
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(63,y_offset + 150), module, MentalSubMixer::CH2_PAN_PARAM, 0.0, 1.0, 0.5));
+	addParam(createParam<RoundSmallBlackKnob>(Vec(33,y_offset + 150), module, MentalSubMixer::CH2_PARAM, 0.0, 1.0, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(63,y_offset + 150), module, MentalSubMixer::CH2_PAN_PARAM, 0.0, 1.0, 0.5));
   
-	addParam(createParam<Davies1900hSmallBlackKnob>(Vec(33,y_offset + 210), module, MentalSubMixer::CH3_PARAM, 0.0, 1.0, 0.0));
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(63,y_offset + 210), module, MentalSubMixer::CH3_PAN_PARAM, 0.0, 1.0, 0.5));
+	addParam(createParam<RoundSmallBlackKnob>(Vec(33,y_offset + 210), module, MentalSubMixer::CH3_PARAM, 0.0, 1.0, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(63,y_offset + 210), module, MentalSubMixer::CH3_PAN_PARAM, 0.0, 1.0, 0.5));
   
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(33,y_offset + 270), module, MentalSubMixer::CH4_PARAM, 0.0, 1.0, 0.0));
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(63,y_offset + 270), module, MentalSubMixer::CH4_PAN_PARAM, 0.0, 1.0, 0.5));		
+  addParam(createParam<RoundSmallBlackKnob>(Vec(33,y_offset + 270), module, MentalSubMixer::CH4_PARAM, 0.0, 1.0, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(63,y_offset + 270), module, MentalSubMixer::CH4_PAN_PARAM, 0.0, 1.0, 0.5));		
   
 
 	addInput(createInput<PJ301MPort>(Vec(3,y_offset + 120), module, MentalSubMixer::CH1_INPUT));

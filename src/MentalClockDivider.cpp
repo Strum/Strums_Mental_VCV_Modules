@@ -35,6 +35,10 @@ struct MentalClockDivider : Module {
 		OUT7,
 		OUT12,
 		NUM_OUTPUTS
+	};  
+  enum LightIds {
+		LIGHTS,
+		NUM_LIGHTS = LIGHTS + 10
 	};
   
 	int clock2Count = 0;
@@ -61,10 +65,10 @@ struct MentalClockDivider : Module {
 
 	SchmittTrigger reset_trig;
 
-  float lights[9] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+  //float lights[9] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
 
 	MentalClockDivider();
-	void step();
+	void step() override;
 };
 
 ////////////////////////////////////////////////////////////////
@@ -72,6 +76,7 @@ MentalClockDivider::MentalClockDivider() {
 	params.resize(NUM_PARAMS);
 	inputs.resize(NUM_INPUTS);
 	outputs.resize(NUM_OUTPUTS);
+  lights.resize(NUM_LIGHTS);
 	trigger2.setThresholds(0.0, 1.0);
 	trigger4.setThresholds(0.0, 1.0);
 	trigger8.setThresholds(0.0, 1.0);
@@ -86,7 +91,7 @@ MentalClockDivider::MentalClockDivider() {
 	reset_trig.setThresholds(0.0, 1.0);
 }
 
-const float lightLambda = 0.075;
+//const float lightLambda = 0.075;
 int divider2 = 2;
 int divider4 = 4;
 int divider8 = 8;
@@ -172,19 +177,22 @@ void MentalClockDivider::step()
 		outputs[OUT2].value= 10.0;
 		if (clock2Count == 0)
 		{
-			lights[0] = 1.0;
+			//lights[0] = 1.0;
+      lights[LIGHTS].value = 1.0;
 		}
 		else
 		{
        // sample rate has changed, update this.
-			lights[0] -= lights[0] / lightLambda / gSampleRate;
+			//lights[0] -= lights[0] / lightLambda / gSampleRate;
       //lights[0] -= lights[0] / lightLambda / engineGetSampleRate();
+      lights[LIGHTS].value = 0.0;
 		}		
 	}
 	else
 	{
 		outputs[OUT2].value= 0.0;
-		lights[0] = 0.0;		
+		//lights[0] = 0.0;
+    lights[LIGHTS].value = 0.0;		
 	}
 
 	if (clock4Count < divider4 / 2)
@@ -192,17 +200,20 @@ void MentalClockDivider::step()
 		outputs[OUT4].value= 10.0;
 		if (clock4Count == 0)
 		{
-			lights[1] = 1.0;
+			//lights[1] = 1.0;
+      lights[LIGHTS + 1].value = 1.0;
 		}
 		else
 		{
-			lights[1] -= lights[1] / lightLambda / gSampleRate;
+			//lights[1] -= lights[1] / lightLambda / engineGetSampleRate;
+      lights[LIGHTS + 1].value = 0.0;
 		}		
 	}
 	else
 	{
 		outputs[OUT4].value= 0.0;
-		lights[1] = 0.0;		
+		//lights[1] = 0.0;
+    lights[LIGHTS + 1].value = 0.0;		
 	}
   
 	if (clock8Count < divider8 / 2)
@@ -210,17 +221,20 @@ void MentalClockDivider::step()
 		outputs[OUT8].value= 10.0;
 		if (clock8Count == 0)
 		{
-			lights[2] = 1.0;
+			//lights[2] = 1.0;
+      lights[LIGHTS + 2].value = 1.0;
 		}
 		else
 		{
-			lights[2] -= lights[2] / lightLambda / gSampleRate;
+			//lights[2] -= lights[2] / lightLambda / engineGetSampleRate;
+      lights[LIGHTS + 2].value = 0.0;
 		}	
 	}
 	else
 	{
 		outputs[OUT8].value= 0.0;
-		lights[2] = 0.0;		
+		//lights[2] = 0.0;
+    lights[LIGHTS + 2].value = 1.0;		
 	}
 
 	if (clock16Count < divider16 / 2)
@@ -228,17 +242,20 @@ void MentalClockDivider::step()
 		outputs[OUT16].value= 10.0;
 		if (clock16Count == 0)
 		{
-			lights[3] = 1.0;
+			//lights[3] = 1.0;
+      lights[LIGHTS + 3].value = 1.0;
 		}
 		else
 		{
-			lights[3] -= lights[3] / lightLambda / gSampleRate;
+			//lights[3] -= lights[3] / lightLambda / engineGetSampleRate;
+      lights[LIGHTS + 3].value = 0.0;
 		}		
 	}
 	else
 	{
 		outputs[OUT16].value= 0.0;
-		lights[3] = 0.0;	
+		//lights[3] = 0.0;
+    lights[LIGHTS + 3].value = 0.0;	
 	}
 
 	if (clock32Count < divider32 / 2)
@@ -246,17 +263,20 @@ void MentalClockDivider::step()
 		outputs[OUT32].value= 10.0;
 		if (clock16Count == 0)
 		{
-			lights[4] = 1.0;
+			//lights[4] = 1.0;
+      lights[LIGHTS + 4].value = 1.0;
 		}
 		else
 		{
-			lights[4] -= lights[4] / lightLambda / gSampleRate;
+			//lights[4] -= lights[4] / lightLambda / engineGetSampleRate;
+      lights[LIGHTS + 4].value = 0.0;
 		}		
 	}
 	else
 	{
 		outputs[OUT32].value= 0.0;
-		lights[4] = 0.0;	
+		//lights[4] = 0.0;
+    lights[LIGHTS + 4].value = 0.0;
 	}
   
   if (clock3Count < divider3 / 2) outputs[OUT3].value = 10.0;	else outputs[OUT3].value = 0.0;
@@ -315,17 +335,20 @@ MentalClockDividerWidget::MentalClockDividerWidget() {
   addOutput(createOutput<PJ301MPort>(Vec(2, 275), module, MentalClockDivider::OUT5));
   addOutput(createOutput<PJ301MPort>(Vec(2, 300), module, MentalClockDivider::OUT7));
   addOutput(createOutput<PJ301MPort>(Vec(2, 325), module, MentalClockDivider::OUT12));
-
-	addChild(createValueLight<SmallLight<GreenRedPolarityLight>>(Vec(33, 125), &module->lights[0]));
-	addChild(createValueLight<SmallLight<GreenRedPolarityLight>>(Vec(33, 150), &module->lights[1]));
-	addChild(createValueLight<SmallLight<GreenRedPolarityLight>>(Vec(33, 175), &module->lights[2]));
-	addChild(createValueLight<SmallLight<GreenRedPolarityLight>>(Vec(33, 200), &module->lights[3]));
-	addChild(createValueLight<SmallLight<GreenRedPolarityLight>>(Vec(33, 225), &module->lights[4]));
   
-  addChild(createValueLight<SmallLight<GreenRedPolarityLight>>(Vec(33, 255), &module->lights[5]));
-	addChild(createValueLight<SmallLight<GreenRedPolarityLight>>(Vec(33, 280), &module->lights[6]));
-	addChild(createValueLight<SmallLight<GreenRedPolarityLight>>(Vec(33, 305), &module->lights[7]));
-	addChild(createValueLight<SmallLight<GreenRedPolarityLight>>(Vec(33, 330), &module->lights[8]));
+ //addChild(createLight<MediumLight<RedLight>>(Vec(42, 59), module, MyModule::BLINK_LIGHT));
+ 
+	
+	addChild(createLight<MediumLight<GreenLight>>(Vec(33, 120), module, MentalClockDivider::LIGHTS));
+	addChild(createLight<MediumLight<GreenLight>>(Vec(33, 145), module, MentalClockDivider::LIGHTS+1));
+	addChild(createLight<MediumLight<GreenLight>>(Vec(33, 170), module, MentalClockDivider::LIGHTS+2));
+	addChild(createLight<MediumLight<GreenLight>>(Vec(33, 195), module, MentalClockDivider::LIGHTS+3));  
+  addChild(createLight<MediumLight<GreenLight>>(Vec(33, 220), module, MentalClockDivider::LIGHTS+4));
+  
+	addChild(createLight<MediumLight<GreenLight>>(Vec(33, 255), module, MentalClockDivider::LIGHTS+5));
+	addChild(createLight<MediumLight<GreenLight>>(Vec(33, 275), module, MentalClockDivider::LIGHTS+6));
+	addChild(createLight<MediumLight<GreenLight>>(Vec(33, 305), module, MentalClockDivider::LIGHTS+7));
+  addChild(createLight<MediumLight<GreenLight>>(Vec(33, 330), module, MentalClockDivider::LIGHTS+8));
 	
 
 }

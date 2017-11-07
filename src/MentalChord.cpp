@@ -53,7 +53,7 @@ struct MentalChord : Module {
   //float on_led = 0.0;
   
 	MentalChord() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-	void step();
+	void step() override;
 };
 
 
@@ -174,10 +174,10 @@ MentalChordWidget::MentalChordWidget() {
     panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalChord.svg")));
 		addChild(panel);
 	}
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(3, 20), module, MentalChord::OFFSET_PARAM, 0.0, 1.0, 0.5));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(3, 20), module, MentalChord::OFFSET_PARAM, 0.0, 1.0, 0.5));
   addInput(createInput<PJ301MPort>(Vec(3, 50), module, MentalChord::OFFSET_CV_INPUT));
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(33, 20), module, MentalChord::INVERSION_PARAM, 0.0, 1.0, 0.0));
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(63, 20), module, MentalChord::VOICING_PARAM, 0.0, 1.0, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(33, 20), module, MentalChord::INVERSION_PARAM, 0.0, 1.0, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(63, 20), module, MentalChord::VOICING_PARAM, 0.0, 1.0, 0.0));
 	
   addInput(createInput<PJ301MPort>(Vec(3, 100), module, MentalChord::INPUT));
   addInput(createInput<PJ301MPort>(Vec(33, 50), module, MentalChord::INVERSION_CV_INPUT));

@@ -37,7 +37,7 @@ struct MentalSums : Module {
   
   
 	MentalSums() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-	void step();
+	void step() override;
 };
 
 void MentalSums::step()
