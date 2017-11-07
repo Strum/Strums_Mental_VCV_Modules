@@ -32,18 +32,29 @@ struct MentalMuxes : Module {
     OUTPUT_C,        
 		NUM_OUTPUTS
 	};
+  enum LightIds {
+    LEVEL_LED_A1,
+    LEVEL_LED_A2,
+    LEVEL_LED_B1,
+    LEVEL_LED_B2,
+    LEVEL_LED_C1,
+    LEVEL_LED_C2,
+    LEVEL_LED_C3,
+    LEVEL_LED_C4,    
+    NUM_LIGHTS
+  };
 
-  float level_led_a1 = 0.0;
+  /*float level_led_a1 = 0.0;
   float level_led_a2 = 0.0;
   float level_led_b1 = 0.0;
   float level_led_b2 = 0.0;
   float level_led_c1 = 0.0;
   float level_led_c2 = 0.0;
   float level_led_c3 = 0.0;
-  float level_led_c4 = 0.0;
+  float level_led_c4 = 0.0; */
   
-	MentalMuxes() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-	void step();
+	MentalMuxes() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+	void step() override;
 };
 
 void MentalMuxes::step()
@@ -56,14 +67,18 @@ void MentalMuxes::step()
   if (select_a > 0.0 )
   {
     outputs[OUTPUT_A].value = signal_in_a2;
-    level_led_a2 = abs((signal_in_a2 / 3));
-    level_led_a1 = 0.0;
+    //level_led_a2 = abs((signal_in_a2 / 3));
+    //level_led_a1 = 0.0;
+    lights[LEVEL_LED_A2].value = abs((signal_in_a2 / 3));
+    lights[LEVEL_LED_A1].value = 0.0;
   }
   else
   {
     outputs[OUTPUT_A].value = signal_in_a1;
-    level_led_a1 = abs((signal_in_a1 / 3));
-    level_led_a2 = 0.0;
+    //level_led_a1 = abs((signal_in_a1 / 3));
+    //level_led_a2 = 0.0;
+    lights[LEVEL_LED_A1].value = abs((signal_in_a1 / 3));
+    lights[LEVEL_LED_A2].value = 0.0;
   }
   float signal_in_b1 = inputs[INPUT_1B].value;
   float signal_in_b2 = inputs[INPUT_2B].value;
@@ -72,14 +87,18 @@ void MentalMuxes::step()
   if (select_b > 0.0 )
   {
     outputs[OUTPUT_B].value = signal_in_b2;
-    level_led_b2 = abs((signal_in_b2 / 3));
-    level_led_b1 = 0.0;
+    //level_led_b2 = abs((signal_in_b2 / 3));
+    //level_led_b1 = 0.0;
+    lights[LEVEL_LED_B2].value = abs((signal_in_b2 / 3));
+    lights[LEVEL_LED_B1].value = 0.0;
   }
   else
   {
     outputs[OUTPUT_B].value = signal_in_b1;
-    level_led_b1 = abs((signal_in_b1 / 3));
-    level_led_b2 = 0.0;
+    //level_led_b1 = abs((signal_in_b1 / 3));
+    //level_led_b2 = 0.0;
+    lights[LEVEL_LED_B1].value = abs((signal_in_b1 / 3));
+    lights[LEVEL_LED_B2].value = 0.0;
   }
   
   float signal_in_c1 = inputs[INPUT_1C].value;
@@ -93,34 +112,51 @@ void MentalMuxes::step()
   if (selector == 0 )
   {
     outputs[OUTPUT_C].value = signal_in_c1;
-    level_led_c1 = abs((signal_in_c1 / 3));
-    level_led_c2 = 0.0;
-    level_led_c3 = 0.0;
-    level_led_c4 = 0.0;    
+    //level_led_c1 = abs((signal_in_c1 / 3));
+    //level_led_c2 = 0.0;
+    //level_led_c3 = 0.0;
+    //level_led_c4 = 0.0; 
+    lights[LEVEL_LED_C1].value = abs((signal_in_c1 / 3));
+    lights[LEVEL_LED_C2].value = 0.0;
+    lights[LEVEL_LED_C3].value = 0.0;
+    lights[LEVEL_LED_C4].value = 0.0;
+       
   }
   if (selector == 1 )
   {
     outputs[OUTPUT_C].value = signal_in_c2;
-    level_led_c2 = abs((signal_in_c2 / 3));
-    level_led_c1 = 0.0;
-    level_led_c3 = 0.0;
-    level_led_c4 = 0.0;
+    //level_led_c2 = abs((signal_in_c2 / 3));
+    //level_led_c1 = 0.0;
+    //level_led_c3 = 0.0;
+    //level_led_c4 = 0.0;
+    lights[LEVEL_LED_C2].value = abs((signal_in_c2 / 3));
+    lights[LEVEL_LED_C1].value = 0.0;
+    lights[LEVEL_LED_C3].value = 0.0;
+    lights[LEVEL_LED_C4].value = 0.0;
   }
   if (selector == 2 )
   {
     outputs[OUTPUT_C].value = signal_in_c3;
-    level_led_c3 = abs((signal_in_c3 / 3));
-    level_led_c1 = 0.0;
-    level_led_c2 = 0.0;
-    level_led_c4 = 0.0;    
+    //level_led_c3 = abs((signal_in_c3 / 3));
+    //level_led_c1 = 0.0;
+    //level_led_c2 = 0.0;
+    //level_led_c4 = 0.0;
+    lights[LEVEL_LED_C3].value = abs((signal_in_c3 / 3));
+    lights[LEVEL_LED_C2].value = 0.0;
+    lights[LEVEL_LED_C2].value = 0.0;
+    lights[LEVEL_LED_C4].value = 0.0;    
   }
   if (selector == 3 )
   {
     outputs[OUTPUT_C].value = signal_in_c4;
-    level_led_c4 = abs((signal_in_c4 / 3));
-    level_led_c1 = 0.0;
-    level_led_c2 = 0.0;
-    level_led_c3 = 0.0;
+    //level_led_c4 = abs((signal_in_c4 / 3));
+    //level_led_c1 = 0.0;
+    //level_led_c2 = 0.0;
+    //level_led_c3 = 0.0;
+    lights[LEVEL_LED_C4].value = abs((signal_in_c4 / 3));
+    lights[LEVEL_LED_C1].value = 0.0;
+    lights[LEVEL_LED_C2].value = 0.0;
+    lights[LEVEL_LED_C3].value = 0.0;
   }
 }
 
@@ -143,8 +179,8 @@ MentalMuxesWidget::MentalMuxesWidget() {
   
   addOutput(createOutput<PJ301MPort>(Vec(33, 75), module, MentalMuxes::OUTPUT_A));
   
-  addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(41, 32), &module->level_led_a1));
-  addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(41, 58), &module->level_led_a2));
+  addChild(createLight<MediumLight<GreenLight>>(Vec(41, 32), module, MentalMuxes::LEVEL_LED_A1));
+  addChild(createLight<MediumLight<GreenLight>>(Vec(41, 58), module, MentalMuxes::LEVEL_LED_A2));
   
   addInput(createInput<PJ301MPort>(Vec(3, group_offset + 75), module, MentalMuxes::SELECT_B));  
 	addInput(createInput<PJ301MPort>(Vec(3, group_offset + 25), module, MentalMuxes::INPUT_1B));
@@ -152,8 +188,8 @@ MentalMuxesWidget::MentalMuxesWidget() {
   
   addOutput(createOutput<PJ301MPort>(Vec(33,group_offset + 75), module, MentalMuxes::OUTPUT_B));
   
-  addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(41,group_offset + 32), &module->level_led_b1));
-  addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(41,group_offset + 58), &module->level_led_b2));
+  addChild(createLight<MediumLight<GreenLight>>(Vec(41,group_offset + 32), module, MentalMuxes::LEVEL_LED_B1));
+  addChild(createLight<MediumLight<GreenLight>>(Vec(41,group_offset + 58), module, MentalMuxes::LEVEL_LED_B2));
   
   addInput(createInput<PJ301MPort>(Vec(3, group_offset * 2 + 125), module, MentalMuxes::SELECT_C));  
 	addInput(createInput<PJ301MPort>(Vec(3, group_offset * 2 + 25), module, MentalMuxes::INPUT_1C));
@@ -163,9 +199,9 @@ MentalMuxesWidget::MentalMuxesWidget() {
   
   addOutput(createOutput<PJ301MPort>(Vec(33,group_offset * 2 + 125), module, MentalMuxes::OUTPUT_C));
   
-  addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(41,group_offset * 2 + 32), &module->level_led_c1));
-  addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(41,group_offset * 2 + 58), &module->level_led_c2));
-  addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(41,group_offset * 2 + 82), &module->level_led_c3));
-  addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(41,group_offset * 2 + 108), &module->level_led_c4));
+  addChild(createLight<MediumLight<GreenLight>>(Vec(41,group_offset * 2 + 32), module, MentalMuxes::LEVEL_LED_C1));
+  addChild(createLight<MediumLight<GreenLight>>(Vec(41,group_offset * 2 + 58), module, MentalMuxes::LEVEL_LED_C2));
+  addChild(createLight<MediumLight<GreenLight>>(Vec(41,group_offset * 2 + 82), module, MentalMuxes::LEVEL_LED_C3));
+  addChild(createLight<MediumLight<GreenLight>>(Vec(41,group_offset * 2 + 108), module, MentalMuxes::LEVEL_LED_C4));
 	  
 }

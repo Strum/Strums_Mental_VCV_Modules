@@ -29,6 +29,10 @@ struct MentalKnobs : Module {
 	enum OutputIds {
 		OUTPUT,       
 		NUM_OUTPUTS = OUTPUT + 3
+	};
+  enum LightIds {
+		BUTTON_LEDS,    
+		NUM_LIGHTS = BUTTON_LEDS + 9
 	};  
   
   float knob_value[3] = {0.0,0.0,0.0};
@@ -40,14 +44,14 @@ struct MentalKnobs : Module {
                              {0,0,0},
                              {0,0,0}};
   
-  float button_leds[3][3] = {{0.0,0.0,0.0},
+  /*float button_leds[3][3] = {{0.0,0.0,0.0},
                             {0.0,0.0,0.0},
-                            {0.0,0.0,0.0}};
+                            {0.0,0.0,0.0}};*/
                             
   int octaves[3] = {0,0,0};
   int semitones[3] = {0,0,0};
-  MentalKnobs() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-	void step();
+  MentalKnobs() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+	void step() override;
 };
 
 
@@ -60,18 +64,20 @@ void MentalKnobs::step()
   {
 	  switch_states[0][i] = !switch_states[0][i];
 	}  
-  button_leds[0][i] = switch_states[0][i] ? 1.0 : 0.0;
+  //button_leds[0][i] = switch_states[0][i] ? 1.0 : 0.0;
+  lights[BUTTON_LEDS + i].value = switch_states[0][i] ? 1.0 : 0.0;
   if (stepsize_switch_trigger[i].process(params[STEPSIZE_SWITCH + i].value))
   {
 	  switch_states[1][i] = !switch_states[1][i];
 	}  
-  button_leds[1][i] = switch_states[1][i] ? 1.0 : 0.0;
+  //button_leds[1][i] = switch_states[1][i] ? 1.0 : 0.0;
+  lights[BUTTON_LEDS + 6 + i].value = switch_states[1][i] ? 1.0 : 0.0;
   if (bi_switch_trigger[i].process(params[BI_SWITCH + i].value))
   {
 	  switch_states[2][i] = !switch_states[2][i];
 	}  
-  button_leds[2][i] = switch_states[2][i] ? 1.0 : 0.0;
-  
+  //button_leds[2][i] = switch_states[2][i] ? 1.0 : 0.0;
+  lights[BUTTON_LEDS + 3 + i].value = switch_states[2][i] ? 1.0 : 0.0;
   knob_value[i] = params[KNOB_PARAM + i].value;
   scale_value[i] = params[SCALE_PARAM + i].value;
   if (!switch_states[2][i]) // bi switch
@@ -109,7 +115,7 @@ struct NumberDisplayWidget : TransparentWidget {
     font = Font::load(assetPlugin(plugin, "res/Segment7Standard.ttf"));
   };
 
-  void draw(NVGcontext *vg)
+  void draw(NVGcontext *vg) override
   {
     // Background
     NVGcolor backgroundColor = nvgRGB(0x00, 0x00, 0x00);
@@ -150,15 +156,15 @@ MentalKnobsWidget::MentalKnobsWidget() {
   int group_offset = 120;    
   for (int i = 0 ; i < 3 ; i++)
   {
-    addParam(createParam<Davies1900hSmallBlackKnob>(Vec(2, 20+group_offset*i), module, MentalKnobs::KNOB_PARAM + i, -1.0, 1.0, 0.0));
-    addParam(createParam<Davies1900hSmallBlackKnob>(Vec(32, 20+group_offset*i), module, MentalKnobs::SCALE_PARAM + i,0.0, 10.0, 1.0)); 
+    addParam(createParam<RoundSmallBlackKnob>(Vec(2, 20+group_offset*i), module, MentalKnobs::KNOB_PARAM + i, -1.0, 1.0, 0.0));
+    addParam(createParam<RoundSmallBlackKnob>(Vec(32, 20+group_offset*i), module, MentalKnobs::SCALE_PARAM + i,0.0, 10.0, 1.0)); 
     
     addParam(createParam<LEDButton>(Vec(5, 50+group_offset*i), module, MentalKnobs::STEP_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(10, 55+group_offset*i), &module->button_leds[0][i]));
+    addChild(createLight<MediumLight<GreenLight>>(Vec(10, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + i ));
     addParam(createParam<LEDButton>(Vec(5, 75+group_offset*i), module, MentalKnobs::BI_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(10, 80+group_offset*i), &module->button_leds[2][i]));
+    addChild(createLight<MediumLight<GreenLight>>(Vec(10, 80+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 3 + i));
     addParam(createParam<LEDButton>(Vec(35, 50+group_offset*i), module, MentalKnobs::STEPSIZE_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(40, 55+group_offset*i), &module->button_leds[1][i]));
+    addChild(createLight<MediumLight<GreenLight>>(Vec(40, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 6 + i));
     
     addOutput(createOutput<PJ301MPort>(Vec(33, 75+group_offset*i), module, MentalKnobs::OUTPUT + i));     
   }

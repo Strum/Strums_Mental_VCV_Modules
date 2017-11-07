@@ -34,8 +34,7 @@ struct MentalMixer : Module {
     RETURN_2_L_INPUT,
     RETURN_2_R_INPUT,
 		NUM_INPUTS
-	};
-  
+	};  
 	enum OutputIds {
 		MIX_OUTPUT_L,
     MIX_OUTPUT_R,
@@ -43,8 +42,13 @@ struct MentalMixer : Module {
     SEND_2_OUTPUT,				
 		NUM_OUTPUTS
 	};
+  enum LightIds {
+		MUTE_LIGHTS,    
+		NUM_LIGHTS = MUTE_LIGHTS + 12
+	};
+  
   SchmittTrigger mute_triggers[12];
-  float mute_lights[12] = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+  //float mute_lights[12] = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
   bool mute_states[12]= {1,1,1,1,1,1,1,1,1,1,1,1};
   float channel_ins[12];
   float pan_cv_ins[12];
@@ -58,10 +62,10 @@ struct MentalMixer : Module {
   float left_sum = 0.0;
   float right_sum = 0.0;
   
-	MentalMixer() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-	void step();
+	MentalMixer() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+	void step() override;
   
-  json_t *toJson()
+  json_t *toJson() override
   {
 		json_t *rootJ = json_object();
     
@@ -76,7 +80,7 @@ struct MentalMixer : Module {
     return rootJ;
   }
   
-  void fromJson(json_t *rootJ)
+  void fromJson(json_t *rootJ) override
   {
     // mute states
 		json_t *mute_statesJ = json_object_get(rootJ, "mutes");
@@ -108,7 +112,8 @@ void MentalMixer::step() {
     {
 		  mute_states[i] = !mute_states[i];
 	  }
-    mute_lights[i] = mute_states[i] ? 1.0 : 0.0;
+    lights[MUTE_LIGHTS + i ].value = mute_states[i] ? 1.0 : 0.0;
+    //mute_lights[i] = mute_states[i] ? 1.0 : 0.0;
   }
   for (int i = 0 ; i < 12 ; i++)
   {  
@@ -117,7 +122,8 @@ void MentalMixer::step() {
     if (!mute_states[i] || inputs[CH_MUTE_INPUT + i].value > 0.0 )
     {
       channel_ins[i] = 0.0;
-      mute_lights[i] = 0;      
+      //mute_lights[i] = 0;
+      lights[MUTE_LIGHTS + i ].value = 0.0;      
     }
     
     channel_sends_1[i] = channel_ins[i] * params[AUX_1_PARAM + i].value * clampf(inputs[CH_VOL_INPUT + i].normalize(10.0) / 10.0, 0.0, 1.0);
@@ -182,11 +188,11 @@ MentalMixerWidget::MentalMixerWidget() {
 	addParam(createParam<SynthTechAlco>(Vec(345, 30), module, MentalMixer::MIX_PARAM, 0.0, 1.0, 0.5)); // master volume
 
   // send volumes
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(right_column - 25, 120), module, MentalMixer::AUX_SEND_1_PARAM, 0.0, 1.0, 0.0));
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(right_column - 25, 180), module, MentalMixer::AUX_SEND_2_PARAM, 0.0, 1.0, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(right_column - 25, 120), module, MentalMixer::AUX_SEND_1_PARAM, 0.0, 1.0, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(right_column - 25, 180), module, MentalMixer::AUX_SEND_2_PARAM, 0.0, 1.0, 0.0));
   // return volumes
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(right_column - 25, 250), module, MentalMixer::AUX_RETURN_1_PARAM, 0.0, 1.0, 0.0));
-  addParam(createParam<Davies1900hSmallBlackKnob>(Vec(right_column - 25, 300), module, MentalMixer::AUX_RETURN_2_PARAM, 0.0, 1.0, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(right_column - 25, 250), module, MentalMixer::AUX_RETURN_1_PARAM, 0.0, 1.0, 0.0));
+  addParam(createParam<RoundSmallBlackKnob>(Vec(right_column - 25, 300), module, MentalMixer::AUX_RETURN_2_PARAM, 0.0, 1.0, 0.0));
 
   // channel strips
   for (int i = 0 ; i < 12 ; i++)
@@ -202,7 +208,7 @@ MentalMixerWidget::MentalMixerWidget() {
     addParam(createParam<Trimpot>(Vec(column_1+column_spacing*i, top_row + row_spacing * 6), module, MentalMixer::AUX_2_PARAM + i, 0.0, 1.0, 0.0));
 
     addParam(createParam<LEDButton>(Vec(column_1+column_spacing*i,top_row + row_spacing * 7), module, MentalMixer::MUTE_PARAM + i, 0.0, 1.0, 0.0));
-	  addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(column_1+column_spacing*i + 5, top_row + row_spacing * 7 + 5), &module->mute_lights[i]));
+	  addChild(createLight<MediumLight<GreenLight>>(Vec(column_1+column_spacing*i + 5, top_row + row_spacing * 7 + 5), module, MentalMixer::MUTE_LIGHTS + i));
     addInput(createInput<PJ301MPort>(Vec(column_1+column_spacing*i, top_row + row_spacing * 8), module, MentalMixer::CH_MUTE_INPUT + i));
 
 	}

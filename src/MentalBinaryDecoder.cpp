@@ -22,24 +22,29 @@ struct MentalBinaryDecoder : Module {
     OUTPUT,    
 		NUM_OUTPUTS = OUTPUT + 8
 	};
+  enum LightIds {
+		OUTPUT_LEDS,
+		NUM_LIGHTS = OUTPUT_LEDS + 8
+	};
   
   //float input_leds[3] = {0.0,0.0,0.0};  
-  float output_leds[8] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+  //float output_leds[8] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
   float in_1 = 0.0;
   float in_2 = 0.0;
   float in_4 = 0.0;
   
   int one, two, four, last_led, decoded;
   
-	MentalBinaryDecoder() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-	void step();  
+	MentalBinaryDecoder() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+	void step() override;  
 };
 
 void MentalBinaryDecoder::step()
 {
   for ( int i = 0 ; i < 8 ; i ++)
   {
-    output_leds[i] = 0.0;
+    //output_leds[i] = 0.0;
+    lights[OUTPUT_LEDS + i].value = 0.0;
     outputs[OUTPUT + i].value = 0.0;
   }
   
@@ -77,7 +82,8 @@ void MentalBinaryDecoder::step()
   
   decoded = one + two + four;  
   outputs[OUTPUT + decoded].value = 1.0;
-  output_leds[decoded] = 1.0;  
+  //output_leds[decoded] = 1.0;
+  lights[OUTPUT_LEDS + decoded].value = 1.0;  
 }
 
 MentalBinaryDecoderWidget::MentalBinaryDecoderWidget() {
@@ -102,7 +108,7 @@ MentalBinaryDecoderWidget::MentalBinaryDecoderWidget() {
   for (int i = 0; i < 8 ; i++)
   {  
    addOutput(createOutput<PJ301MPort>(Vec(30, top_space + spacing * i), module, MentalBinaryDecoder::OUTPUT + i));   	 
-   addChild(createValueLight<SmallLight<GreenValueLight>>(Vec(60, top_space +  spacing * i + 8), &module->output_leds[i]));
+   addChild(createLight<MediumLight<GreenLight>>(Vec(60, top_space +  spacing * i + 8), module, MentalBinaryDecoder::OUTPUT_LEDS + i));
   }
   
 }
