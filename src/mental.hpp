@@ -104,4 +104,14 @@ struct MentalGateMakerWidget : ModuleWidget {
 	MentalGateMakerWidget();
 };
 
+struct MentalMasterClockWidget : ModuleWidget {
+	MentalMasterClockWidget();
+};
+
+struct MentalPatchNotesWidget : ModuleWidget {
+  TextField * patch_notes;
+	MentalPatchNotesWidget();
+  json_t *toJson() override;
+	void fromJson(json_t *rootJ) override;
+};
 
