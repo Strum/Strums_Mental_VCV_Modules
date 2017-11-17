@@ -81,12 +81,12 @@ void MentalButtons::step()
 	  }
     //button_leds[i] = button_states[i] ? 1.0 : 0.0;
     lights[BUTTON_LEDS + i ].value  = (button_states[i]) ? 1.0 : 0.0;
-    outputs[OUTPUT + i].value = button_states[i] * 5.0;
+    outputs[OUTPUT + i].value = button_states[i] * 10.0;
     if (params[MOMENT + i].value > 0.0)
     {
 	    //moment_leds[i] = 1.0;
       lights[MOMENT_LEDS + i ].value  = 1.0;
-      outputs[MOMENT_OUT + i].value = 5.0;
+      outputs[MOMENT_OUT + i].value = 10.0;
 	  }
     else
     {

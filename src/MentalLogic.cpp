@@ -82,7 +82,7 @@ void MentalLogic::step()
   }
   else
   {
-    outputs[OUTPUT_INV_1].value = 5.0;
+    outputs[OUTPUT_INV_1].value = 10.0;
     //inv_led_1 = 1.0;
     lights[INV_LED_1].value = 1.0;
   }
@@ -94,7 +94,7 @@ void MentalLogic::step()
   }
   else
   {
-    outputs[OUTPUT_INV_2].value = 5.0;
+    outputs[OUTPUT_INV_2].value = 10.0;
     //inv_led_2 = 1.0;
     lights[INV_LED_2].value = 1.0;
   }
@@ -103,7 +103,7 @@ void MentalLogic::step()
     
   if (signal_in_A1 > 0.0 && signal_in_B1 > 0.0 )
   {
-    outputs[OUTPUT_AND_1].value = 5.0;    
+    outputs[OUTPUT_AND_1].value = 10.0;    
     //and_led_1 = 1.0;
     lights[AND_LED_1].value = 1.0;
   }
@@ -115,7 +115,7 @@ void MentalLogic::step()
   }
   if (signal_in_A1 > 0.0 || signal_in_B1 > 0.0 )
   {
-    outputs[OUTPUT_OR_1].value = 5.0;
+    outputs[OUTPUT_OR_1].value = 10.0;
     //or_led_1 = 1.0;
     lights[OR_LED_1].value = 1.0;
   }
@@ -128,7 +128,7 @@ void MentalLogic::step()
   //////////////////////////////////////
   if (signal_in_A2 > 0.0 && signal_in_B2 > 0.0 )
   {
-    outputs[OUTPUT_AND_2].value = 5.0;    
+    outputs[OUTPUT_AND_2].value = 10.0;    
     //and_led_2 = 1.0;
     lights[AND_LED_2].value = 1.0;
   }
@@ -140,7 +140,7 @@ void MentalLogic::step()
   }
   if (signal_in_A2 > 0.0 || signal_in_B2 > 0.0 )
   {
-    outputs[OUTPUT_OR_2].value = 5.0;
+    outputs[OUTPUT_OR_2].value = 10.0;
     //or_led_2 = 1.0;
     lights[OR_LED_2].value = 1.0;
   }
@@ -153,7 +153,7 @@ void MentalLogic::step()
   //////////////// Big or
   if ( or_3_A_input > 0.0 || or_3_B_input > 0.0 || or_3_C_input > 0.0 || or_3_D_input > 0.0 || or_3_E_input > 0.0 )
   {
-    outputs[OUTPUT_OR_3].value = 5.0;
+    outputs[OUTPUT_OR_3].value = 10.0;
     //or_led_3 = 1.0;
     lights[OR_LED_3].value = 1.0;
   }
