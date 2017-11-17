@@ -52,6 +52,42 @@ struct MentalKnobs : Module {
   int semitones[3] = {0,0,0};
   MentalKnobs() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 	void step() override;
+  
+  json_t *toJson() override
+  {
+		json_t *rootJ = json_object();
+    
+    // button states
+		json_t *switch_statesJ = json_array();
+		for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0 ; j < 3 ; j++)
+      {
+			  json_t *switch_stateJ = json_integer((int) switch_states[i][j]);
+			  json_array_append_new(switch_statesJ, switch_stateJ);
+      }
+		}
+		json_object_set_new(rootJ, "switches", switch_statesJ);    
+    return rootJ;
+  }
+  
+  void fromJson(json_t *rootJ) override
+  {
+    // button states
+		json_t *switch_statesJ = json_object_get(rootJ, "switches");
+		if (switch_statesJ)
+    {
+			for (int i = 0; i < 3 ; i++)
+      {
+				for (int j = 0 ; j < 3 ; j++)
+        {
+          json_t *switch_stateJ = json_array_get(switch_statesJ, i * 3 + j);
+				  if (switch_stateJ)
+					  switch_states[i][j] = !!json_integer_value(switch_stateJ);
+        }
+			}
+		}  
+  }
 };
 
 
