@@ -81,7 +81,7 @@ void MentalBinaryDecoder::step()
   }
   
   decoded = one + two + four;  
-  outputs[OUTPUT + decoded].value = 1.0;
+  outputs[OUTPUT + decoded].value = 10.0;
   //output_leds[decoded] = 1.0;
   lights[OUTPUT_LEDS + decoded].value = 1.0;  
 }

@@ -138,14 +138,14 @@ void MentalGateMaker::step()
 					count++;	
   }
   
-  if (count >= delay && count <= (count_on + delay)) outputs[OUTPUT].value = 5.0;
+  if (count >= delay && count <= (count_on + delay)) outputs[OUTPUT].value = 10.0;
   else outputs[OUTPUT].value = 0.0;
   if (count > count_limit)
   {
     count = 0;
     if (triggered) outputs[OUTPUT].value = 0;
     triggered = false;        
-    outputs[FINISH_OUT].value = 5.0; 
+    outputs[FINISH_OUT].value = 10.0; 
   }
   
   //outputs[FINISH_OUT].value = end.process(1.0/engineGetSampleRate) ? 5.0 : 0.0;
