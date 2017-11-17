@@ -105,6 +105,27 @@ struct MentalQuadLFO : Module {
   
 	MentalQuadLFO() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 	void step() override;
+  
+  json_t *toJson() override
+  {
+		json_t *rootJ = json_object();
+    
+    // save mode
+		json_t *modeJ = json_integer((int)mode);
+						
+		json_object_set_new(rootJ, "mode", modeJ);    
+    return rootJ;
+  }
+  
+  void fromJson(json_t *rootJ) override
+  {
+    // read mode
+		json_t *modeJ = json_object_get(rootJ, "mode");
+		if (modeJ)
+    {
+			mode = json_integer_value(modeJ);		
+		}  
+  }
 };
 
 void MentalQuadLFO::step()
