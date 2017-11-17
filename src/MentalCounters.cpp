@@ -79,7 +79,7 @@ void MentalCounters::step()
 		if (clock_trigger.process(inputs[CLK_IN].value) && count <= count_limit)
 					count++;	
   }
-  if (count == count_limit) outputs[OUTPUT].value = 5.0;
+  if (count == count_limit) outputs[OUTPUT].value = 10.0;
   if (count > count_limit)
   {
     count = 0;
@@ -97,7 +97,7 @@ void MentalCounters::step()
 		if (clock_trigger_2.process(inputs[CLK_IN_2].value) && count_2 <= count_limit_2)
 					count_2++;	
   }
-  if (count_2 == count_limit_2) outputs[OUTPUT_2].value = 5.0;
+  if (count_2 == count_limit_2) outputs[OUTPUT_2].value = 10.0;
   if (count_2 > count_limit_2)
   {
     count_2 = 0;
