@@ -118,3 +118,7 @@ struct MentalPatchNotesWidget : ModuleWidget {
 struct MentalQuadLFOWidget : ModuleWidget {
 	MentalQuadLFOWidget();
 };
+
+struct MentalRadioButtonsWidget : ModuleWidget {
+	MentalRadioButtonsWidget();
+};
