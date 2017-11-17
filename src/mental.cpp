@@ -38,5 +38,6 @@ void init(rack::Plugin *p) {
     p->addModel(createModel<MentalGateMakerWidget>("mental", "MentalGateMaker", "Mental Gate Maker", UTILITY_TAG));    
     p->addModel(createModel<MentalMasterClockWidget>("mental", "MentalMasterClock", "MentalMasterClock", CLOCK_TAG));
     p->addModel(createModel<MentalPatchNotesWidget>("mental", "MentalPatchNotes", "MentalPatchNotes", UTILITY_TAG));
-    p->addModel(createModel<MentalQuadLFOWidget>("mental", "MentalQuadLFO", "Quad LFO", LFO_TAG, QUAD_TAG, CLOCK_TAG));      
+    p->addModel(createModel<MentalQuadLFOWidget>("mental", "MentalQuadLFO", "Quad LFO", LFO_TAG, QUAD_TAG, CLOCK_TAG));
+    p->addModel(createModel<MentalRadioButtonsWidget>("mental", "MentalRadioButtons", "Radio Buttons", UTILITY_TAG, SWITCH_TAG, CONTROLLER_TAG));      
 }
