@@ -115,3 +115,6 @@ struct MentalPatchNotesWidget : ModuleWidget {
 	void fromJson(json_t *rootJ) override;
 };
 
+struct MentalQuadLFOWidget : ModuleWidget {
+	MentalQuadLFOWidget();
+};
