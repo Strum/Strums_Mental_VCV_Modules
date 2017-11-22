@@ -4,10 +4,9 @@ strum@softhome.net
 
 Simple but useful modules for VCVRack
 
-Version : 0.4g
+Version : 0.5a
 
-Works with Rack 0.4.0 only, api changes from 0.3 versions broke it and i didn't want to apply conditional compilation when
-in a few weeks noboby will be using version 0.3 anymore anyway. 
+Date : 22nd Nov 2017
 
 Based largely on the fundamental modules but I have also used some code from other module
 developers and learned various ways of doing things from the other suites of modules as well.
@@ -15,7 +14,6 @@ developers and learned various ways of doing things from the other suites of mod
 The modules are mostly utilities, which you can never have enough of, and I have
 focused on keeping them small to pack a lot of functionality into as little possible screen area.
 
-Currently Compiles against the lastest code as of 13 Oct 2017.
 
 Module List
 
@@ -86,3 +84,9 @@ Dual Counters - for euclidean rhythms
 Knobs - Outputs constants continous or stepped by integer ro semitone, uni or bipolar
 
 Gate Maker - Counter with delay before opening and after closing, cycle or one shot mode - BETA
+
+Patch notes - add notes to a patch
+
+Master Clock - Set a Tempo by BPM and time signature, outputs beat, bar and subdivisions of the beat
+
+Quad LFO - 4 LFOs with cv control and 4 synced modes in a small panel 
