@@ -156,12 +156,12 @@ MentalCountersWidget::MentalCountersWidget() {
   int group_offset = 190;
   
   addParam(createParam<RoundSmallBlackKnob>(Vec(2, 20), module, MentalCounters::COUNT_NUM_PARAM, 0.0, 32.0, 0.0)); 
-  addInput(createInput<PJ301MPort>(Vec(3, 90), module, MentalCounters::CLK_IN));
-	addInput(createInput<PJ301MPort>(Vec(3, 120), module, MentalCounters::RESET_IN));
+  addInput(createInput<CVPort>(Vec(3, 90), module, MentalCounters::CLK_IN));
+	addInput(createInput<CVPort>(Vec(3, 120), module, MentalCounters::RESET_IN));
   
   addParam(createParam<LEDButton>(Vec(5, 145), module, MentalCounters::RST_BUTTON, 0.0, 1.0, 0.0));
   
-  addOutput(createOutput<PJ301MPort>(Vec(33, 90), module, MentalCounters::OUTPUT));
+  addOutput(createOutput<OutPort>(Vec(33, 90), module, MentalCounters::OUTPUT));
   
   NumberDisplayWidget *display = new NumberDisplayWidget();
 	display->box.pos = Vec(5,50);
@@ -171,12 +171,12 @@ MentalCountersWidget::MentalCountersWidget() {
   
   /////////// counter 2
   addParam(createParam<RoundSmallBlackKnob>(Vec(2, 20 + group_offset), module, MentalCounters::COUNT_NUM_PARAM_2, 0.0, 32.0, 0.0)); 
-  addInput(createInput<PJ301MPort>(Vec(3, 90 + group_offset), module, MentalCounters::CLK_IN_2));
-	addInput(createInput<PJ301MPort>(Vec(3, 120 + group_offset), module, MentalCounters::RESET_IN_2));
+  addInput(createInput<CVPort>(Vec(3, 90 + group_offset), module, MentalCounters::CLK_IN_2));
+	addInput(createInput<CVPort>(Vec(3, 120 + group_offset), module, MentalCounters::RESET_IN_2));
   
   addParam(createParam<LEDButton>(Vec(5, 145 + group_offset), module, MentalCounters::RST_BUTTON_2, 0.0, 1.0, 0.0));
   
-  addOutput(createOutput<PJ301MPort>(Vec(33, 90 + group_offset), module, MentalCounters::OUTPUT_2));
+  addOutput(createOutput<OutPort>(Vec(33, 90 + group_offset), module, MentalCounters::OUTPUT_2));
   
   NumberDisplayWidget *display_2 = new NumberDisplayWidget();
 	display_2->box.pos = Vec(5,50 + group_offset);

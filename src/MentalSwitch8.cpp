@@ -102,15 +102,15 @@ MentalSwitch8Widget::MentalSwitch8Widget() {
   int spacing = 25; 
   int top_space = 15;
   
-  addInput(createInput<PJ301MPort>(Vec(3, top_space), module, MentalSwitch8::INPUT_1));
-  addInput(createInput<PJ301MPort>(Vec(3, top_space + spacing), module, MentalSwitch8::INPUT_2));
-  addInput(createInput<PJ301MPort>(Vec(3, top_space + spacing * 2), module, MentalSwitch8::INPUT_4));
+  addInput(createInput<CVPort>(Vec(3, top_space), module, MentalSwitch8::INPUT_1));
+  addInput(createInput<CVPort>(Vec(3, top_space + spacing), module, MentalSwitch8::INPUT_2));
+  addInput(createInput<CVPort>(Vec(3, top_space + spacing * 2), module, MentalSwitch8::INPUT_4));
   
-  addInput(createInput<PJ301MPort>(Vec(3, top_space + spacing * 3 + 15), module, MentalSwitch8::SIG_INPUT));
+  addInput(createInput<InPort>(Vec(3, top_space + spacing * 3 + 15), module, MentalSwitch8::SIG_INPUT));
   
   for (int i = 0; i < 8 ; i++)
   {  
-   addOutput(createOutput<PJ301MPort>(Vec(30, top_space + spacing * i), module, MentalSwitch8::OUTPUT + i));   	 
+   addOutput(createOutput<OutPort>(Vec(30, top_space + spacing * i), module, MentalSwitch8::OUTPUT + i));   	 
    addChild(createLight<MediumLight<GreenLight>>(Vec(60, top_space +  spacing * i + 8), module,MentalSwitch8::OUTPUT_LEDS + i));
   }
   
