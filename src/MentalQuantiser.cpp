@@ -143,16 +143,16 @@ MentalQuantiserWidget::MentalQuantiserWidget() {
   int row_spacing = 25; 
 	
   addParam(createParam<RoundSmallBlackKnob>(Vec(62, 15), module, MentalQuantiser::PITCH_PARAM, -6.5, 6.5, 0.0));
-  addInput(createInput<PJ301MPort>(Vec(63, 45), module, MentalQuantiser::PITCH_INPUT));
+  addInput(createInput<InPort>(Vec(63, 45), module, MentalQuantiser::PITCH_INPUT));
   
-  addInput(createInput<PJ301MPort>(Vec(3, top_row), module, MentalQuantiser::INPUT));
-  addOutput(createOutput<PJ301MPort>(Vec(32, top_row), module, MentalQuantiser::OUTPUT));
+  addInput(createInput<InPort>(Vec(3, top_row), module, MentalQuantiser::INPUT));
+  addOutput(createOutput<OutPort>(Vec(32, top_row), module, MentalQuantiser::OUTPUT));
   
   for (int i = 0; i < 12 ; i++)
   {  
     addParam(createParam<LEDButton>(Vec(3, top_row + 30 + row_spacing * i), module, MentalQuantiser::BUTTON_PARAM + i, 0.0, 1.0, 0.0));
 	  addChild(createLight<MediumLight<GreenLight>>(Vec(3+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::BUTTON_LIGHTS + i));
     addChild(createLight<MediumLight<GreenLight>>(Vec(30+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::OUTPUT_LIGHTS + i));
-    addOutput(createOutput<PJ301MPort>(Vec(63, top_row + 30 + row_spacing * i), module, MentalQuantiser::REF_OUT + i));    
+    addOutput(createOutput<OutPort>(Vec(63, top_row + 30 + row_spacing * i), module, MentalQuantiser::REF_OUT + i));    
   }
 }

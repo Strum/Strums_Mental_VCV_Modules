@@ -68,19 +68,19 @@ MentalSumsWidget::MentalSumsWidget() {
     panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalSums.svg")));
 		addChild(panel);
 	}
-  addOutput(createOutput<PJ301MPort>(Vec(3, 22), module, MentalSums::OUTPUT_1));
-  addOutput(createOutput<PJ301MPort>(Vec(3, 190), module, MentalSums::OUTPUT_2));
+  addOutput(createOutput<OutPort>(Vec(3, 22), module, MentalSums::OUTPUT_1));
+  addOutput(createOutput<OutPort>(Vec(3, 190), module, MentalSums::OUTPUT_2));
   
-  addInput(createInput<PJ301MPort>(Vec(3, 58), module, MentalSums::INPUT_1));
-	addInput(createInput<PJ301MPort>(Vec(3, 83), module, MentalSums::INPUT_2));
-	addInput(createInput<PJ301MPort>(Vec(3, 108), module, MentalSums::INPUT_3));
-	addInput(createInput<PJ301MPort>(Vec(3, 133), module, MentalSums::INPUT_4));
-	addInput(createInput<PJ301MPort>(Vec(3, 158), module, MentalSums::INPUT_5));
+  addInput(createInput<InPort>(Vec(3, 58), module, MentalSums::INPUT_1));
+	addInput(createInput<InPort>(Vec(3, 83), module, MentalSums::INPUT_2));
+	addInput(createInput<InPort>(Vec(3, 108), module, MentalSums::INPUT_3));
+	addInput(createInput<InPort>(Vec(3, 133), module, MentalSums::INPUT_4));
+	addInput(createInput<InPort>(Vec(3, 158), module, MentalSums::INPUT_5));
   
-  addInput(createInput<PJ301MPort>(Vec(3, 230), module, MentalSums::INPUT_2_1));
-	addInput(createInput<PJ301MPort>(Vec(3, 255), module, MentalSums::INPUT_2_2));
-	addInput(createInput<PJ301MPort>(Vec(3, 280), module, MentalSums::INPUT_2_3));
-	addInput(createInput<PJ301MPort>(Vec(3, 305), module, MentalSums::INPUT_2_4));
-	addInput(createInput<PJ301MPort>(Vec(3, 330), module, MentalSums::INPUT_2_5));
+  addInput(createInput<InPort>(Vec(3, 230), module, MentalSums::INPUT_2_1));
+	addInput(createInput<InPort>(Vec(3, 255), module, MentalSums::INPUT_2_2));
+	addInput(createInput<InPort>(Vec(3, 280), module, MentalSums::INPUT_2_3));
+	addInput(createInput<InPort>(Vec(3, 305), module, MentalSums::INPUT_2_4));
+	addInput(createInput<InPort>(Vec(3, 330), module, MentalSums::INPUT_2_5));
 	
 }
