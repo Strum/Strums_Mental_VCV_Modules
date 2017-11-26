@@ -129,11 +129,11 @@ MentalABSwitchesWidget::MentalABSwitchesWidget() {
   
   for (int i = 0 ; i < 4 ; i++)
   {
-	  addInput(createInput<PJ301MPort>(Vec(3, group_spacing * i + 25), module, MentalABSwitches::INPUT + i));
-    addInput(createInput<PJ301MPort>(Vec(3, group_spacing * i + 75), module, MentalABSwitches::SEL_INPUT + i));
+	  addInput(createInput<InPort>(Vec(3, group_spacing * i + 25), module, MentalABSwitches::INPUT + i));
+    addInput(createInput<CVPort>(Vec(3, group_spacing * i + 75), module, MentalABSwitches::SEL_INPUT + i));
   
-    addOutput(createOutput<PJ301MPort>(Vec(33, group_spacing * i + 25), module, MentalABSwitches::OUTPUT_A + i));
-    addOutput(createOutput<PJ301MPort>(Vec(33, group_spacing * i + 50), module, MentalABSwitches::OUTPUT_B + i));
+    addOutput(createOutput<OutPort>(Vec(33, group_spacing * i + 25), module, MentalABSwitches::OUTPUT_A + i));
+    addOutput(createOutput<OutPort>(Vec(33, group_spacing * i + 50), module, MentalABSwitches::OUTPUT_B + i));
 
     addChild(createLight<MediumLight<GreenLight>>(Vec(62, group_spacing * i + 34), module, MentalABSwitches::A_LEDS + i ));
     addChild(createLight<MediumLight<GreenLight>>(Vec(62, group_spacing * i + 59), module, MentalABSwitches::B_LEDS + i));

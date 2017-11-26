@@ -122,3 +122,27 @@ struct MentalQuadLFOWidget : ModuleWidget {
 struct MentalRadioButtonsWidget : ModuleWidget {
 	MentalRadioButtonsWidget();
 };
+
+/////////////////////////////////////////////
+// ports
+struct OutPort : SVGPort {
+	OutPort() {
+		background->svg = SVG::load(assetPlugin(plugin, "res/components/OutPort.svg"));
+		background->wrap();
+		box.size = background->box.size;
+	}
+};
+struct InPort : SVGPort {
+	InPort() {
+		background->svg = SVG::load(assetPlugin(plugin, "res/components/InPort.svg"));
+		background->wrap();
+		box.size = background->box.size;
+	}
+};
+struct CVPort : SVGPort {
+	CVPort() {
+		background->svg = SVG::load(assetPlugin(plugin, "res/components/CVPort.svg"));
+		background->wrap();
+		box.size = background->box.size;
+	}
+};

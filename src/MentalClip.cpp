@@ -79,10 +79,10 @@ MentalClipWidget::MentalClipWidget() {
   addParam(createParam<RoundSmallBlackKnob>(Vec(2, 20), module, MentalClip::THRESH_PARAM, 0.0, 1.0, 1.0));
   addParam(createParam<RoundSmallBlackKnob>(Vec(2, 80), module, MentalClip::GAIN_PARAM, 0.0, 1.0, 0.5));
 	
-  addInput(createInput<PJ301MPort>(Vec(3, 50), module, MentalClip::THRESH_CV_INPUT));
-  addInput(createInput<PJ301MPort>(Vec(3, 110), module, MentalClip::GAIN_CV_INPUT));
+  addInput(createInput<CVPort>(Vec(3, 50), module, MentalClip::THRESH_CV_INPUT));
+  addInput(createInput<CVPort>(Vec(3, 110), module, MentalClip::GAIN_CV_INPUT));
 
-  addInput(createInput<PJ301MPort>(Vec(3, 140), module, MentalClip::INPUT_1));
-  addOutput(createOutput<PJ301MPort>(Vec(33, 140), module, MentalClip::OUTPUT_1));
+  addInput(createInput<InPort>(Vec(3, 140), module, MentalClip::INPUT_1));
+  addOutput(createOutput<OutPort>(Vec(33, 140), module, MentalClip::OUTPUT_1));
 
 }

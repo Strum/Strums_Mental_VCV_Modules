@@ -235,13 +235,13 @@ MentalQuadLFOWidget::MentalQuadLFOWidget()
   {
 	  addParam(createParam<BefacoSlidePot>(mm2px(Vec(2.792 + i * x_offset, 3.937)), module,MentalQuadLFO::FREQ_PARAM + i, 0.0, 1.0, 0.0));
 
-	  addInput(createInput<PJ301MPort>(mm2px(Vec(1.003 + i * x_offset, 61.915)), module, MentalQuadLFO::FREQ_INPUT + i));
-	  addInput(createInput<PJ301MPort>(mm2px(Vec(1.003 + i * x_offset, 72.858)), module, MentalQuadLFO::RESET_INPUT + i));
+	  addInput(createInput<InPort>(mm2px(Vec(1.003 + i * x_offset, 61.915)), module, MentalQuadLFO::FREQ_INPUT + i));
+	  addInput(createInput<InPort>(mm2px(Vec(1.003 + i * x_offset, 72.858)), module, MentalQuadLFO::RESET_INPUT + i));
 
-	  addOutput(createOutput<PJ301MPort>(mm2px(Vec(1.003 + i * x_offset, 83.759)), module, MentalQuadLFO::SIN_OUTPUT + i));
-	  addOutput(createOutput<PJ301MPort>(mm2px(Vec(1.003 + i * x_offset, 94.173)), module, MentalQuadLFO::TRI_OUTPUT + i));
-	  addOutput(createOutput<PJ301MPort>(mm2px(Vec(1.003 + i * x_offset, 105.169)), module, MentalQuadLFO::SAW_OUTPUT + i));
-	  addOutput(createOutput<PJ301MPort>(mm2px(Vec(1.003 + i * x_offset, 116.583)), module, MentalQuadLFO::SQR_OUTPUT + i));
+	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 83.759)), module, MentalQuadLFO::SIN_OUTPUT + i));
+	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 94.173)), module, MentalQuadLFO::TRI_OUTPUT + i));
+	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 105.169)), module, MentalQuadLFO::SAW_OUTPUT + i));
+	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 116.583)), module, MentalQuadLFO::SQR_OUTPUT + i));
   	
     addChild(createLight<SmallLight<GreenRedLight>>(Vec(13 + i * 30, 125), module, MentalQuadLFO::PHASE_POS_LIGHT + i));
   }

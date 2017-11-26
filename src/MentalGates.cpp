@@ -120,9 +120,9 @@ MentalGatesWidget::MentalGatesWidget() {
   int group_spacing = 85;
   for (int i = 0 ; i < 4 ; i++)
   {
-	  addInput(createInput<PJ301MPort>(Vec(3, group_spacing * i +  60), module, MentalGates::INPUT + i));
-    addInput(createInput<PJ301MPort>(Vec(3, group_spacing * i +  28), module, MentalGates::GATE_INPUT + i));
-    addOutput(createOutput<PJ301MPort>(Vec(32, group_spacing * i +  60), module, MentalGates::OUTPUT + i));
+	  addInput(createInput<InPort>(Vec(3, group_spacing * i +  60), module, MentalGates::INPUT + i));
+    addInput(createInput<CVPort>(Vec(3, group_spacing * i +  28), module, MentalGates::GATE_INPUT + i));
+    addOutput(createOutput<OutPort>(Vec(32, group_spacing * i +  60), module, MentalGates::OUTPUT + i));
 
 
     addChild(createLight<MediumLight<GreenLight>>(Vec(26, group_spacing * i + 17), module, MentalGates::ON_LEDS + i));
