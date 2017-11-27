@@ -124,10 +124,10 @@ MentalSubMixerWidget::MentalSubMixerWidget() {
 	}
   int y_offset = 40;
 	addParam(createParam<SynthTechAlco>(Vec(23, 15), module, MentalSubMixer::MIX_PARAM, 0.0, 1.0, 0.5));
-  addInput(createInput<PJ301MPort>(Vec(33, 65), module, MentalSubMixer::MIX_CV_INPUT));
+  addInput(createInput<CVPort>(Vec(33, 65), module, MentalSubMixer::MIX_CV_INPUT));
   
-  addOutput(createOutput<PJ301MPort>(Vec(93, 20), module, MentalSubMixer::MIX_OUTPUT_L));
-	addOutput(createOutput<PJ301MPort>(Vec(93, 45), module, MentalSubMixer::MIX_OUTPUT_R));
+  addOutput(createOutput<OutPort>(Vec(93, 20), module, MentalSubMixer::MIX_OUTPUT_L));
+	addOutput(createOutput<OutPort>(Vec(93, 45), module, MentalSubMixer::MIX_OUTPUT_R));
   
 	
   addParam(createParam<RoundSmallBlackKnob>(Vec(33,y_offset + 90), module, MentalSubMixer::CH1_PARAM, 0.0, 1.0, 0.0));
@@ -143,26 +143,26 @@ MentalSubMixerWidget::MentalSubMixerWidget() {
   addParam(createParam<RoundSmallBlackKnob>(Vec(63,y_offset + 270), module, MentalSubMixer::CH4_PAN_PARAM, 0.0, 1.0, 0.5));		
   
 
-	addInput(createInput<PJ301MPort>(Vec(3,y_offset + 120), module, MentalSubMixer::CH1_INPUT));
-	addInput(createInput<PJ301MPort>(Vec(33,y_offset + 120), module, MentalSubMixer::CH1_CV_INPUT));
-  addInput(createInput<PJ301MPort>(Vec(63,y_offset + 120), module, MentalSubMixer::CH1_PAN_INPUT));
+	addInput(createInput<InPort>(Vec(3,y_offset + 120), module, MentalSubMixer::CH1_INPUT));
+	addInput(createInput<CVPort>(Vec(33,y_offset + 120), module, MentalSubMixer::CH1_CV_INPUT));
+  addInput(createInput<CVPort>(Vec(63,y_offset + 120), module, MentalSubMixer::CH1_PAN_INPUT));
   
-	addInput(createInput<PJ301MPort>(Vec(3,y_offset + 180), module, MentalSubMixer::CH2_INPUT));
-	addInput(createInput<PJ301MPort>(Vec(33,y_offset + 180), module, MentalSubMixer::CH2_CV_INPUT));
-  addInput(createInput<PJ301MPort>(Vec(63,y_offset + 180), module, MentalSubMixer::CH2_PAN_INPUT));
+	addInput(createInput<InPort>(Vec(3,y_offset + 180), module, MentalSubMixer::CH2_INPUT));
+	addInput(createInput<CVPort>(Vec(33,y_offset + 180), module, MentalSubMixer::CH2_CV_INPUT));
+  addInput(createInput<CVPort>(Vec(63,y_offset + 180), module, MentalSubMixer::CH2_PAN_INPUT));
   
-	addInput(createInput<PJ301MPort>(Vec(3,y_offset + 240), module, MentalSubMixer::CH3_INPUT));
-	addInput(createInput<PJ301MPort>(Vec(33,y_offset + 240), module, MentalSubMixer::CH3_CV_INPUT));
-  addInput(createInput<PJ301MPort>(Vec(63,y_offset + 240), module, MentalSubMixer::CH3_PAN_INPUT));
+	addInput(createInput<InPort>(Vec(3,y_offset + 240), module, MentalSubMixer::CH3_INPUT));
+	addInput(createInput<CVPort>(Vec(33,y_offset + 240), module, MentalSubMixer::CH3_CV_INPUT));
+  addInput(createInput<CVPort>(Vec(63,y_offset + 240), module, MentalSubMixer::CH3_PAN_INPUT));
   
-  addInput(createInput<PJ301MPort>(Vec(3,y_offset + 300), module, MentalSubMixer::CH4_INPUT));
-	addInput(createInput<PJ301MPort>(Vec(33,y_offset + 300), module, MentalSubMixer::CH4_CV_INPUT));
-  addInput(createInput<PJ301MPort>(Vec(63,y_offset + 300), module, MentalSubMixer::CH4_PAN_INPUT));
+  addInput(createInput<InPort>(Vec(3,y_offset + 300), module, MentalSubMixer::CH4_INPUT));
+	addInput(createInput<CVPort>(Vec(33,y_offset + 300), module, MentalSubMixer::CH4_CV_INPUT));
+  addInput(createInput<CVPort>(Vec(63,y_offset + 300), module, MentalSubMixer::CH4_PAN_INPUT));
     
   
-	addOutput(createOutput<PJ301MPort>(Vec(93,y_offset + 120), module, MentalSubMixer::CH1_OUTPUT));
-	addOutput(createOutput<PJ301MPort>(Vec(93,y_offset + 180), module, MentalSubMixer::CH2_OUTPUT));
-	addOutput(createOutput<PJ301MPort>(Vec(93,y_offset + 240), module, MentalSubMixer::CH3_OUTPUT));
-  addOutput(createOutput<PJ301MPort>(Vec(93,y_offset + 300), module, MentalSubMixer::CH4_OUTPUT));
+	addOutput(createOutput<OutPort>(Vec(93,y_offset + 120), module, MentalSubMixer::CH1_OUTPUT));
+	addOutput(createOutput<OutPort>(Vec(93,y_offset + 180), module, MentalSubMixer::CH2_OUTPUT));
+	addOutput(createOutput<OutPort>(Vec(93,y_offset + 240), module, MentalSubMixer::CH3_OUTPUT));
+  addOutput(createOutput<OutPort>(Vec(93,y_offset + 300), module, MentalSubMixer::CH4_OUTPUT));
   
 }
