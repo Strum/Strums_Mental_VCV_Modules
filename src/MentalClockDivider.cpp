@@ -336,7 +336,7 @@ MentalClockDividerWidget::MentalClockDividerWidget() {
   addOutput(createOutput<OutPort>(Vec(2, 300), module, MentalClockDivider::OUT7));
   addOutput(createOutput<OutPort>(Vec(2, 325), module, MentalClockDivider::OUT12));
   
- //addChild(createLight<MediumLight<RedLight>>(Vec(42, 59), module, MyModule::BLINK_LIGHT));
+ //addChild(createLight<MediumLight<GreenLight>>(Vec(42, 59), module, MyModule::BLINK_LIGHT));
  
 	
 	addChild(createLight<MediumLight<GreenLight>>(Vec(33, 120), module, MentalClockDivider::LIGHTS));
