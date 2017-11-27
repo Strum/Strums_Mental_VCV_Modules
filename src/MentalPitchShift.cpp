@@ -89,19 +89,19 @@ MentalPitchShiftWidget::MentalPitchShiftWidget() {
   addParam(createParam<RoundSmallBlackKnob>(Vec(2, 140), module, MentalPitchShift::SEMITONE_SHIFT_1, -6.5, 6.5, 0.0));
   addParam(createParam<RoundSmallBlackKnob>(Vec(2, 200), module, MentalPitchShift::SEMITONE_SHIFT_2, -6.5, 6.5, 0.0));
 
-  addInput(createInput<PJ301MPort>(Vec(3, 50), module, MentalPitchShift::OCTAVE_SHIFT_1_INPUT));
-	addInput(createInput<PJ301MPort>(Vec(3, 110), module, MentalPitchShift::OCTAVE_SHIFT_2_INPUT));
-  addInput(createInput<PJ301MPort>(Vec(3, 170), module, MentalPitchShift::SEMITONE_SHIFT_1_INPUT));
-	addInput(createInput<PJ301MPort>(Vec(3, 230), module, MentalPitchShift::SEMITONE_SHIFT_2_INPUT));
+  addInput(createInput<InPort>(Vec(3, 50), module, MentalPitchShift::OCTAVE_SHIFT_1_INPUT));
+	addInput(createInput<InPort>(Vec(3, 110), module, MentalPitchShift::OCTAVE_SHIFT_2_INPUT));
+  addInput(createInput<InPort>(Vec(3, 170), module, MentalPitchShift::SEMITONE_SHIFT_1_INPUT));
+	addInput(createInput<InPort>(Vec(3, 230), module, MentalPitchShift::SEMITONE_SHIFT_2_INPUT));
   
-  addInput(createInput<PJ301MPort>(Vec(33, 20), module, MentalPitchShift::OCTAVE_SHIFT_1_CVINPUT));
-	addInput(createInput<PJ301MPort>(Vec(33, 80), module, MentalPitchShift::OCTAVE_SHIFT_2_CVINPUT));
-  addInput(createInput<PJ301MPort>(Vec(33, 140), module, MentalPitchShift::SEMITONE_SHIFT_1_CVINPUT));
-	addInput(createInput<PJ301MPort>(Vec(33, 200), module, MentalPitchShift::SEMITONE_SHIFT_2_CVINPUT));
+  addInput(createInput<InPort>(Vec(33, 20), module, MentalPitchShift::OCTAVE_SHIFT_1_CVINPUT));
+	addInput(createInput<InPort>(Vec(33, 80), module, MentalPitchShift::OCTAVE_SHIFT_2_CVINPUT));
+  addInput(createInput<InPort>(Vec(33, 140), module, MentalPitchShift::SEMITONE_SHIFT_1_CVINPUT));
+	addInput(createInput<InPort>(Vec(33, 200), module, MentalPitchShift::SEMITONE_SHIFT_2_CVINPUT));
 
-  addOutput(createOutput<PJ301MPort>(Vec(33, 50), module, MentalPitchShift::OCTAVE_SHIFT_1_OUTPUT));
-  addOutput(createOutput<PJ301MPort>(Vec(33, 110), module, MentalPitchShift::OCTAVE_SHIFT_2_OUTPUT));
-  addOutput(createOutput<PJ301MPort>(Vec(33, 170), module, MentalPitchShift::SEMITONE_SHIFT_1_OUTPUT));
-  addOutput(createOutput<PJ301MPort>(Vec(33, 230), module, MentalPitchShift::SEMITONE_SHIFT_2_OUTPUT));
+  addOutput(createOutput<OutPort>(Vec(33, 50), module, MentalPitchShift::OCTAVE_SHIFT_1_OUTPUT));
+  addOutput(createOutput<OutPort>(Vec(33, 110), module, MentalPitchShift::OCTAVE_SHIFT_2_OUTPUT));
+  addOutput(createOutput<OutPort>(Vec(33, 170), module, MentalPitchShift::SEMITONE_SHIFT_1_OUTPUT));
+  addOutput(createOutput<OutPort>(Vec(33, 230), module, MentalPitchShift::SEMITONE_SHIFT_2_OUTPUT));
 
 }

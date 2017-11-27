@@ -202,7 +202,7 @@ MentalKnobsWidget::MentalKnobsWidget() {
     addParam(createParam<LEDButton>(Vec(35, 50+group_offset*i), module, MentalKnobs::STEPSIZE_SWITCH + i, 0.0, 1.0, 0.0));
     addChild(createLight<MediumLight<GreenLight>>(Vec(40, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 6 + i));
     
-    addOutput(createOutput<PJ301MPort>(Vec(33, 75+group_offset*i), module, MentalKnobs::OUTPUT + i));     
+    addOutput(createOutput<OutPort>(Vec(33, 75+group_offset*i), module, MentalKnobs::OUTPUT + i));     
   }
   
   NumberDisplayWidget *display = new NumberDisplayWidget();
