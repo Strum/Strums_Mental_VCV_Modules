@@ -14,7 +14,7 @@
    viewBox="0 0 8.3556203 8.3556298"
    version="1.1"
    id="svg15246"
-   sodipodi:docname="RedPort.svg"
+   sodipodi:docname="InPort.svg"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
   <defs
      id="defs15240">
@@ -146,15 +146,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="44.8"
-     inkscape:cx="-4.1102511"
-     inkscape:cy="12.222481"
+     inkscape:zoom="13.724069"
+     inkscape:cx="0.82485522"
+     inkscape:cy="19.112777"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1033"
-     inkscape:window-x="-4"
+     inkscape:window-width="1600"
+     inkscape:window-height="853"
+     inkscape:window-x="1916"
      inkscape:window-y="-4"
      inkscape:window-maximized="1"
      units="px"
@@ -179,11 +179,19 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-88.611154,-119.19859)">
+    <rect
+       style="fill:#2700d1;fill-opacity:1;stroke:none;stroke-width:19.61753654;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect849"
+       width="8.3730946"
+       height="8.3647604"
+       x="88.611153"
+       y="119.1958"
+       ry="2.2643049" />
     <path
        inkscape:connector-curvature="0"
        id="path7255"
-       d="m 92.788964,127.31148 c -2.170245,0 -3.935073,-1.76481 -3.935073,-3.93508 0,-2.17023 1.764828,-3.93507 3.935073,-3.93507 2.170242,0 3.935073,1.76484 3.935073,3.93507 0,2.17027 -1.764831,3.93508 -3.935073,3.93508"
-       style="fill:#c0c0c0;fill-opacity:1;fill-rule:nonzero;stroke:#b22222;stroke-width:0.48547462;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+       d="m 92.781114,127.31142 c -2.16588,0 -3.927158,-1.76931 -3.927158,-3.94512 0,-2.17576 1.761278,-3.94509 3.927158,-3.94509 2.165876,0 3.927156,1.76933 3.927156,3.94509 0,2.17581 -1.76128,3.94512 -3.927156,3.94512"
+       style="fill:#c0c0c0;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.48560375;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <path
        inkscape:connector-curvature="0"
        id="path7261"

@@ -146,15 +146,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.919596"
-     inkscape:cx="19.431022"
-     inkscape:cy="-13.59856"
+     inkscape:zoom="9.7043823"
+     inkscape:cx="8.0881316"
+     inkscape:cy="9.3427373"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1033"
-     inkscape:window-x="-4"
+     inkscape:window-width="1600"
+     inkscape:window-height="853"
+     inkscape:window-x="1916"
      inkscape:window-y="-4"
      inkscape:window-maximized="1"
      units="px"
@@ -170,7 +170,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -179,11 +179,19 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-88.611154,-119.19859)">
+    <rect
+       style="fill:#006700;fill-opacity:1;stroke:none;stroke-width:19.60248566;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect849"
+       width="8.3984737"
+       height="8.3266926"
+       x="88.611153"
+       y="119.19163"
+       ry="2.2539999" />
     <path
        inkscape:connector-curvature="0"
        id="path7255"
-       d="m 92.788964,127.31148 c -2.170245,0 -3.935073,-1.76481 -3.935073,-3.93508 0,-2.17023 1.764828,-3.93507 3.935073,-3.93507 2.170242,0 3.935073,1.76484 3.935073,3.93507 0,2.17027 -1.764831,3.93508 -3.935073,3.93508"
-       style="fill:#c0c0c0;fill-opacity:1;fill-rule:nonzero;stroke:#ffd700;stroke-width:0.48547462;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+       d="m 92.781114,127.31142 c -2.16588,0 -3.927158,-1.76931 -3.927158,-3.94512 0,-2.17576 1.761278,-3.94509 3.927158,-3.94509 2.165876,0 3.927156,1.76933 3.927156,3.94509 0,2.17581 -1.76128,3.94512 -3.927156,3.94512"
+       style="fill:#c0c0c0;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.386;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <path
        inkscape:connector-curvature="0"
        id="path7261"

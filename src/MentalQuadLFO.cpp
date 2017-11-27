@@ -247,7 +247,7 @@ MentalQuadLFOWidget::MentalQuadLFOWidget()
   }
   for (int i = 0 ; i < 5 ; i++)
   {
-    addChild(createLight<MediumLight<RedLight>>(mm2px(Vec(2.905 + i * 8 , 50.035)), module, MentalQuadLFO::MODE_LIGHTS + i));
+    addChild(createLight<MediumLight<GreenLight>>(mm2px(Vec(2.905 + i * 8 , 50.035)), module, MentalQuadLFO::MODE_LIGHTS + i));
   }
   addParam(createParam<LEDButton>(Vec(50, 160), module, MentalQuadLFO::MODE_BUTTON_PARAM, 0.0, 1.0, 0.0));
   
