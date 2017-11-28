@@ -121,13 +121,11 @@ MentalGatesWidget::MentalGatesWidget() {
   for (int i = 0 ; i < 4 ; i++)
   {
 	  addInput(createInput<InPort>(Vec(3, group_spacing * i +  60), module, MentalGates::INPUT + i));
-    addInput(createInput<CVPort>(Vec(3, group_spacing * i +  28), module, MentalGates::GATE_INPUT + i));
+    addInput(createInput<GateInPort>(Vec(3, group_spacing * i +  28), module, MentalGates::GATE_INPUT + i));
     addOutput(createOutput<OutPort>(Vec(32, group_spacing * i +  60), module, MentalGates::OUTPUT + i));
-
 
     addChild(createLight<MediumLight<GreenLight>>(Vec(26, group_spacing * i + 17), module, MentalGates::ON_LEDS + i));
     addParam(createParam<LEDButton>(Vec(35, group_spacing * i +  31), module, MentalGates::BUTTON_PARAM + i, 0.0, 1.0, 0.0));
-	  addChild(createLight<MediumLight<GreenLight>>(Vec(35+5, group_spacing * i +  31+5), module, MentalGates::BUTTON_LIGHTS + i));
-  
+	  addChild(createLight<MediumLight<GreenLight>>(Vec(35+5, group_spacing * i +  31+5), module, MentalGates::BUTTON_LIGHTS + i));  
   }
 }

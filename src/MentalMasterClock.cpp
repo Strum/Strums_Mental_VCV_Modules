@@ -267,10 +267,10 @@ MentalMasterClockWidget::MentalMasterClockWidget() {
     addParam(createParam<RoundSmallBlackKnob>(Vec(2, 50), module, MentalMasterClock::TIMESIGTOP_PARAM,2.0, 15.0, 4.0));
     addParam(createParam<RoundSmallBlackKnob>(Vec(2, 80), module, MentalMasterClock::TIMESIGBOTTOM_PARAM,0.0, 3.0, 1.0));
      
-    addOutput(createOutput<OutPort>(Vec(90, 110), module, MentalMasterClock::BEAT_OUT)); 
-    addOutput(createOutput<OutPort>(Vec(90, 140), module, MentalMasterClock::BAR_OUT)); 
-    addOutput(createOutput<OutPort>(Vec(90, 170), module, MentalMasterClock::EIGHTHS_OUT)); 
-    addOutput(createOutput<OutPort>(Vec(90, 200), module, MentalMasterClock::SIXTEENTHS_OUT)); 
+    addOutput(createOutput<GateOutPort>(Vec(90, 110), module, MentalMasterClock::BEAT_OUT)); 
+    addOutput(createOutput<GateOutPort>(Vec(90, 140), module, MentalMasterClock::BAR_OUT)); 
+    addOutput(createOutput<GateOutPort>(Vec(90, 170), module, MentalMasterClock::EIGHTHS_OUT)); 
+    addOutput(createOutput<GateOutPort>(Vec(90, 200), module, MentalMasterClock::SIXTEENTHS_OUT)); 
     
    /* addParam(createParam<LEDButton>(Vec(5, 50+group_offset*i), module, MentalMasterClock::STEP_SWITCH + i, 0.0, 1.0, 0.0));
     addChild(createLight<MediumLight<GreenLight>>(Vec(10, 55+group_offset*i), &module->button_leds[0][i]));
