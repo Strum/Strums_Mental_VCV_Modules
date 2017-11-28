@@ -101,13 +101,13 @@ MentalBinaryDecoderWidget::MentalBinaryDecoderWidget() {
   int spacing = 25; 
   int top_space = 15;
   
-  addInput(createInput<InPort>(Vec(3, top_space), module, MentalBinaryDecoder::INPUT_1));
-  addInput(createInput<InPort>(Vec(3, top_space + spacing), module, MentalBinaryDecoder::INPUT_2));
-  addInput(createInput<InPort>(Vec(3, top_space + spacing * 2), module, MentalBinaryDecoder::INPUT_4));
+  addInput(createInput<GateInPort>(Vec(3, top_space), module, MentalBinaryDecoder::INPUT_1));
+  addInput(createInput<GateInPort>(Vec(3, top_space + spacing), module, MentalBinaryDecoder::INPUT_2));
+  addInput(createInput<GateInPort>(Vec(3, top_space + spacing * 2), module, MentalBinaryDecoder::INPUT_4));
   
   for (int i = 0; i < 8 ; i++)
   {  
-   addOutput(createOutput<OutPort>(Vec(30, top_space + spacing * i), module, MentalBinaryDecoder::OUTPUT + i));   	 
+   addOutput(createOutput<GateOutPort>(Vec(30, top_space + spacing * i), module, MentalBinaryDecoder::OUTPUT + i));   	 
    addChild(createLight<MediumLight<GreenLight>>(Vec(60, top_space +  spacing * i + 8), module, MentalBinaryDecoder::OUTPUT_LEDS + i));
   }
   

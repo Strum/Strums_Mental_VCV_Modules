@@ -71,8 +71,8 @@ MentalFoldWidget::MentalFoldWidget() {
   addParam(createParam<RoundSmallBlackKnob>(Vec(2, 20), module, MentalFold::THRESH_PARAM, 0.0, 1.0, 1.0));
   addParam(createParam<RoundSmallBlackKnob>(Vec(2, 80), module, MentalFold::GAIN_PARAM, 0.0, 1.0, 0.5));
 	
-  addInput(createInput<CVPort>(Vec(3, 50), module, MentalFold::THRESH_CV_INPUT));
-  addInput(createInput<CVPort>(Vec(3, 110), module, MentalFold::GAIN_CV_INPUT));
+  addInput(createInput<CVInPort>(Vec(3, 50), module, MentalFold::THRESH_CV_INPUT));
+  addInput(createInput<CVInPort>(Vec(3, 110), module, MentalFold::GAIN_CV_INPUT));
 
   addInput(createInput<InPort>(Vec(3, 140), module, MentalFold::INPUT_1));
   addOutput(createOutput<OutPort>(Vec(33, 140), module, MentalFold::OUTPUT_1));

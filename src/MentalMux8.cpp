@@ -102,9 +102,9 @@ MentalMux8Widget::MentalMux8Widget() {
   int spacing = 25; 
   int top_space = 15;
   
-  addInput(createInput<CVPort>(Vec(3, top_space), module, MentalMux8::INPUT_1));
-  addInput(createInput<CVPort>(Vec(3, top_space + spacing), module, MentalMux8::INPUT_2));
-  addInput(createInput<CVPort>(Vec(3, top_space + spacing * 2), module, MentalMux8::INPUT_4));
+  addInput(createInput<GateInPort>(Vec(3, top_space), module, MentalMux8::INPUT_1));
+  addInput(createInput<GateInPort>(Vec(3, top_space + spacing), module, MentalMux8::INPUT_2));
+  addInput(createInput<GateInPort>(Vec(3, top_space + spacing * 2), module, MentalMux8::INPUT_4));
   
   for (int i = 0; i < 8 ; i++)
   {  
@@ -112,8 +112,6 @@ MentalMux8Widget::MentalMux8Widget() {
    addChild(createLight<MediumLight<GreenLight>>(Vec(33, top_space +  spacing * i + 8 + 100), module, MentalMux8::INPUT_LEDS + i));
   }
   
-  addOutput(createOutput<OutPort>(Vec(30, top_space + spacing), module, MentalMux8::OUTPUT));
-  
-  
+  addOutput(createOutput<OutPort>(Vec(30, top_space + spacing), module, MentalMux8::OUTPUT));  
   
 }

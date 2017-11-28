@@ -235,8 +235,8 @@ MentalQuadLFOWidget::MentalQuadLFOWidget()
   {
 	  addParam(createParam<BefacoSlidePot>(mm2px(Vec(2.792 + i * x_offset, 3.937)), module,MentalQuadLFO::FREQ_PARAM + i, 0.0, 1.0, 0.0));
 
-	  addInput(createInput<InPort>(mm2px(Vec(1.003 + i * x_offset, 61.915)), module, MentalQuadLFO::FREQ_INPUT + i));
-	  addInput(createInput<InPort>(mm2px(Vec(1.003 + i * x_offset, 72.858)), module, MentalQuadLFO::RESET_INPUT + i));
+	  addInput(createInput<CVInPort>(mm2px(Vec(1.003 + i * x_offset, 61.915)), module, MentalQuadLFO::FREQ_INPUT + i));
+	  addInput(createInput<GateInPort>(mm2px(Vec(1.003 + i * x_offset, 72.858)), module, MentalQuadLFO::RESET_INPUT + i));
 
 	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 83.759)), module, MentalQuadLFO::SIN_OUTPUT + i));
 	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 94.173)), module, MentalQuadLFO::TRI_OUTPUT + i));
