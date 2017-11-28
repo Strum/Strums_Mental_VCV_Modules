@@ -130,7 +130,7 @@ MentalABSwitchesWidget::MentalABSwitchesWidget() {
   for (int i = 0 ; i < 4 ; i++)
   {
 	  addInput(createInput<InPort>(Vec(3, group_spacing * i + 25), module, MentalABSwitches::INPUT + i));
-    addInput(createInput<CVPort>(Vec(3, group_spacing * i + 75), module, MentalABSwitches::SEL_INPUT + i));
+    addInput(createInput<GateInPort>(Vec(3, group_spacing * i + 75), module, MentalABSwitches::SEL_INPUT + i));
   
     addOutput(createOutput<OutPort>(Vec(33, group_spacing * i + 25), module, MentalABSwitches::OUTPUT_A + i));
     addOutput(createOutput<OutPort>(Vec(33, group_spacing * i + 50), module, MentalABSwitches::OUTPUT_B + i));

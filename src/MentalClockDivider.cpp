@@ -321,20 +321,20 @@ MentalClockDividerWidget::MentalClockDividerWidget() {
 		addChild(panel);
 	}
 
-	addInput(createInput<CVPort>(Vec(3, 20), module, MentalClockDivider::CLOCK_INPUT));
-	addInput(createInput<CVPort>(Vec(3, 55), module, MentalClockDivider::RESET_INPUT));
+	addInput(createInput<GateInPort>(Vec(3, 20), module, MentalClockDivider::CLOCK_INPUT));
+	addInput(createInput<GateInPort>(Vec(3, 55), module, MentalClockDivider::RESET_INPUT));
 	addParam(createParam<LEDButton>(Vec(5, 80), module, MentalClockDivider::RESET_PARAM, 0.0, 1.0, 0.0));
 	 
-	addOutput(createOutput<OutPort>(Vec(2, 120), module, MentalClockDivider::OUT2));  
-	addOutput(createOutput<OutPort>(Vec(2, 145), module, MentalClockDivider::OUT4));  
-	addOutput(createOutput<OutPort>(Vec(2, 170), module, MentalClockDivider::OUT8));  
-	addOutput(createOutput<OutPort>(Vec(2, 195), module, MentalClockDivider::OUT16));
-	addOutput(createOutput<OutPort>(Vec(2, 220), module, MentalClockDivider::OUT32));
+	addOutput(createOutput<GateOutPort>(Vec(2, 120), module, MentalClockDivider::OUT2));  
+	addOutput(createOutput<GateOutPort>(Vec(2, 145), module, MentalClockDivider::OUT4));  
+	addOutput(createOutput<GateOutPort>(Vec(2, 170), module, MentalClockDivider::OUT8));  
+	addOutput(createOutput<GateOutPort>(Vec(2, 195), module, MentalClockDivider::OUT16));
+	addOutput(createOutput<GateOutPort>(Vec(2, 220), module, MentalClockDivider::OUT32));
   
-  addOutput(createOutput<OutPort>(Vec(2, 250), module, MentalClockDivider::OUT3));
-  addOutput(createOutput<OutPort>(Vec(2, 275), module, MentalClockDivider::OUT5));
-  addOutput(createOutput<OutPort>(Vec(2, 300), module, MentalClockDivider::OUT7));
-  addOutput(createOutput<OutPort>(Vec(2, 325), module, MentalClockDivider::OUT12));
+  addOutput(createOutput<GateOutPort>(Vec(2, 250), module, MentalClockDivider::OUT3));
+  addOutput(createOutput<GateOutPort>(Vec(2, 275), module, MentalClockDivider::OUT5));
+  addOutput(createOutput<GateOutPort>(Vec(2, 300), module, MentalClockDivider::OUT7));
+  addOutput(createOutput<GateOutPort>(Vec(2, 325), module, MentalClockDivider::OUT12));
   
  //addChild(createLight<MediumLight<GreenLight>>(Vec(42, 59), module, MyModule::BLINK_LIGHT));
  

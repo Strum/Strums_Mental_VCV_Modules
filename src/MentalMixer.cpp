@@ -199,17 +199,17 @@ MentalMixerWidget::MentalMixerWidget() {
   {
     addInput(createInput<InPort>(Vec(column_1+column_spacing*i, top_row), module, MentalMixer::CH_INPUT + i));
 	  addParam(createParam<Trimpot>(Vec(column_1+column_spacing*i,top_row + row_spacing), module, MentalMixer::VOL_PARAM + i, 0.0, 1.0, 0.0));
-    addInput(createInput<CVPort>(Vec(column_1+column_spacing*i,top_row + row_spacing * 2), module, MentalMixer::CH_VOL_INPUT + i));
+    addInput(createInput<CVInPort>(Vec(column_1+column_spacing*i,top_row + row_spacing * 2), module, MentalMixer::CH_VOL_INPUT + i));
     
     addParam(createParam<Trimpot>(Vec(column_1+column_spacing*i, top_row + row_spacing * 3), module, MentalMixer::PAN_PARAM + i, 0.0, 1.0, 0.5));
-    addInput(createInput<CVPort>(Vec(column_1+column_spacing*i, top_row + row_spacing * 4), module, MentalMixer::CH_PAN_INPUT + i));
+    addInput(createInput<CVInPort>(Vec(column_1+column_spacing*i, top_row + row_spacing * 4), module, MentalMixer::CH_PAN_INPUT + i));
     
     addParam(createParam<Trimpot>(Vec(column_1+column_spacing*i, top_row + row_spacing * 5), module, MentalMixer::AUX_1_PARAM + i, 0.0, 1.0, 0.0));
     addParam(createParam<Trimpot>(Vec(column_1+column_spacing*i, top_row + row_spacing * 6), module, MentalMixer::AUX_2_PARAM + i, 0.0, 1.0, 0.0));
 
     addParam(createParam<LEDButton>(Vec(column_1+column_spacing*i,top_row + row_spacing * 7), module, MentalMixer::MUTE_PARAM + i, 0.0, 1.0, 0.0));
 	  addChild(createLight<MediumLight<GreenLight>>(Vec(column_1+column_spacing*i + 5, top_row + row_spacing * 7 + 5), module, MentalMixer::MUTE_LIGHTS + i));
-    addInput(createInput<CVPort>(Vec(column_1+column_spacing*i, top_row + row_spacing * 8), module, MentalMixer::CH_MUTE_INPUT + i));
+    addInput(createInput<GateInPort>(Vec(column_1+column_spacing*i, top_row + row_spacing * 8), module, MentalMixer::CH_MUTE_INPUT + i));
 
 	}
 

@@ -125,6 +125,7 @@ struct MentalRadioButtonsWidget : ModuleWidget {
 
 /////////////////////////////////////////////
 // ports
+
 struct OutPort : SVGPort {
 	OutPort() {
 		background->svg = SVG::load(assetPlugin(plugin, "res/components/OutPort.svg"));
@@ -132,6 +133,7 @@ struct OutPort : SVGPort {
 		box.size = background->box.size;
 	}
 };
+
 struct InPort : SVGPort {
 	InPort() {
 		background->svg = SVG::load(assetPlugin(plugin, "res/components/InPort.svg"));
@@ -139,9 +141,34 @@ struct InPort : SVGPort {
 		box.size = background->box.size;
 	}
 };
-struct CVPort : SVGPort {
-	CVPort() {
-		background->svg = SVG::load(assetPlugin(plugin, "res/components/CVPort.svg"));
+
+struct CVInPort : SVGPort {
+	CVInPort() {
+		background->svg = SVG::load(assetPlugin(plugin, "res/components/CVInPort.svg"));
+		background->wrap();
+		box.size = background->box.size;
+	}
+};
+
+struct CVOutPort : SVGPort {
+	CVOutPort() {
+		background->svg = SVG::load(assetPlugin(plugin, "res/components/CVOutPort.svg"));
+		background->wrap();
+		box.size = background->box.size;
+	}
+};
+
+struct GateInPort : SVGPort {
+	GateInPort() {
+		background->svg = SVG::load(assetPlugin(plugin, "res/components/GateInPort.svg"));
+		background->wrap();
+		box.size = background->box.size;
+	}
+};
+
+struct GateOutPort : SVGPort {
+	GateOutPort() {
+		background->svg = SVG::load(assetPlugin(plugin, "res/components/GateOutPort.svg"));
 		background->wrap();
 		box.size = background->box.size;
 	}

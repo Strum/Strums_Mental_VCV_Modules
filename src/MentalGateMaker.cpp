@@ -214,7 +214,7 @@ MentalGateMakerWidget::MentalGateMakerWidget() {
     DELAY_CV,*/
 	
   addParam(createParam<RoundSmallBlackKnob>(Vec(2, 20), module, MentalGateMaker::COUNT_NUM_PARAM, 0.0, 32.0, 0.0));
-  addInput(createInput<CVPort>(Vec(33, 20), module, MentalGateMaker::COUNT_CV));
+  addInput(createInput<CVInPort>(Vec(33, 20), module, MentalGateMaker::COUNT_CV));
   NumberDisplayWidget *count_display = new NumberDisplayWidget();
 	count_display->box.pos = Vec(63,20);
 	count_display->box.size = Vec(50, 20);
@@ -222,7 +222,7 @@ MentalGateMakerWidget::MentalGateMakerWidget() {
 	addChild(count_display);   
   
   addParam(createParam<RoundSmallBlackKnob>(Vec(2, 50), module, MentalGateMaker::DELAY_PARAM, 0.0, 32.0, 0.0)); 
-  addInput(createInput<CVPort>(Vec(33, 50), module, MentalGateMaker::DELAY_CV));
+  addInput(createInput<CVInPort>(Vec(33, 50), module, MentalGateMaker::DELAY_CV));
   NumberDisplayWidget *delay_display = new NumberDisplayWidget();
 	delay_display->box.pos = Vec(63,50);
 	delay_display->box.size = Vec(50, 20);
@@ -230,7 +230,7 @@ MentalGateMakerWidget::MentalGateMakerWidget() {
 	addChild(delay_display);
   
   addParam(createParam<RoundSmallBlackKnob>(Vec(2, 80), module, MentalGateMaker::TAIL_PARAM, 0.0, 32.0, 0.0)); 
-  addInput(createInput<CVPort>(Vec(33, 80), module, MentalGateMaker::TAIL_CV));
+  addInput(createInput<CVInPort>(Vec(33, 80), module, MentalGateMaker::TAIL_CV));
   NumberDisplayWidget *tail_display = new NumberDisplayWidget();
 	tail_display->box.pos = Vec(63,80);
 	tail_display->box.size = Vec(50, 20);
@@ -238,20 +238,19 @@ MentalGateMakerWidget::MentalGateMakerWidget() {
 	addChild(tail_display);      
   
   int offset = 30;
-  addInput(createInput<CVPort>(Vec(3, 80 + offset), module, MentalGateMaker::CLK_IN));
-	addInput(createInput<CVPort>(Vec(3, 110 + offset), module, MentalGateMaker::RESET_IN));
+  
+  addInput(createInput<GateInPort>(Vec(3, 80 + offset), module, MentalGateMaker::CLK_IN));
+	addInput(createInput<GateInPort>(Vec(3, 110 + offset), module, MentalGateMaker::RESET_IN));
   addParam(createParam<LEDButton>(Vec(35, 110 + offset), module, MentalGateMaker::RST_BUTTON, 0.0, 1.0, 0.0));
-  addInput(createInput<CVPort>(Vec(3, 140 + offset), module, MentalGateMaker::TRIGGER_IN));
-  addParam(createParam<LEDButton>(Vec(35, 140 + offset), module, MentalGateMaker::TRIG_BUTTON, 0.0, 1.0, 0.0));
-  
-  
+  addInput(createInput<GateInPort>(Vec(3, 140 + offset), module, MentalGateMaker::TRIGGER_IN));
+  addParam(createParam<LEDButton>(Vec(35, 140 + offset), module, MentalGateMaker::TRIG_BUTTON, 0.0, 1.0, 0.0));  
   
   addParam(createParam<LEDButton>(Vec(35, 170 + offset), module, MentalGateMaker::CYCLE_BUTTON, 0.0, 1.0, 0.0));
   addChild(createLight<MediumLight<GreenLight>>(Vec(35+5, 170 + offset + 5), module, MentalGateMaker::CYCLE_BUTTON_LED));
-  addInput(createInput<CVPort>(Vec(3, 170 + offset), module, MentalGateMaker::CYCLE_IN));  
+  addInput(createInput<GateInPort>(Vec(3, 170 + offset), module, MentalGateMaker::CYCLE_IN));  
   
-  addOutput(createOutput<OutPort>(Vec(93, 110), module, MentalGateMaker::OUTPUT)); 
-  addOutput(createOutput<OutPort>(Vec(93, 140), module, MentalGateMaker::TRIG_OUT));
-  addOutput(createOutput<OutPort>(Vec(93, 170), module, MentalGateMaker::FINISH_OUT)); 
+  addOutput(createOutput<GateOutPort>(Vec(93, 110), module, MentalGateMaker::OUTPUT)); 
+  addOutput(createOutput<GateOutPort>(Vec(93, 140), module, MentalGateMaker::TRIG_OUT));
+  addOutput(createOutput<GateOutPort>(Vec(93, 170), module, MentalGateMaker::FINISH_OUT)); 
  
 }
