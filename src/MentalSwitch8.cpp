@@ -102,9 +102,9 @@ MentalSwitch8Widget::MentalSwitch8Widget() {
   int spacing = 25; 
   int top_space = 15;
   
-  addInput(createInput<CVInPort>(Vec(3, top_space), module, MentalSwitch8::INPUT_1));
-  addInput(createInput<CVInPort>(Vec(3, top_space + spacing), module, MentalSwitch8::INPUT_2));
-  addInput(createInput<CVInPort>(Vec(3, top_space + spacing * 2), module, MentalSwitch8::INPUT_4));
+  addInput(createInput<GateInPort>(Vec(3, top_space), module, MentalSwitch8::INPUT_1));
+  addInput(createInput<GateInPort>(Vec(3, top_space + spacing), module, MentalSwitch8::INPUT_2));
+  addInput(createInput<GateInPort>(Vec(3, top_space + spacing * 2), module, MentalSwitch8::INPUT_4));
   
   addInput(createInput<InPort>(Vec(3, top_space + spacing * 3 + 15), module, MentalSwitch8::SIG_INPUT));
   
