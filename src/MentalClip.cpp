@@ -63,7 +63,7 @@ void MentalClip::step() {
     }
   }
 
-  if (abs(signal_in2) > threshold2)
+  if (std::abs(signal_in2) > threshold2)
   {
     if (signal_in2 > 0)
     {
