@@ -69,7 +69,7 @@ void MentalMuxes::step()
     outputs[OUTPUT_A].value = signal_in_a2;
     //level_led_a2 = abs((signal_in_a2 / 3));
     //level_led_a1 = 0.0;
-    lights[LEVEL_LED_A2].value = abs((signal_in_a2 / 3));
+    lights[LEVEL_LED_A2].value = std::abs((signal_in_a2 / 3));
     lights[LEVEL_LED_A1].value = 0.0;
   }
   else
@@ -77,7 +77,7 @@ void MentalMuxes::step()
     outputs[OUTPUT_A].value = signal_in_a1;
     //level_led_a1 = abs((signal_in_a1 / 3));
     //level_led_a2 = 0.0;
-    lights[LEVEL_LED_A1].value = abs((signal_in_a1 / 3));
+    lights[LEVEL_LED_A1].value = std::abs((signal_in_a1 / 3));
     lights[LEVEL_LED_A2].value = 0.0;
   }
   float signal_in_b1 = inputs[INPUT_1B].value;
@@ -89,7 +89,7 @@ void MentalMuxes::step()
     outputs[OUTPUT_B].value = signal_in_b2;
     //level_led_b2 = abs((signal_in_b2 / 3));
     //level_led_b1 = 0.0;
-    lights[LEVEL_LED_B2].value = abs((signal_in_b2 / 3));
+    lights[LEVEL_LED_B2].value = std::abs((signal_in_b2 / 3));
     lights[LEVEL_LED_B1].value = 0.0;
   }
   else
@@ -97,7 +97,7 @@ void MentalMuxes::step()
     outputs[OUTPUT_B].value = signal_in_b1;
     //level_led_b1 = abs((signal_in_b1 / 3));
     //level_led_b2 = 0.0;
-    lights[LEVEL_LED_B1].value = abs((signal_in_b1 / 3));
+    lights[LEVEL_LED_B1].value = std::abs((signal_in_b1 / 3));
     lights[LEVEL_LED_B2].value = 0.0;
   }
   
@@ -106,7 +106,7 @@ void MentalMuxes::step()
   float signal_in_c3 = inputs[INPUT_3C].value;
   float signal_in_c4 = inputs[INPUT_4C].value;
   float select_c = inputs[SELECT_C].value;
-  int selector = round(abs(select_c));
+  int selector = round(std::abs(select_c));
   if (selector > 3) selector = 3;
     
   if (selector == 0 )
@@ -116,7 +116,7 @@ void MentalMuxes::step()
     //level_led_c2 = 0.0;
     //level_led_c3 = 0.0;
     //level_led_c4 = 0.0; 
-    lights[LEVEL_LED_C1].value = abs((signal_in_c1 / 3));
+    lights[LEVEL_LED_C1].value = std::abs((signal_in_c1 / 3));
     lights[LEVEL_LED_C2].value = 0.0;
     lights[LEVEL_LED_C3].value = 0.0;
     lights[LEVEL_LED_C4].value = 0.0;
@@ -129,7 +129,7 @@ void MentalMuxes::step()
     //level_led_c1 = 0.0;
     //level_led_c3 = 0.0;
     //level_led_c4 = 0.0;
-    lights[LEVEL_LED_C2].value = abs((signal_in_c2 / 3));
+    lights[LEVEL_LED_C2].value = std::abs((signal_in_c2 / 3));
     lights[LEVEL_LED_C1].value = 0.0;
     lights[LEVEL_LED_C3].value = 0.0;
     lights[LEVEL_LED_C4].value = 0.0;
@@ -141,7 +141,7 @@ void MentalMuxes::step()
     //level_led_c1 = 0.0;
     //level_led_c2 = 0.0;
     //level_led_c4 = 0.0;
-    lights[LEVEL_LED_C3].value = abs((signal_in_c3 / 3));
+    lights[LEVEL_LED_C3].value = std::abs((signal_in_c3 / 3));
     lights[LEVEL_LED_C2].value = 0.0;
     lights[LEVEL_LED_C2].value = 0.0;
     lights[LEVEL_LED_C4].value = 0.0;    
@@ -153,7 +153,7 @@ void MentalMuxes::step()
     //level_led_c1 = 0.0;
     //level_led_c2 = 0.0;
     //level_led_c3 = 0.0;
-    lights[LEVEL_LED_C4].value = abs((signal_in_c4 / 3));
+    lights[LEVEL_LED_C4].value = std::abs((signal_in_c4 / 3));
     lights[LEVEL_LED_C1].value = 0.0;
     lights[LEVEL_LED_C2].value = 0.0;
     lights[LEVEL_LED_C3].value = 0.0;

@@ -39,7 +39,7 @@ void MentalFold::step() {
   float gain = params[GAIN_PARAM].value * 5 + inputs[GAIN_CV_INPUT].value / 2;
 
   float modified2 = signal_in_1;
-  if (abs(signal_in_1) > threshold_fold )
+  if (std::abs(signal_in_1) > threshold_fold )
   {
     if (signal_in_1 > 0)
     {
