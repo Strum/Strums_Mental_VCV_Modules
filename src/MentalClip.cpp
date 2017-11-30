@@ -52,7 +52,7 @@ void MentalClip::step() {
   float clipped1 = signal_in1;
   float clipped2 = signal_in2;
 
-  if (abs(signal_in1) > threshold1)
+  if (std::abs(signal_in1) > threshold1)
   {
     if (signal_in1 > 0)
     {
