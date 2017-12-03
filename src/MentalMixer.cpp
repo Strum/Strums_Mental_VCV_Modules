@@ -25,7 +25,8 @@ struct MentalMixer : Module {
 		NUM_PARAMS = MUTE_PARAM + 12
 	};
 	enum InputIds {
-		CH_INPUT,
+    MIX_CV_INPUT,
+    CH_INPUT,
 		CH_VOL_INPUT = CH_INPUT + 12,
     CH_PAN_INPUT = CH_VOL_INPUT + 12,
     CH_MUTE_INPUT = CH_PAN_INPUT + 12,		
@@ -149,8 +150,8 @@ void MentalMixer::step() {
   float return_2_l = inputs[RETURN_2_L_INPUT].value * params[AUX_RETURN_2_PARAM].value;
   float return_2_r = inputs[RETURN_2_R_INPUT].value * params[AUX_RETURN_2_PARAM].value;
 
-	float mix_l = (left_sum + return_1_l + return_2_l) * params[MIX_PARAM].value;
-  float mix_r = (right_sum + return_1_r + return_2_r) * params[MIX_PARAM].value;
+	float mix_l = (left_sum + return_1_l + return_2_l) * params[MIX_PARAM].value * clampf(inputs[MIX_CV_INPUT].normalize(10.0) / 10.0, 0.0, 1.0);
+  float mix_r = (right_sum + return_1_r + return_2_r) * params[MIX_PARAM].value * clampf(inputs[MIX_CV_INPUT].normalize(10.0) / 10.0, 0.0, 1.0);
 
   float send_1_mix = (send_1_sum) * params[AUX_SEND_1_PARAM].value;
   float send_2_mix = (send_2_sum) * params[AUX_SEND_2_PARAM].value;
@@ -186,7 +187,8 @@ MentalMixerWidget::MentalMixerWidget() {
 
 
   // master volume
-  addParam(createParam<SynthTechAlco>(Vec(port_col + column_spacing * 9, 30), module, MentalMixer::MIX_PARAM, 0.0, 1.0, 0.5));
+  addInput(createInput<CVInPort>(Vec(port_col + column_spacing * 8, 44), module, MentalMixer::MIX_CV_INPUT));
+  addParam(createParam<SynthTechAlco>(Vec(port_col + column_spacing * 9, 32), module, MentalMixer::MIX_PARAM, 0.0, 1.0, 0.5));
   addOutput(createOutput<OutPort>(Vec(port_col + column_spacing * 11, 30), module, MentalMixer::MIX_OUTPUT_L));
   addOutput(createOutput<OutPort>(Vec(port_col + column_spacing * 11, 58), module, MentalMixer::MIX_OUTPUT_R));
 
@@ -194,13 +196,13 @@ MentalMixerWidget::MentalMixerWidget() {
   addOutput(createOutput<OutPort>(Vec(port_col, 30), module, MentalMixer::SEND_1_OUTPUT));
   addParam(createParam<Trimpot>(Vec(pots_col, 58), module, MentalMixer::AUX_SEND_1_PARAM, 0.0, 1.0, 0.0));
   
-  addOutput(createOutput<OutPort>(Vec(port_col + column_spacing * 2, 30), module, MentalMixer::SEND_2_OUTPUT));
-  addParam(createParam<Trimpot>(Vec(pots_col + column_spacing * 2, 58), module, MentalMixer::AUX_SEND_2_PARAM, 0.0, 1.0, 0.0));
+  addOutput(createOutput<OutPort>(Vec(port_col + column_spacing * 4, 30), module, MentalMixer::SEND_2_OUTPUT));
+  addParam(createParam<Trimpot>(Vec(pots_col + column_spacing * 4, 58), module, MentalMixer::AUX_SEND_2_PARAM, 0.0, 1.0, 0.0));
   
   // returns
-  addInput(createInput<InPort>(Vec(port_col + column_spacing * 4, 30), module, MentalMixer::RETURN_1_L_INPUT));
-  addInput(createInput<InPort>(Vec(port_col + column_spacing * 4, 58), module, MentalMixer::RETURN_1_R_INPUT));
-  addParam(createParam<Trimpot>(Vec(pots_col + column_spacing * 4, 86), module, MentalMixer::AUX_RETURN_1_PARAM, 0.0, 1.0, 0.0));
+  addInput(createInput<InPort>(Vec(port_col + column_spacing * 2, 30), module, MentalMixer::RETURN_1_L_INPUT));
+  addInput(createInput<InPort>(Vec(port_col + column_spacing * 2, 58), module, MentalMixer::RETURN_1_R_INPUT));
+  addParam(createParam<Trimpot>(Vec(pots_col + column_spacing * 2, 86), module, MentalMixer::AUX_RETURN_1_PARAM, 0.0, 1.0, 0.0));
 
   addInput(createInput<InPort>(Vec(port_col + column_spacing * 6, 30), module, MentalMixer::RETURN_2_L_INPUT));
   addInput(createInput<InPort>(Vec(port_col + column_spacing * 6, 58), module, MentalMixer::RETURN_2_R_INPUT));
