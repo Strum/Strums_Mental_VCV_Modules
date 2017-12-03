@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////
 //
-//   Wave Folder VCV Module
+//   Wave Clipper VCV Module
 //
 //   Strum 2017
 //
@@ -30,54 +30,35 @@ struct MentalClip : Module {
   void step() override;
 };
 
-/*
-MentalClip::MentalClip() {
-  params.resize(NUM_PARAMS);
-  inputs.resize(NUM_INPUTS);
-  outputs.resize(NUM_OUTPUTS);
-}*/
 
 /////////////////////////////////////////////////////
+
+static void clipperStep(Input &in, Param &thresh, Input &threshcv, Param &gain, Input &gaincv, Output &out) {
+  float signal_in = in.value;
+  float threshold = thresh.value * 6 + threshcv.value / 2;
+  float level = gain.value * 5 + gaincv.value / 2;
+
+  float clipped = signal_in;
+
+  if (std::abs(signal_in) > threshold) {
+    if (signal_in > 0) {
+      clipped = threshold;
+    }
+    else {
+      clipped = -threshold;
+    }
+  }
+  out.value = clipped * level;
+}
+
+
 void MentalClip::step() {
-
-  float signal_in1 = inputs[INPUT1].value;
-  float threshold1 = params[THRESH1_PARAM].value * 6 + inputs[THRESH1_CV_INPUT].value/2;
-  float gain1 = params[GAIN1_PARAM].value * 5 + inputs[GAIN1_CV_INPUT].value / 2;
-
-  float signal_in2 = inputs[INPUT2].value;
-  float threshold2 = params[THRESH2_PARAM].value * 6 + inputs[THRESH2_CV_INPUT].value/2;
-  float gain2 = params[GAIN2_PARAM].value * 5 + inputs[GAIN2_CV_INPUT].value / 2;
-
-
-  float clipped1 = signal_in1;
-  float clipped2 = signal_in2;
-
-  if (abs(signal_in1) > threshold1)
-  {
-    if (signal_in1 > 0)
-    {
-     clipped1 = threshold1;
-    } else
-    {
-     clipped1 = - threshold1;
-    }
-  }
-
-  if (abs(signal_in2) > threshold2)
-  {
-    if (signal_in2 > 0)
-    {
-     clipped2 = threshold2;
-    } else
-    {
-     clipped2 = - threshold2;
-    }
-  }
-  outputs[OUTPUT1].value = clipped1 * gain1;
-  outputs[OUTPUT2].value = clipped2 * gain2;
+  clipperStep(inputs[INPUT1], params[THRESH1_PARAM], inputs[THRESH1_CV_INPUT], params[GAIN1_PARAM], inputs[GAIN1_CV_INPUT], outputs[OUTPUT1]);
+  clipperStep(inputs[INPUT2], params[THRESH2_PARAM], inputs[THRESH2_CV_INPUT], params[GAIN2_PARAM], inputs[GAIN2_CV_INPUT], outputs[OUTPUT2]);
 }
 
 //////////////////////////////////////////////////////////////////
+
 MentalClipWidget::MentalClipWidget() {
   MentalClip *module = new MentalClip();
   setModule(module);
@@ -104,13 +85,13 @@ MentalClipWidget::MentalClipWidget() {
 
   
   // label
-  addParam(createParam<Trimpot>(Vec(6, box.size.y - 175), module, MentalClip::THRESH2_PARAM, 0.0, 1.0, 1.0));
-  addInput(createInput<CVInPort>(Vec(3, box.size.y - 154), module, MentalClip::THRESH2_CV_INPUT));
+  addParam(createParam<Trimpot>(Vec(6, box.size.y - 177), module, MentalClip::THRESH2_PARAM, 0.0, 1.0, 1.0));
+  addInput(createInput<CVInPort>(Vec(3, box.size.y - 156), module, MentalClip::THRESH2_CV_INPUT));
   // label
-  addParam(createParam<Trimpot>(Vec(6, box.size.y - 118), module, MentalClip::GAIN2_PARAM, 0.0, 1.0, 0.5));
-  addInput(createInput<CVInPort>(Vec(3, box.size.y - 97), module, MentalClip::GAIN2_CV_INPUT));
+  addParam(createParam<Trimpot>(Vec(6, box.size.y - 120), module, MentalClip::GAIN2_PARAM, 0.0, 1.0, 0.5));
+  addInput(createInput<CVInPort>(Vec(3, box.size.y - 99), module, MentalClip::GAIN2_CV_INPUT));
   // output  
-  addInput(createInput<InPort>(Vec(3, box.size.y - 61), module, MentalClip::INPUT2));
-  addOutput(createOutput<OutPort>(Vec(3, box.size.y - 34), module, MentalClip::OUTPUT2));
+  addInput(createInput<InPort>(Vec(3, box.size.y - 63), module, MentalClip::INPUT2));
+  addOutput(createOutput<OutPort>(Vec(3, box.size.y - 36), module, MentalClip::OUTPUT2));
 
 }
