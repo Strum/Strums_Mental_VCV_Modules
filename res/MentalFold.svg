@@ -53,7 +53,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -208,5 +208,51 @@
        id="path882"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;line-height:1.25;font-family:LilyUPC;-inkscape-font-specification:LilyUPC;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
        d="m 23.759989,746.66614 v -6.21419 h 1.253255 v 2.05403 q 0,0 0,0 0,-0.003 0.14974,-0.0846 0.15625,-0.0814 0.410156,-0.14974 0.257162,-0.0684 0.611979,-0.0716 0.498047,0 0.820313,0.14974 0.322265,0.14649 0.465495,0.38412 0.143229,0.23763 0.143229,0.50455 v 3.42774 h -0.934245 v -3.18685 q 0,-0.40039 -0.188802,-0.54688 -0.188802,-0.14648 -0.638021,-0.14648 -0.257161,0.013 -0.445963,0.11068 -0.185547,0.0944 -0.289714,0.20182 -0.104167,0.10417 -0.104167,0.12695 v 3.44076 z" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;line-height:1.25;font-family:LilyUPC;-inkscape-font-specification:'LilyUPC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       x="3.3072937"
+       y="680.96118"
+       id="text849"><tspan
+         sodipodi:role="line"
+         id="tspan847"
+         x="3.3072937"
+         y="680.96118"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;font-family:LilyUPC;-inkscape-font-specification:'LilyUPC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">Folder</tspan></text>
+    <g
+       aria-label="Folder"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;line-height:1.25;font-family:LilyUPC;-inkscape-font-specification:'LilyUPC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       id="text875">
+      <path
+         d="M 5.1595072,680.96118 H 3.7467468 v -6.21419 h 4.2285155 v 0.77474 H 5.1595072 v 1.81315 h 2.3470051 v 0.77148 H 5.1595072 Z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;font-family:LilyUPC;-inkscape-font-specification:'LilyUPC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
+         id="path877"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 10.263673,676.49504 q 0.77474,0 1.23698,0.25065 0.465494,0.25065 0.667317,0.74218 0.201823,0.49154 0.201823,1.24675 0,1.18164 -0.501302,1.73177 -0.501302,0.54687 -1.634114,0.54687 -1.0742191,-0.01 -1.5852868,-0.55013 -0.5078125,-0.54036 -0.5078125,-1.71549 0.019531,-2.2526 2.1223953,-2.2526 z m -0.8821609,2.23958 q 0.022786,0.57617 0.065104,0.87565 0.045573,0.29622 0.2376302,0.53711 0.1920573,0.24088 0.5924477,0.24088 0.559896,0 0.706381,-0.42317 0.146484,-0.42643 0.146484,-1.20443 0,-0.76497 -0.14974,-1.20768 -0.146484,-0.44596 -0.703125,-0.44596 -0.5729164,0.0163 -0.7356768,0.44596 -0.1595052,0.42643 -0.1595051,1.18164 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;font-family:LilyUPC;-inkscape-font-specification:'LilyUPC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
+         id="path879"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 12.805991,680.96118 v -6.21419 h 1.227214 v 6.21419 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;font-family:LilyUPC;-inkscape-font-specification:'LilyUPC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
+         id="path881"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 18.603517,674.74699 v 6.21419 h -1.240234 v -0.26693 q -0.06836,0.0716 -0.3125,0.1823 -0.244141,0.11067 -0.690105,0.11067 -0.511067,-0.007 -0.921224,-0.17578 -0.406901,-0.17252 -0.677083,-0.6901 -0.266927,-0.51758 -0.266927,-1.49414 0.01628,-1.29883 0.494792,-1.7155 0.481771,-0.41666 1.223958,-0.41666 0.69987,0 1.149089,0.22461 v -1.97266 z m -1.240234,5.26693 v -2.69206 q 0,-0.0391 -0.201823,-0.13346 -0.201823,-0.0944 -0.559896,-0.12045 -0.657552,0 -0.882162,0.40039 -0.224609,0.39714 -0.224609,1.14584 0,0.5957 0.104167,0.98307 0.107422,0.38411 0.358073,0.58268 0.250651,0.19531 0.670572,0.19531 0.30599,-0.0293 0.520834,-0.16927 0.214844,-0.14323 0.214844,-0.19205 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;font-family:LilyUPC;-inkscape-font-specification:'LilyUPC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
+         id="path883"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 20.358074,678.96248 q 0.0293,0.35157 0.240886,0.88868 0.211588,0.5371 0.771484,0.56315 0.683594,0 1.070964,-0.17253 0.387369,-0.17578 0.504557,-0.29297 l -0.188802,0.77149 q 0,0.0684 -0.38737,0.18229 -0.38737,0.11067 -0.986328,0.11067 -0.23763,0 -0.371094,-0.013 -0.970052,-0.0716 -1.422526,-0.55664 -0.449219,-0.48828 -0.458984,-1.5625 0,-1.23047 0.511067,-1.80338 0.514323,-0.57292 1.503907,-0.58268 1.188151,0 1.611328,0.625 0.361328,0.51757 0.361328,1.39974 0,0.16601 -0.0098,0.2832 -0.0098,0.11393 -0.01628,0.1595 z m 0.908203,-1.90755 q -0.908203,0.0293 -0.908203,1.31836 h 1.933594 q 0,-1.31836 -1.025391,-1.31836 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;font-family:LilyUPC;-inkscape-font-specification:'LilyUPC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
+         id="path886"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 23.483074,680.96118 v -4.4401 h 1.253255 v 0.54687 q 0.0065,-0.007 0.07487,-0.0911 0.07161,-0.0879 0.211588,-0.18229 0.139974,-0.0944 0.380859,-0.17904 0.257162,-0.10742 0.654297,-0.10742 0.30599,0 0.384115,0.026 l 0.107422,0.64127 q -0.227865,-0.0553 -0.426432,-0.0553 -0.432943,0 -0.719402,0.16276 -0.322265,0.1595 -0.494791,0.43619 -0.172526,0.2767 -0.172526,0.50782 v 2.73437 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.33333302px;font-family:LilyUPC;-inkscape-font-specification:'LilyUPC, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
+         id="path888"
+         inkscape:connector-curvature="0" />
+    </g>
   </g>
 </svg>
