@@ -4,9 +4,9 @@ strum@softhome.net
 
 Simple but useful modules for VCVRack
 
-Version : 0.5a
+Version : v0.5b
 
-Date : 22nd Nov 2017
+Date : 6th Dec 2017
 
 Based largely on the fundamental modules but I have also used some code from other module
 developers and learned various ways of doing things from the other suites of modules as well.
@@ -14,6 +14,7 @@ developers and learned various ways of doing things from the other suites of mod
 The modules are mostly utilities, which you can never have enough of, and I have
 focused on keeping them small to pack a lot of functionality into as little possible screen area.
 
+Jack sockets are now colour coded, hopefully this should make using them more intitutive. 
 
 Module List
 
