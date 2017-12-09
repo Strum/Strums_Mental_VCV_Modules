@@ -259,7 +259,7 @@ MentalMasterClockWidget::MentalMasterClockWidget() {
 		SVGPanel *panel = new SVGPanel();
 		panel->box.size = box.size;
 		
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalMasterClock2.svg")));
+    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalMasterClock.svg")));
 		addChild(panel);
 	}
    
