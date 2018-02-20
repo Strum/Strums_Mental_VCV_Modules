@@ -76,8 +76,8 @@ MentalGateMaker::MentalGateMaker()
 	inputs.resize(NUM_INPUTS);
 	outputs.resize(NUM_OUTPUTS);
   lights.resize(NUM_LIGHTS);
-	clock_trigger.setThresholds(0.0, 1.0);
-	reset_trigger.setThresholds(0.0, 1.0);  
+	//clock_trigger.setThresholds(0.0, 1.0);
+	//reset_trigger.setThresholds(0.0, 1.0);  
 }
 
 void MentalGateMaker::step()

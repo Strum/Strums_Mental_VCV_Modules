@@ -26,7 +26,7 @@ void init(rack::Plugin *p)
     p->addModel(modelMentalButtons);
     p->addModel(modelMentalSums);
     p->addModel(modelMentalPitchShift);
-    //p->addModel(modelMentalClockDivider);
+    p->addModel(modelMentalClockDivider);
     p->addModel(modelMentalCartesian);
     p->addModel(modelMentalPatchMatrix);
     p->addModel(modelMentalBinaryDecoder);
@@ -35,8 +35,8 @@ void init(rack::Plugin *p)
     p->addModel(modelMentalCounters);
     p->addModel(modelMentalKnobs);
     p->addModel(modelMentalGateMaker);
-    //p->addModel(modelMentalMasterClock);
-    p->addModel(modelMentalPatchNotes);
+    p->addModel(modelMentalMasterClock);
+    //p->addModel(modelMentalPatchNotes);
     p->addModel(modelMentalQuadLFO);
     p->addModel(modelMentalRadioButtons);
 
