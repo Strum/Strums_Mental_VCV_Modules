@@ -122,4 +122,4 @@ MentalBinaryDecoderWidget::MentalBinaryDecoderWidget(MentalBinaryDecoder *module
   
 }
 
-Model *modelBinaryDecoder = Model::create<MentalBinaryDecoder, MentalBinaryDecoderWidget>("mental", "MentalBinaryDecoder", "Binary Decoder", UTILITY_TAG);
+Model *modelMentalBinaryDecoder = Model::create<MentalBinaryDecoder, MentalBinaryDecoderWidget>("mental", "MentalBinaryDecoder", "Binary Decoder", UTILITY_TAG);
