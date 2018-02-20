@@ -106,15 +106,16 @@ struct MentalMasterClock : Module {
   }  
 };
 
+/////////////////////////////////////////////////////////////////////////
 MentalMasterClock::MentalMasterClock()
 {
   params.resize(NUM_PARAMS);
 	inputs.resize(NUM_INPUTS);
 	outputs.resize(NUM_OUTPUTS);
   lights.resize(NUM_LIGHTS);
-  eighths_trig.setThresholds(0.0, 1.0);
-  quarters_trig.setThresholds(0.0, 1.0);
-  bars_trig.setThresholds(0.0, 1.0);
+  //eighths_trig.setThresholds(0.0, 1.0);
+  //quarters_trig.setThresholds(0.0, 1.0);
+  //bars_trig.setThresholds(0.0, 1.0);
 }
 
 void MentalMasterClock::step()
@@ -250,9 +251,18 @@ struct NumberDisplayWidget : TransparentWidget {
 };
 
 //////////////////////////////////
-MentalMasterClockWidget::MentalMasterClockWidget() {
-	MentalMasterClock *module = new MentalMasterClock();
-	setModule(module);
+struct MentalMasterClockWidget : ModuleWidget {
+  MentalMasterClockWidget(MentalMasterClock *module);
+};
+
+MentalMasterClockWidget::MentalMasterClockWidget(MentalMasterClock *module) : ModuleWidget(module)
+{
+
+// MentalMasterClockWidget::MentalMasterClockWidget() {
+//	MentalMasterClock *module = new MentalMasterClock();
+//	setModule(module);
+
+
 	box.size = Vec(15*8, 380);
   
 	{
@@ -263,27 +273,27 @@ MentalMasterClockWidget::MentalMasterClockWidget() {
 		addChild(panel);
 	}
    
-    addParam(createParam<RoundSmallBlackKnob>(Vec(2, 20), module, MentalMasterClock::TEMPO_PARAM, 40.0, 250.0, 120.0));
-    addParam(createParam<RoundSmallBlackKnob>(Vec(2, 50), module, MentalMasterClock::TIMESIGTOP_PARAM,2.0, 15.0, 4.0));
-    addParam(createParam<RoundSmallBlackKnob>(Vec(2, 80), module, MentalMasterClock::TIMESIGBOTTOM_PARAM,0.0, 3.0, 1.0));
+    addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 20), module, MentalMasterClock::TEMPO_PARAM, 40.0, 250.0, 120.0));
+    addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 50), module, MentalMasterClock::TIMESIGTOP_PARAM,2.0, 15.0, 4.0));
+    addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 80), module, MentalMasterClock::TIMESIGBOTTOM_PARAM,0.0, 3.0, 1.0));
      
-    addOutput(createOutput<GateOutPort>(Vec(90, 110), module, MentalMasterClock::BEAT_OUT)); 
-    addOutput(createOutput<GateOutPort>(Vec(90, 140), module, MentalMasterClock::BAR_OUT)); 
-    addOutput(createOutput<GateOutPort>(Vec(90, 170), module, MentalMasterClock::EIGHTHS_OUT)); 
-    addOutput(createOutput<GateOutPort>(Vec(90, 200), module, MentalMasterClock::SIXTEENTHS_OUT)); 
+    addOutput(Port::create<GateOutPort>(Vec(90, 110), Port::OUTPUT, module, MentalMasterClock::BEAT_OUT)); 
+    addOutput(Port::create<GateOutPort>(Vec(90, 140), Port::OUTPUT, module, MentalMasterClock::BAR_OUT)); 
+    addOutput(Port::create<GateOutPort>(Vec(90, 170), Port::OUTPUT, module, MentalMasterClock::EIGHTHS_OUT)); 
+    addOutput(Port::create<GateOutPort>(Vec(90, 200), Port::OUTPUT, module, MentalMasterClock::SIXTEENTHS_OUT)); 
     
-   /* addParam(createParam<LEDButton>(Vec(5, 50+group_offset*i), module, MentalMasterClock::STEP_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(createLight<MediumLight<GreenLight>>(Vec(10, 55+group_offset*i), &module->button_leds[0][i]));
-    addParam(createParam<LEDButton>(Vec(5, 75+group_offset*i), module, MentalMasterClock::BI_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(createLight<MediumLight<GreenLight>>(Vec(10, 80+group_offset*i), &module->button_leds[2][i])); */
+   /* addParam(ParamWidget::create<LEDButton>(Vec(5, 50+group_offset*i), module, MentalMasterClock::STEP_SWITCH + i, 0.0, 1.0, 0.0));
+    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(10, 55+group_offset*i), &module->button_leds[0][i]));
+    addParam(ParamWidget::create<LEDButton>(Vec(5, 75+group_offset*i), module, MentalMasterClock::BI_SWITCH + i, 0.0, 1.0, 0.0));
+    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(10, 80+group_offset*i), &module->button_leds[2][i])); */
     
-    //addChild(createLight<MediumLight<GreenRedLight>>(Vec(33, 125), module, MentalClockDivider::LIGHTS));
+    //addChild(ModuleLightWidget::create<MediumLight<GreenRedLight>>(Vec(33, 125), module, MentalClockDivider::LIGHTS));
     
-    addParam(createParam<LEDButton>(Vec(5, 140), module, MentalMasterClock::RESET_BUTTON, 0.0, 1.0, 0.0));
-    addChild(createLight<MediumLight<GreenLight>>(Vec(10, 145), module, MentalMasterClock::RESET_LED));
+    addParam(ParamWidget::create<LEDButton>(Vec(5, 140), module, MentalMasterClock::RESET_BUTTON, 0.0, 1.0, 0.0));
+    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(10, 145), module, MentalMasterClock::RESET_LED));
     
-    addParam(createParam<LEDButton>(Vec(5, 110), module, MentalMasterClock::RUN_SWITCH, 0.0, 1.0, 0.0));
-    addChild(createLight<MediumLight<GreenLight>>(Vec(10, 115), module, MentalMasterClock::RUN_LED));
+    addParam(ParamWidget::create<LEDButton>(Vec(5, 110), module, MentalMasterClock::RUN_SWITCH, 0.0, 1.0, 0.0));
+    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(10, 115), module, MentalMasterClock::RUN_LED));
     
   NumberDisplayWidget *display = new NumberDisplayWidget();
 	display->box.pos = Vec(35,20);
@@ -304,3 +314,5 @@ MentalMasterClockWidget::MentalMasterClockWidget() {
 	addChild(display3); 
  
 }
+
+Model *modelMentalMasterClock = Model::create<MentalMasterClock, MentalMasterClockWidget>("mental", "MentalMasterClock", "Master Clock", CLOCK_TAG);
