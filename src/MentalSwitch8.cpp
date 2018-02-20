@@ -87,9 +87,18 @@ void MentalSwitch8::step()
   lights[OUTPUT_LEDS + decoded].value = 1.0;
 }
 
-MentalSwitch8Widget::MentalSwitch8Widget() {
-	MentalSwitch8 *module = new MentalSwitch8();
-	setModule(module);
+////////////////////////////////////////////////////////////////////////////////////////////////////
+struct MentalSwitch8Widget : ModuleWidget {
+  MentalSwitch8Widget(MentalSwitch8 *module);
+};
+
+MentalSwitch8Widget::MentalSwitch8Widget(MentalSwitch8 *module) : ModuleWidget(module)
+{
+
+//MentalSwitch8Widget::MentalSwitch8Widget() {
+//	MentalSwitch8 *module = new MentalSwitch8();
+//	setModule(module);
+
 	box.size = Vec(15*5, 380);
   
 	{
@@ -102,16 +111,18 @@ MentalSwitch8Widget::MentalSwitch8Widget() {
   int spacing = 25; 
   int top_space = 15;
   
-  addInput(createInput<GateInPort>(Vec(3, top_space), module, MentalSwitch8::INPUT_1));
-  addInput(createInput<GateInPort>(Vec(3, top_space + spacing), module, MentalSwitch8::INPUT_2));
-  addInput(createInput<GateInPort>(Vec(3, top_space + spacing * 2), module, MentalSwitch8::INPUT_4));
+  addInput(Port::create<GateInPort>(Vec(3, top_space), Port::INPUT, module, MentalSwitch8::INPUT_1));
+  addInput(Port::create<GateInPort>(Vec(3, top_space + spacing), Port::INPUT, module, MentalSwitch8::INPUT_2));
+  addInput(Port::create<GateInPort>(Vec(3, top_space + spacing * 2), Port::INPUT, module, MentalSwitch8::INPUT_4));
   
-  addInput(createInput<InPort>(Vec(3, top_space + spacing * 3 + 15), module, MentalSwitch8::SIG_INPUT));
+  addInput(Port::create<InPort>(Vec(3, top_space + spacing * 3 + 15), Port::INPUT, module, MentalSwitch8::SIG_INPUT));
   
   for (int i = 0; i < 8 ; i++)
   {  
-   addOutput(createOutput<OutPort>(Vec(30, top_space + spacing * i), module, MentalSwitch8::OUTPUT + i));   	 
-   addChild(createLight<MediumLight<GreenLight>>(Vec(60, top_space +  spacing * i + 8), module,MentalSwitch8::OUTPUT_LEDS + i));
+   addOutput(Port::create<OutPort>(Vec(30, top_space + spacing * i), Port::OUTPUT, module, MentalSwitch8::OUTPUT + i));   	 
+   addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(60, top_space +  spacing * i + 8), module,MentalSwitch8::OUTPUT_LEDS + i));
   }
   
 }
+
+Model *modelMentalSwitch8 = Model::create<MentalSwitch8, MentalSwitch8Widget>("mental", "MentalSwitch8", "8 Way Switch", SWITCH_TAG, UTILITY_TAG);

@@ -160,9 +160,18 @@ void MentalMuxes::step()
   }
 }
 
-MentalMuxesWidget::MentalMuxesWidget() {
-	MentalMuxes *module = new MentalMuxes();
-	setModule(module);
+///////////////////////////////////////////////////////////////////////////////////////////////
+struct MentalMuxesWidget : ModuleWidget {
+  MentalMuxesWidget(MentalMuxes *module);
+};
+
+MentalMuxesWidget::MentalMuxesWidget(MentalMuxes *module) : ModuleWidget(module)
+{
+
+//MentalMuxesWidget::MentalMuxesWidget() {
+//	MentalMuxes *module = new MentalMuxes();
+//	setModule(module);
+
 	box.size = Vec(15*4, 380);
   
 	{
@@ -173,35 +182,37 @@ MentalMuxesWidget::MentalMuxesWidget() {
 		addChild(panel);
 	}
 	int group_offset = 90;
-  addInput(createInput<GateInPort>(Vec(3, 75), module, MentalMuxes::SELECT_A));  
-	addInput(createInput<InPort>(Vec(3, 25), module, MentalMuxes::INPUT_1A));
-  addInput(createInput<InPort>(Vec(3, 50), module, MentalMuxes::INPUT_2A));  
+  addInput(Port::create<GateInPort>(Vec(3, 75), Port::INPUT, module, MentalMuxes::SELECT_A));  
+	addInput(Port::create<InPort>(Vec(3, 25), Port::INPUT, module, MentalMuxes::INPUT_1A));
+  addInput(Port::create<InPort>(Vec(3, 50), Port::INPUT, module, MentalMuxes::INPUT_2A));  
   
-  addOutput(createOutput<OutPort>(Vec(33, 75), module, MentalMuxes::OUTPUT_A));
+  addOutput(Port::create<OutPort>(Vec(33, 75), Port::OUTPUT, module, MentalMuxes::OUTPUT_A));
   
-  addChild(createLight<MediumLight<GreenLight>>(Vec(41, 32), module, MentalMuxes::LEVEL_LED_A1));
-  addChild(createLight<MediumLight<GreenLight>>(Vec(41, 58), module, MentalMuxes::LEVEL_LED_A2));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(41, 32), module, MentalMuxes::LEVEL_LED_A1));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(41, 58), module, MentalMuxes::LEVEL_LED_A2));
   
-  addInput(createInput<GateInPort>(Vec(3, group_offset + 75), module, MentalMuxes::SELECT_B));  
-	addInput(createInput<InPort>(Vec(3, group_offset + 25), module, MentalMuxes::INPUT_1B));
-  addInput(createInput<InPort>(Vec(3, group_offset + 50), module, MentalMuxes::INPUT_2B));  
+  addInput(Port::create<GateInPort>(Vec(3, group_offset + 75), Port::INPUT, module, MentalMuxes::SELECT_B));  
+	addInput(Port::create<InPort>(Vec(3, group_offset + 25), Port::INPUT, module, MentalMuxes::INPUT_1B));
+  addInput(Port::create<InPort>(Vec(3, group_offset + 50), Port::INPUT, module, MentalMuxes::INPUT_2B));  
   
-  addOutput(createOutput<OutPort>(Vec(33,group_offset + 75), module, MentalMuxes::OUTPUT_B));
+  addOutput(Port::create<OutPort>(Vec(33,group_offset + 75), Port::OUTPUT, module, MentalMuxes::OUTPUT_B));
   
-  addChild(createLight<MediumLight<GreenLight>>(Vec(41,group_offset + 32), module, MentalMuxes::LEVEL_LED_B1));
-  addChild(createLight<MediumLight<GreenLight>>(Vec(41,group_offset + 58), module, MentalMuxes::LEVEL_LED_B2));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(41,group_offset + 32), module, MentalMuxes::LEVEL_LED_B1));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(41,group_offset + 58), module, MentalMuxes::LEVEL_LED_B2));
   
-  addInput(createInput<CVInPort>(Vec(3, group_offset * 2 + 125), module, MentalMuxes::SELECT_C));  
-	addInput(createInput<InPort>(Vec(3, group_offset * 2 + 25), module, MentalMuxes::INPUT_1C));
-  addInput(createInput<InPort>(Vec(3, group_offset * 2 + 50), module, MentalMuxes::INPUT_2C));
-  addInput(createInput<InPort>(Vec(3, group_offset * 2 + 75), module, MentalMuxes::INPUT_3C));
-  addInput(createInput<InPort>(Vec(3, group_offset * 2 + 100), module, MentalMuxes::INPUT_4C));    
+  addInput(Port::create<CVInPort>(Vec(3, group_offset * 2 + 125), Port::INPUT, module, MentalMuxes::SELECT_C));  
+	addInput(Port::create<InPort>(Vec(3, group_offset * 2 + 25), Port::INPUT, module, MentalMuxes::INPUT_1C));
+  addInput(Port::create<InPort>(Vec(3, group_offset * 2 + 50), Port::INPUT, module, MentalMuxes::INPUT_2C));
+  addInput(Port::create<InPort>(Vec(3, group_offset * 2 + 75), Port::INPUT, module, MentalMuxes::INPUT_3C));
+  addInput(Port::create<InPort>(Vec(3, group_offset * 2 + 100), Port::INPUT, module, MentalMuxes::INPUT_4C));    
   
-  addOutput(createOutput<OutPort>(Vec(33,group_offset * 2 + 125), module, MentalMuxes::OUTPUT_C));
+  addOutput(Port::create<OutPort>(Vec(33,group_offset * 2 + 125), Port::OUTPUT, module, MentalMuxes::OUTPUT_C));
   
-  addChild(createLight<MediumLight<GreenLight>>(Vec(41,group_offset * 2 + 32), module, MentalMuxes::LEVEL_LED_C1));
-  addChild(createLight<MediumLight<GreenLight>>(Vec(41,group_offset * 2 + 58), module, MentalMuxes::LEVEL_LED_C2));
-  addChild(createLight<MediumLight<GreenLight>>(Vec(41,group_offset * 2 + 82), module, MentalMuxes::LEVEL_LED_C3));
-  addChild(createLight<MediumLight<GreenLight>>(Vec(41,group_offset * 2 + 108), module, MentalMuxes::LEVEL_LED_C4));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(41,group_offset * 2 + 32), module, MentalMuxes::LEVEL_LED_C1));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(41,group_offset * 2 + 58), module, MentalMuxes::LEVEL_LED_C2));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(41,group_offset * 2 + 82), module, MentalMuxes::LEVEL_LED_C3));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(41,group_offset * 2 + 108), module, MentalMuxes::LEVEL_LED_C4));
 	  
 }
+
+Model *modelMentalMuxes = Model::create<MentalMuxes, MentalMuxesWidget>("mental", "MentalMuxes", "Multiplexers", DUAL_TAG, UTILITY_TAG);

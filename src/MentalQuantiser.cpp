@@ -127,9 +127,18 @@ void MentalQuantiser::step() {
 }
 
 //////////////////////////////////////////////////////////////////
-MentalQuantiserWidget::MentalQuantiserWidget() {
-	MentalQuantiser *module = new MentalQuantiser();
-	setModule(module);
+struct MentalQuantiserWidget : ModuleWidget {
+  MentalQuantiserWidget(MentalQuantiser *module);
+};
+
+MentalQuantiserWidget::MentalQuantiserWidget(MentalQuantiser *module) : ModuleWidget(module)
+{
+
+//MentalQuantiserWidget::MentalQuantiserWidget() {
+//	MentalQuantiser *module = new MentalQuantiser();
+//	setModule(module);
+
+
 	box.size = Vec(15*6, 380);
 
   {
@@ -142,17 +151,19 @@ MentalQuantiserWidget::MentalQuantiserWidget() {
   int top_row = 50;
   int row_spacing = 25; 
 	
-  addParam(createParam<RoundSmallBlackKnob>(Vec(62, 15), module, MentalQuantiser::PITCH_PARAM, -6.5, 6.5, 0.0));
-  addInput(createInput<CVInPort>(Vec(63, 45), module, MentalQuantiser::PITCH_INPUT));
+  addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(62, 15), module, MentalQuantiser::PITCH_PARAM, -6.5, 6.5, 0.0));
+  addInput(Port::create<CVInPort>(Vec(63, 45), Port::INPUT, module, MentalQuantiser::PITCH_INPUT));
   
-  addInput(createInput<CVInPort>(Vec(3, top_row), module, MentalQuantiser::INPUT));
-  addOutput(createOutput<CVOutPort>(Vec(32, top_row), module, MentalQuantiser::OUTPUT));
+  addInput(Port::create<CVInPort>(Vec(3, top_row), Port::INPUT, module, MentalQuantiser::INPUT));
+  addOutput(Port::create<CVOutPort>(Vec(32, top_row), Port::OUTPUT, module, MentalQuantiser::OUTPUT));
   
   for (int i = 0; i < 12 ; i++)
   {  
-    addParam(createParam<LEDButton>(Vec(3, top_row + 30 + row_spacing * i), module, MentalQuantiser::BUTTON_PARAM + i, 0.0, 1.0, 0.0));
-	  addChild(createLight<MediumLight<GreenLight>>(Vec(3+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::BUTTON_LIGHTS + i));
-    addChild(createLight<MediumLight<GreenLight>>(Vec(30+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::OUTPUT_LIGHTS + i));
-    addOutput(createOutput<CVOutPort>(Vec(63, top_row + 30 + row_spacing * i), module, MentalQuantiser::REF_OUT + i));    
+    addParam(ParamWidget::create<LEDButton>(Vec(3, top_row + 30 + row_spacing * i), module, MentalQuantiser::BUTTON_PARAM + i, 0.0, 1.0, 0.0));
+	  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(3+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::BUTTON_LIGHTS + i));
+    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(30+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::OUTPUT_LIGHTS + i));
+    addOutput(Port::create<CVOutPort>(Vec(63, top_row + 30 + row_spacing * i), Port::OUTPUT, module, MentalQuantiser::REF_OUT + i));    
   }
 }
+
+Model *modelMentalQuantiser = Model::create<MentalQuantiser, MentalQuantiserWidget>("mental", "MentalQuantiser", "Quantiser", QUANTISER_TAG);

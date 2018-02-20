@@ -105,9 +105,18 @@ for (int i = 0 ; i < 4 ; i++)
 }
 
 //////////////////////////////////////////////////////////////////
-MentalGatesWidget::MentalGatesWidget() {
-	MentalGates *module = new MentalGates();
-	setModule(module);
+struct MentalGatesWidget : ModuleWidget {
+  MentalGatesWidget(MentalGates *module);
+};
+
+MentalGatesWidget::MentalGatesWidget(MentalGates *module) : ModuleWidget(module)
+{
+
+//MentalGatesWidget::MentalGatesWidget() {
+//	MentalGates *module = new MentalGates();
+//	setModule(module);
+
+
 	box.size = Vec(15*4, 380);
 
   {
@@ -120,12 +129,14 @@ MentalGatesWidget::MentalGatesWidget() {
   int group_spacing = 85;
   for (int i = 0 ; i < 4 ; i++)
   {
-	  addInput(createInput<InPort>(Vec(3, group_spacing * i +  60), module, MentalGates::INPUT + i));
-    addInput(createInput<GateInPort>(Vec(3, group_spacing * i +  28), module, MentalGates::GATE_INPUT + i));
-    addOutput(createOutput<OutPort>(Vec(32, group_spacing * i +  60), module, MentalGates::OUTPUT + i));
+	  addInput(Port::create<InPort>(Vec(3, group_spacing * i +  60), Port::INPUT, module, MentalGates::INPUT + i));
+    addInput(Port::create<GateInPort>(Vec(3, group_spacing * i +  28), Port::INPUT, module, MentalGates::GATE_INPUT + i));
+    addOutput(Port::create<OutPort>(Vec(32, group_spacing * i +  60), Port::OUTPUT, module, MentalGates::OUTPUT + i));
 
-    addChild(createLight<MediumLight<GreenLight>>(Vec(26, group_spacing * i + 17), module, MentalGates::ON_LEDS + i));
-    addParam(createParam<LEDButton>(Vec(35, group_spacing * i +  31), module, MentalGates::BUTTON_PARAM + i, 0.0, 1.0, 0.0));
-	  addChild(createLight<MediumLight<GreenLight>>(Vec(35+5, group_spacing * i +  31+5), module, MentalGates::BUTTON_LIGHTS + i));  
+    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(26, group_spacing * i + 17), module, MentalGates::ON_LEDS + i));
+    addParam(ParamWidget::create<LEDButton>(Vec(35, group_spacing * i +  31), module, MentalGates::BUTTON_PARAM + i, 0.0, 1.0, 0.0));
+	  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(35+5, group_spacing * i +  31+5), module, MentalGates::BUTTON_LIGHTS + i));  
   }
 }
+
+Model *modelMentalGates = Model::create<MentalGates, MentalGatesWidget>("mental", "MentalGates", "Gates", UTILITY_TAG);

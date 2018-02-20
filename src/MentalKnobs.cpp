@@ -142,6 +142,7 @@ void MentalKnobs::step()
 }
 
 ////////////////////////////////////
+
 struct NumberDisplayWidget : TransparentWidget {
 
   int *value;
@@ -176,9 +177,19 @@ struct NumberDisplayWidget : TransparentWidget {
 };
 
 //////////////////////////////////
-MentalKnobsWidget::MentalKnobsWidget() {
-	MentalKnobs *module = new MentalKnobs();
-	setModule(module);
+struct MentalKnobsWidget : ModuleWidget {
+  MentalKnobsWidget(MentalKnobs *module);
+};
+
+MentalKnobsWidget::MentalKnobsWidget(MentalKnobs *module) : ModuleWidget(module)
+{
+
+
+//MentalKnobsWidget::MentalKnobsWidget() {
+//	MentalKnobs *module = new MentalKnobs();
+//	setModule(module);
+
+
 	box.size = Vec(15*4, 380);
   
 	{
@@ -192,17 +203,17 @@ MentalKnobsWidget::MentalKnobsWidget() {
   int group_offset = 120;    
   for (int i = 0 ; i < 3 ; i++)
   {
-    addParam(createParam<RoundSmallBlackKnob>(Vec(2, 20+group_offset*i), module, MentalKnobs::KNOB_PARAM + i, -1.0, 1.0, 0.0));
-    addParam(createParam<RoundSmallBlackKnob>(Vec(32, 20+group_offset*i), module, MentalKnobs::SCALE_PARAM + i,0.0, 10.0, 1.0)); 
+    addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 20+group_offset*i), module, MentalKnobs::KNOB_PARAM + i, -1.0, 1.0, 0.0));
+    addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(32, 20+group_offset*i), module, MentalKnobs::SCALE_PARAM + i,0.0, 10.0, 1.0)); 
     
-    addParam(createParam<LEDButton>(Vec(5, 50+group_offset*i), module, MentalKnobs::STEP_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(createLight<MediumLight<GreenLight>>(Vec(10, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + i ));
-    addParam(createParam<LEDButton>(Vec(5, 75+group_offset*i), module, MentalKnobs::BI_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(createLight<MediumLight<GreenLight>>(Vec(10, 80+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 3 + i));
-    addParam(createParam<LEDButton>(Vec(35, 50+group_offset*i), module, MentalKnobs::STEPSIZE_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(createLight<MediumLight<GreenLight>>(Vec(40, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 6 + i));
+    addParam(ParamWidget::create<LEDButton>(Vec(5, 50+group_offset*i), module, MentalKnobs::STEP_SWITCH + i, 0.0, 1.0, 0.0));
+    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(10, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + i ));
+    addParam(ParamWidget::create<LEDButton>(Vec(5, 75+group_offset*i), module, MentalKnobs::BI_SWITCH + i, 0.0, 1.0, 0.0));
+    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(10, 80+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 3 + i));
+    addParam(ParamWidget::create<LEDButton>(Vec(35, 50+group_offset*i), module, MentalKnobs::STEPSIZE_SWITCH + i, 0.0, 1.0, 0.0));
+    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(40, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 6 + i));
     
-    addOutput(createOutput<CVOutPort>(Vec(33, 75+group_offset*i), module, MentalKnobs::OUTPUT + i));     
+    addOutput(Port::create<CVOutPort>(Vec(33, 75+group_offset*i), Port::OUTPUT, module, MentalKnobs::OUTPUT + i));     
   }
   
   NumberDisplayWidget *display = new NumberDisplayWidget();
@@ -224,3 +235,5 @@ MentalKnobsWidget::MentalKnobsWidget() {
 	addChild(display3); 
  
 }
+
+Model *modelMentalKnobs = Model::create<MentalKnobs, MentalKnobsWidget>("mental", "MentalKnobs", "Knobs", CONTROLLER_TAG, UTILITY_TAG);
