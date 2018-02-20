@@ -10,7 +10,7 @@ struct LowFrequencyOscillator {
 	bool invert = false;
 	SchmittTrigger resetTrigger;
 	LowFrequencyOscillator() {
-		resetTrigger.setThresholds(0.0, 0.01);
+		//resetTrigger.setThresholds(0.0, 0.01);
 	}
   void setFreq(float freq_to_set)
   {

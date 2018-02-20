@@ -54,10 +54,10 @@ MentalCounters::MentalCounters()
   params.resize(NUM_PARAMS);
 	inputs.resize(NUM_INPUTS);
 	outputs.resize(NUM_OUTPUTS);
-	clock_trigger.setThresholds(0.0, 1.0);
-	reset_trigger.setThresholds(0.0, 1.0);
-  clock_trigger_2.setThresholds(0.0, 1.0);
-	reset_trigger_2.setThresholds(0.0, 1.0);
+	//clock_trigger.setThresholds(0.0, 1.0);
+	//reset_trigger.setThresholds(0.0, 1.0);
+  //clock_trigger_2.setThresholds(0.0, 1.0);
+	//reset_trigger_2.setThresholds(0.0, 1.0);
 }
 
 void MentalCounters::step()
