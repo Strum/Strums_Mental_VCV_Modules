@@ -162,9 +162,18 @@ void MentalChord::step() {
 }
 
 //////////////////////////////////////////////////////////////////
-MentalChordWidget::MentalChordWidget() {
-	MentalChord *module = new MentalChord();
-	setModule(module);
+struct MentalChordWidget : ModuleWidget {
+  MentalChordWidget(MentalChord *module);
+};
+
+MentalChordWidget::MentalChordWidget(MentalChord *module) : ModuleWidget(module)
+{
+
+//MentalChordWidget::MentalChordWidget() {
+//	MentalChord *module = new MentalChord();
+//	setModule(module);
+
+
 	box.size = Vec(15*6, 380);
 
   {
@@ -174,37 +183,39 @@ MentalChordWidget::MentalChordWidget() {
     panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalChord.svg")));
 		addChild(panel);
 	}
-  addParam(createParam<RoundSmallBlackKnob>(Vec(3, 20), module, MentalChord::OFFSET_PARAM, 0.0, 1.0, 0.5));
-  addInput(createInput<CVInPort>(Vec(3, 50), module, MentalChord::OFFSET_CV_INPUT));
-  addParam(createParam<RoundSmallBlackKnob>(Vec(33, 20), module, MentalChord::INVERSION_PARAM, 0.0, 1.0, 0.0));
-  addParam(createParam<RoundSmallBlackKnob>(Vec(63, 20), module, MentalChord::VOICING_PARAM, 0.0, 1.0, 0.0));
+  addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(3, 20), module, MentalChord::OFFSET_PARAM, 0.0, 1.0, 0.5));
+  addInput(Port::create<CVInPort>(Vec(3, 50), Port::INPUT, module, MentalChord::OFFSET_CV_INPUT));
+  addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(33, 20), module, MentalChord::INVERSION_PARAM, 0.0, 1.0, 0.0));
+  addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(63, 20), module, MentalChord::VOICING_PARAM, 0.0, 1.0, 0.0));
 	
-  addInput(createInput<CVInPort>(Vec(3, 100), module, MentalChord::INPUT));
-  addInput(createInput<CVInPort>(Vec(33, 50), module, MentalChord::INVERSION_CV_INPUT));
-  addInput(createInput<CVInPort>(Vec(63, 50), module, MentalChord::VOICING_CV_INPUT));
+  addInput(Port::create<CVInPort>(Vec(3, 100), Port::INPUT, module, MentalChord::INPUT));
+  addInput(Port::create<CVInPort>(Vec(33, 50), Port::INPUT, module, MentalChord::INVERSION_CV_INPUT));
+  addInput(Port::create<CVInPort>(Vec(63, 50), Port::INPUT, module, MentalChord::VOICING_CV_INPUT));
   
-  addInput(createInput<GateInPort>(Vec(3, 130), module, MentalChord::FLAT_3RD_INPUT));
-  addInput(createInput<GateInPort>(Vec(3, 155), module, MentalChord::FLAT_5TH_INPUT));
-  addInput(createInput<GateInPort>(Vec(3, 180), module, MentalChord::FLAT_7TH_INPUT));
+  addInput(Port::create<GateInPort>(Vec(3, 130), Port::INPUT, module, MentalChord::FLAT_3RD_INPUT));
+  addInput(Port::create<GateInPort>(Vec(3, 155), Port::INPUT, module, MentalChord::FLAT_5TH_INPUT));
+  addInput(Port::create<GateInPort>(Vec(3, 180), Port::INPUT, module, MentalChord::FLAT_7TH_INPUT));
   
-  addInput(createInput<GateInPort>(Vec(3, 210), module, MentalChord::SUS_2_INPUT));
-  addInput(createInput<GateInPort>(Vec(3, 235), module, MentalChord::SUS_4_INPUT));
-  addInput(createInput<GateInPort>(Vec(3, 260), module, MentalChord::SIX_FOR_5_INPUT));
-  addInput(createInput<GateInPort>(Vec(3, 285), module, MentalChord::ONE_FOR_7_INPUT));
-  addInput(createInput<GateInPort>(Vec(3, 310), module, MentalChord::FLAT_9_INPUT));
-  addInput(createInput<GateInPort>(Vec(3, 335), module, MentalChord::SHARP_9_INPUT));
-  addInput(createInput<GateInPort>(Vec(33, 322), module, MentalChord::SIX_FOR_7_INPUT));
-  addInput(createInput<GateInPort>(Vec(33, 347), module, MentalChord::SHARP_5_INPUT));
+  addInput(Port::create<GateInPort>(Vec(3, 210), Port::INPUT, module, MentalChord::SUS_2_INPUT));
+  addInput(Port::create<GateInPort>(Vec(3, 235), Port::INPUT, module, MentalChord::SUS_4_INPUT));
+  addInput(Port::create<GateInPort>(Vec(3, 260), Port::INPUT, module, MentalChord::SIX_FOR_5_INPUT));
+  addInput(Port::create<GateInPort>(Vec(3, 285), Port::INPUT, module, MentalChord::ONE_FOR_7_INPUT));
+  addInput(Port::create<GateInPort>(Vec(3, 310), Port::INPUT, module, MentalChord::FLAT_9_INPUT));
+  addInput(Port::create<GateInPort>(Vec(3, 335), Port::INPUT, module, MentalChord::SHARP_9_INPUT));
+  addInput(Port::create<GateInPort>(Vec(33, 322), Port::INPUT, module, MentalChord::SIX_FOR_7_INPUT));
+  addInput(Port::create<GateInPort>(Vec(33, 347), Port::INPUT, module, MentalChord::SHARP_5_INPUT));
   
   
-  addOutput(createOutput<CVOutPort>(Vec(63, 100), module, MentalChord::OUTPUT_ROOT));
-  addOutput(createOutput<CVOutPort>(Vec(63, 125), module, MentalChord::OUTPUT_THIRD));
-  addOutput(createOutput<CVOutPort>(Vec(63, 150), module, MentalChord::OUTPUT_FIFTH));
-  addOutput(createOutput<CVOutPort>(Vec(63, 175), module, MentalChord::OUTPUT_SEVENTH));  
+  addOutput(Port::create<CVOutPort>(Vec(63, 100), Port::OUTPUT, module, MentalChord::OUTPUT_ROOT));
+  addOutput(Port::create<CVOutPort>(Vec(63, 125), Port::OUTPUT, module, MentalChord::OUTPUT_THIRD));
+  addOutput(Port::create<CVOutPort>(Vec(63, 150), Port::OUTPUT, module, MentalChord::OUTPUT_FIFTH));
+  addOutput(Port::create<CVOutPort>(Vec(63, 175), Port::OUTPUT, module, MentalChord::OUTPUT_SEVENTH));  
     
-  addOutput(createOutput<CVOutPort>(Vec(63, 250), module, MentalChord::OUTPUT_1));
-  addOutput(createOutput<CVOutPort>(Vec(63, 275), module, MentalChord::OUTPUT_2));
-  addOutput(createOutput<CVOutPort>(Vec(63, 300), module, MentalChord::OUTPUT_3));
-  addOutput(createOutput<CVOutPort>(Vec(63, 325), module, MentalChord::OUTPUT_4));
+  addOutput(Port::create<CVOutPort>(Vec(63, 250), Port::OUTPUT, module, MentalChord::OUTPUT_1));
+  addOutput(Port::create<CVOutPort>(Vec(63, 275), Port::OUTPUT, module, MentalChord::OUTPUT_2));
+  addOutput(Port::create<CVOutPort>(Vec(63, 300), Port::OUTPUT, module, MentalChord::OUTPUT_3));
+  addOutput(Port::create<CVOutPort>(Vec(63, 325), Port::OUTPUT, module, MentalChord::OUTPUT_4));
     
 }
+
+Model *modelMentalChord = Model::create<MentalChord, MentalChordWidget>("mental", "MentalChord", "Chord", CONTROLLER_TAG);

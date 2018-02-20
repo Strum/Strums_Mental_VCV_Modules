@@ -11,7 +11,18 @@
 
 
 //////////////////////////////////
-MentalPatchNotesWidget::MentalPatchNotesWidget() {
+struct MentalPatchNotesWidget : ModuleWidget {
+  TextField * patch_notes;
+	MentalPatchNotesWidget(MentalPatchNotes *module);
+  json_t *toJson() override;
+	void fromJson(json_t *rootJ) override;
+};
+
+
+//MentalPatchNotesWidget::MentalPatchNotesWidget() {
+
+MentalPatchNotesWidget::MentalPatchNotesWidget(MentalPatchNotes *module) : ModuleWidget(module)
+{
 	
 	
   
@@ -29,6 +40,8 @@ MentalPatchNotesWidget::MentalPatchNotesWidget() {
   patch_notes->multiline = true;
   addChild(patch_notes); 
 }
+
+Model *modelMentalPatchNotes = Model::create<MentalPatchNotes, MentalPatchNotesWidget>("mental", "MentalPatchNotes", "Patch Notes", UTILITY_TAG);
 
 json_t *MentalPatchNotesWidget::toJson() {
 	json_t *rootJ = ModuleWidget::toJson();

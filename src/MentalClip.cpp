@@ -78,9 +78,19 @@ void MentalClip::step() {
 }
 
 //////////////////////////////////////////////////////////////////
-MentalClipWidget::MentalClipWidget() {
-  MentalClip *module = new MentalClip();
-  setModule(module);
+struct MentalClipWidget : ModuleWidget {
+  MentalClipWidget(MentalClip *module);
+};
+
+MentalClipWidget::MentalClipWidget(MentalClip *module) : ModuleWidget(module)
+{
+
+
+//MentalClipWidget::MentalClipWidget() {
+//  MentalClip *module = new MentalClip();
+//  setModule(module);
+
+
   box.size = Vec(15*2, 380);
 
   {
@@ -93,24 +103,26 @@ MentalClipWidget::MentalClipWidget() {
   
 
   // label
-  addParam(createParam<Trimpot>(Vec(6, box.size.y / 2 - 169), module, MentalClip::THRESH1_PARAM, 0.0, 1.0, 1.0));
-  addInput(createInput<CVInPort>(Vec(3, box.size.y / 2 - 148), module, MentalClip::THRESH1_CV_INPUT));
+  addParam(ParamWidget::create<Trimpot>(Vec(6, box.size.y / 2 - 169), module, MentalClip::THRESH1_PARAM, 0.0, 1.0, 1.0));
+  addInput(Port::create<CVInPort>(Vec(3, box.size.y / 2 - 148), Port::INPUT, module, MentalClip::THRESH1_CV_INPUT));
   // label
-  addParam(createParam<Trimpot>(Vec(6, box.size.y / 2 - 112), module, MentalClip::GAIN1_PARAM, 0.0, 1.0, 0.5));
-  addInput(createInput<CVInPort>(Vec(3, box.size.y / 2 - 91), module, MentalClip::GAIN1_CV_INPUT));
+  addParam(ParamWidget::create<Trimpot>(Vec(6, box.size.y / 2 - 112), module, MentalClip::GAIN1_PARAM, 0.0, 1.0, 0.5));
+  addInput(Port::create<CVInPort>(Vec(3, box.size.y / 2 - 91), Port::INPUT, module, MentalClip::GAIN1_CV_INPUT));
   // output  
-  addInput(createInput<InPort>(Vec(3, box.size.y / 2 - 55), module, MentalClip::INPUT1));
-  addOutput(createOutput<OutPort>(Vec(3, box.size.y / 2 - 28), module, MentalClip::OUTPUT1));
+  addInput(Port::create<InPort>(Vec(3, box.size.y / 2 - 55), Port::INPUT, module, MentalClip::INPUT1));
+  addOutput(Port::create<OutPort>(Vec(3, box.size.y / 2 - 28), Port::OUTPUT, module, MentalClip::OUTPUT1));
 
   
   // label
-  addParam(createParam<Trimpot>(Vec(6, box.size.y - 175), module, MentalClip::THRESH2_PARAM, 0.0, 1.0, 1.0));
-  addInput(createInput<CVInPort>(Vec(3, box.size.y - 154), module, MentalClip::THRESH2_CV_INPUT));
+  addParam(ParamWidget::create<Trimpot>(Vec(6, box.size.y - 175), module, MentalClip::THRESH2_PARAM, 0.0, 1.0, 1.0));
+  addInput(Port::create<CVInPort>(Vec(3, box.size.y - 154), Port::INPUT, module, MentalClip::THRESH2_CV_INPUT));
   // label
-  addParam(createParam<Trimpot>(Vec(6, box.size.y - 118), module, MentalClip::GAIN2_PARAM, 0.0, 1.0, 0.5));
-  addInput(createInput<CVInPort>(Vec(3, box.size.y - 97), module, MentalClip::GAIN2_CV_INPUT));
+  addParam(ParamWidget::create<Trimpot>(Vec(6, box.size.y - 118), module, MentalClip::GAIN2_PARAM, 0.0, 1.0, 0.5));
+  addInput(Port::create<CVInPort>(Vec(3, box.size.y - 97), Port::INPUT, module, MentalClip::GAIN2_CV_INPUT));
   // output  
-  addInput(createInput<InPort>(Vec(3, box.size.y - 61), module, MentalClip::INPUT2));
-  addOutput(createOutput<OutPort>(Vec(3, box.size.y - 34), module, MentalClip::OUTPUT2));
+  addInput(Port::create<InPort>(Vec(3, box.size.y - 61), Port::INPUT, module, MentalClip::INPUT2));
+  addOutput(Port::create<OutPort>(Vec(3, box.size.y - 34), Port::OUTPUT, module, MentalClip::OUTPUT2));
 
 }
+
+Model *modelMentalClip = Model::create<MentalClip, MentalClipWidget>("mental", "MentalClip", "Clipper", DISTORTION_TAG);

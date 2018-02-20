@@ -166,9 +166,17 @@ void MentalLogic::step()
 }
 
 /////////////////////////
-MentalLogicWidget::MentalLogicWidget() {
-	MentalLogic *module = new MentalLogic();
-	setModule(module);
+struct MentalLogicWidget : ModuleWidget {
+  MentalLogicWidget(MentalLogic *module);
+};
+
+MentalLogicWidget::MentalLogicWidget(MentalLogic *module) : ModuleWidget(module)
+{
+
+//MentalLogicWidget::MentalLogicWidget() {
+//	MentalLogic *module = new MentalLogic();
+//	setModule(module);
+
 	box.size = Vec(15*5, 380);
   
 	{
@@ -186,44 +194,46 @@ MentalLogicWidget::MentalLogicWidget() {
   int row_spacing = 25;
   int vert_offset = 60;
   
-  addInput(createInput<GateInPort>(Vec(input_column, first_row), module, MentalLogic::INPUT_A_1));
-  addInput(createInput<GateInPort>(Vec(input_column, first_row+row_spacing), module, MentalLogic::INPUT_B_1));  
+  addInput(Port::create<GateInPort>(Vec(input_column, first_row), Port::INPUT, module, MentalLogic::INPUT_A_1));
+  addInput(Port::create<GateInPort>(Vec(input_column, first_row+row_spacing), Port::INPUT, module, MentalLogic::INPUT_B_1));  
   
-  addOutput(createOutput<GateOutPort>(Vec(output_column, first_row), module, MentalLogic::OUTPUT_AND_1));
-  addOutput(createOutput<GateOutPort>(Vec(output_column, first_row+row_spacing), module, MentalLogic::OUTPUT_OR_1));  
+  addOutput(Port::create<GateOutPort>(Vec(output_column, first_row), Port::OUTPUT, module, MentalLogic::OUTPUT_AND_1));
+  addOutput(Port::create<GateOutPort>(Vec(output_column, first_row+row_spacing), Port::OUTPUT, module, MentalLogic::OUTPUT_OR_1));  
   
-  addChild(createLight<MediumLight<GreenLight>>(Vec(led_column, first_row + 8), module, MentalLogic::AND_LED_1));
-  addChild(createLight<MediumLight<GreenLight>>(Vec(led_column, first_row+row_spacing + 8), module, MentalLogic::OR_LED_1));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(led_column, first_row + 8), module, MentalLogic::AND_LED_1));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(led_column, first_row+row_spacing + 8), module, MentalLogic::OR_LED_1));
   
   ////////////////////////////
   
-  addInput(createInput<GateInPort>(Vec(input_column, vert_offset + first_row), module, MentalLogic::INPUT_A_2));
-  addInput(createInput<GateInPort>(Vec(input_column, vert_offset + first_row + row_spacing), module, MentalLogic::INPUT_B_2));  
+  addInput(Port::create<GateInPort>(Vec(input_column, vert_offset + first_row), Port::INPUT, module, MentalLogic::INPUT_A_2));
+  addInput(Port::create<GateInPort>(Vec(input_column, vert_offset + first_row + row_spacing), Port::INPUT, module, MentalLogic::INPUT_B_2));  
   
-  addOutput(createOutput<GateOutPort>(Vec(output_column, vert_offset + first_row), module, MentalLogic::OUTPUT_AND_2));
-  addOutput(createOutput<GateOutPort>(Vec(output_column, vert_offset + first_row + row_spacing), module, MentalLogic::OUTPUT_OR_2));  
+  addOutput(Port::create<GateOutPort>(Vec(output_column, vert_offset + first_row), Port::OUTPUT, module, MentalLogic::OUTPUT_AND_2));
+  addOutput(Port::create<GateOutPort>(Vec(output_column, vert_offset + first_row + row_spacing), Port::OUTPUT, module, MentalLogic::OUTPUT_OR_2));  
   
-  addChild(createLight<MediumLight<GreenLight>>(Vec(led_column, vert_offset +  first_row + 8), module, MentalLogic::AND_LED_2));
-  addChild(createLight<MediumLight<GreenLight>>(Vec(led_column, vert_offset +first_row + row_spacing + 8), module, MentalLogic::OR_LED_2));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(led_column, vert_offset +  first_row + 8), module, MentalLogic::AND_LED_2));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(led_column, vert_offset +first_row + row_spacing + 8), module, MentalLogic::OR_LED_2));
   
   ///// Inverters
   
-  addInput(createInput<GateInPort>(Vec(input_column, vert_offset * 2 + first_row), module, MentalLogic::INPUT_INV_1));
-  addInput(createInput<GateInPort>(Vec(input_column, vert_offset * 2 + first_row + row_spacing), module, MentalLogic::INPUT_INV_2));  
+  addInput(Port::create<GateInPort>(Vec(input_column, vert_offset * 2 + first_row), Port::INPUT, module, MentalLogic::INPUT_INV_1));
+  addInput(Port::create<GateInPort>(Vec(input_column, vert_offset * 2 + first_row + row_spacing), Port::INPUT, module, MentalLogic::INPUT_INV_2));  
   
-  addOutput(createOutput<GateOutPort>(Vec(output_column, vert_offset * 2 + first_row), module, MentalLogic::OUTPUT_INV_1));
-  addOutput(createOutput<GateOutPort>(Vec(output_column, vert_offset * 2 + first_row + row_spacing), module, MentalLogic::OUTPUT_INV_2));
+  addOutput(Port::create<GateOutPort>(Vec(output_column, vert_offset * 2 + first_row), Port::OUTPUT, module, MentalLogic::OUTPUT_INV_1));
+  addOutput(Port::create<GateOutPort>(Vec(output_column, vert_offset * 2 + first_row + row_spacing), Port::OUTPUT, module, MentalLogic::OUTPUT_INV_2));
   
-  addChild(createLight<MediumLight<GreenLight>>(Vec(led_column, vert_offset * 2 + first_row + 8), module, MentalLogic::INV_LED_1));
-  addChild(createLight<MediumLight<GreenLight>>(Vec(led_column, vert_offset * 2 + first_row + row_spacing + 8), module, MentalLogic::INV_LED_2));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(led_column, vert_offset * 2 + first_row + 8), module, MentalLogic::INV_LED_1));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(led_column, vert_offset * 2 + first_row + row_spacing + 8), module, MentalLogic::INV_LED_2));
   
   ////// Big or
-  addInput(createInput<GateInPort>(Vec(input_column, vert_offset + 150), module, MentalLogic::INPUT_A_3));
-  addInput(createInput<GateInPort>(Vec(input_column, vert_offset + 175), module, MentalLogic::INPUT_B_3));
-  addInput(createInput<GateInPort>(Vec(input_column, vert_offset + 200), module, MentalLogic::INPUT_C_3));
-  addInput(createInput<GateInPort>(Vec(input_column, vert_offset + 225), module, MentalLogic::INPUT_D_3));
-  addInput(createInput<GateInPort>(Vec(input_column, vert_offset + 250), module, MentalLogic::INPUT_E_3));  
+  addInput(Port::create<GateInPort>(Vec(input_column, vert_offset + 150), Port::INPUT, module, MentalLogic::INPUT_A_3));
+  addInput(Port::create<GateInPort>(Vec(input_column, vert_offset + 175), Port::INPUT, module, MentalLogic::INPUT_B_3));
+  addInput(Port::create<GateInPort>(Vec(input_column, vert_offset + 200), Port::INPUT, module, MentalLogic::INPUT_C_3));
+  addInput(Port::create<GateInPort>(Vec(input_column, vert_offset + 225), Port::INPUT, module, MentalLogic::INPUT_D_3));
+  addInput(Port::create<GateInPort>(Vec(input_column, vert_offset + 250), Port::INPUT, module, MentalLogic::INPUT_E_3));  
   
-	addOutput(createOutput<GateOutPort>(Vec(output_column, vert_offset + 150), module, MentalLogic::OUTPUT_OR_3));
-  addChild(createLight<MediumLight<GreenLight>>(Vec(led_column, vert_offset + 158), module, MentalLogic::OR_LED_3));   
+	addOutput(Port::create<GateOutPort>(Vec(output_column, vert_offset + 150), Port::OUTPUT, module, MentalLogic::OUTPUT_OR_3));
+  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(led_column, vert_offset + 158), module, MentalLogic::OR_LED_3));   
 }
+
+Model *modelMentalLogic = Model::create<MentalLogic, MentalLogicWidget>("mental", "MentalLogic", "Logic Gates", UTILITY_TAG);

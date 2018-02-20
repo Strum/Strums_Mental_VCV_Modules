@@ -248,9 +248,19 @@ void MentalCartesian::step() {
 }
 
 ////////////////////////////////
-MentalCartesianWidget::MentalCartesianWidget() {
-	MentalCartesian *module = new MentalCartesian();
-	setModule(module);
+struct MentalCartesianWidget : ModuleWidget {
+  MentalCartesianWidget(MentalCartesian *module);
+};
+
+//MentalCartesianWidget::MentalCartesianWidget() {
+//	MentalCartesian *module = new MentalCartesian();
+//	setModule(module);
+
+MentalCartesianWidget::MentalCartesianWidget(MentalCartesian *module) : ModuleWidget(module)
+{
+
+
+
 	box.size = Vec(15*16, 380);
   
 	{
@@ -265,32 +275,34 @@ MentalCartesianWidget::MentalCartesianWidget() {
   int column_spacing = 25; 
   int row_spacing = 25;
   int button_offset = 140;
-	addInput(createInput<GateInPort>(Vec(left, top), module, MentalCartesian::LEFT));
-  addInput(createInput<GateInPort>(Vec(left+column_spacing, top), module, MentalCartesian::RIGHT));
-  addInput(createInput<CVInPort>(Vec(left+column_spacing * 2, top), module, MentalCartesian::X_CV));
-  addInput(createInput<GateInPort>(Vec(left+column_spacing * 3, top), module, MentalCartesian::X_RESET));
+	addInput(Port::create<GateInPort>(Vec(left, top), Port::INPUT, module, MentalCartesian::LEFT));
+  addInput(Port::create<GateInPort>(Vec(left+column_spacing, top), Port::INPUT, module, MentalCartesian::RIGHT));
+  addInput(Port::create<CVInPort>(Vec(left+column_spacing * 2, top), Port::INPUT, module, MentalCartesian::X_CV));
+  addInput(Port::create<GateInPort>(Vec(left+column_spacing * 3, top), Port::INPUT, module, MentalCartesian::X_RESET));
   
-  addInput(createInput<GateInPort>(Vec(left, top + 30), module, MentalCartesian::UP));
-  addInput(createInput<GateInPort>(Vec(left + column_spacing, top + 30), module, MentalCartesian::DOWN));  
-  addInput(createInput<CVInPort>(Vec(left + column_spacing * 2, top + 30), module, MentalCartesian::Y_CV));
-  addInput(createInput<GateInPort>(Vec(left + column_spacing * 3, top + 30), module, MentalCartesian::Y_RESET));
+  addInput(Port::create<GateInPort>(Vec(left, top + 30), Port::INPUT, module, MentalCartesian::UP));
+  addInput(Port::create<GateInPort>(Vec(left + column_spacing, top + 30), Port::INPUT, module, MentalCartesian::DOWN));  
+  addInput(Port::create<CVInPort>(Vec(left + column_spacing * 2, top + 30), Port::INPUT, module, MentalCartesian::Y_CV));
+  addInput(Port::create<GateInPort>(Vec(left + column_spacing * 3, top + 30), Port::INPUT, module, MentalCartesian::Y_RESET));
     
-  addInput(createInput<GateInPort>(Vec(left + column_spacing * 3, top + row_spacing * 2 + 10), module, MentalCartesian::RESET));
+  addInput(Port::create<GateInPort>(Vec(left + column_spacing * 3, top + row_spacing * 2 + 10), Port::INPUT, module, MentalCartesian::RESET));
   
-  addOutput(createOutput<CVOutPort>(Vec(213, 20), module, MentalCartesian::UNQUANT_OUT));  
-  addOutput(createOutput<CVOutPort>(Vec(213, 50), module, MentalCartesian::QUANT_OUT));	
+  addOutput(Port::create<CVOutPort>(Vec(213, 20), Port::OUTPUT, module, MentalCartesian::UNQUANT_OUT));  
+  addOutput(Port::create<CVOutPort>(Vec(213, 50), Port::OUTPUT, module, MentalCartesian::QUANT_OUT));	
   
   for ( int i = 0 ; i < 4 ; i++)
   {
     for ( int j = 0 ; j < 4 ; j++)
     {
-      addParam(createParam<Trimpot>(Vec(left+column_spacing * i, top + row_spacing * j + 150 ), module, MentalCartesian::KNOB_PARAM + i + j * 4, -2.0, 2.0, 0.0));
-      addChild(createLight<MediumLight<GreenLight>>(Vec(left+column_spacing * i + 4, top + row_spacing * j + 150 + 4), module, MentalCartesian::GRID_LIGHTS + i + j * 4));
-      addParam(createParam<LEDButton>(Vec(button_offset+left+column_spacing * i, top + row_spacing * j + 150 ), module, MentalCartesian::BUTTON_PARAM + i + j * 4, 0.0, 1.0, 0.0));
-      addChild(createLight<MediumLight<GreenLight>>(Vec(button_offset+left+column_spacing * i + 5, top + row_spacing * j + 150 + 5), module, MentalCartesian::BUTTON_LIGHTS + i + j * 4));
+      addParam(ParamWidget::create<Trimpot>(Vec(left+column_spacing * i, top + row_spacing * j + 150 ), module, MentalCartesian::KNOB_PARAM + i + j * 4, -2.0, 2.0, 0.0));
+      addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(left+column_spacing * i + 4, top + row_spacing * j + 150 + 4), module, MentalCartesian::GRID_LIGHTS + i + j * 4));
+      addParam(ParamWidget::create<LEDButton>(Vec(button_offset+left+column_spacing * i, top + row_spacing * j + 150 ), module, MentalCartesian::BUTTON_PARAM + i + j * 4, 0.0, 1.0, 0.0));
+      addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(button_offset+left+column_spacing * i + 5, top + row_spacing * j + 150 + 5), module, MentalCartesian::BUTTON_LIGHTS + i + j * 4));
     }
-    addOutput(createOutput<CVOutPort>(Vec(left+column_spacing * i, top + row_spacing * 4 + 150 ), module, MentalCartesian::ROW_OUT + i));
-    addOutput(createOutput<CVOutPort>(Vec(left+column_spacing * 4, top + row_spacing * i + 150 ), module, MentalCartesian::COLUMN_OUT + i));
+    addOutput(Port::create<CVOutPort>(Vec(left+column_spacing * i, top + row_spacing * 4 + 150 ), Port::OUTPUT, module, MentalCartesian::ROW_OUT + i));
+    addOutput(Port::create<CVOutPort>(Vec(left+column_spacing * 4, top + row_spacing * i + 150 ), Port::OUTPUT, module, MentalCartesian::COLUMN_OUT + i));
 	}  
 	
 }
+
+Model *modelMentalCartesian = Model::create<MentalCartesian, MentalCartesianWidget>("mental", "MentalCartesian", "Cartesian Sequencer", SEQUENCER_TAG);

@@ -8,7 +8,38 @@ extern Plugin *plugin;
 // module widgets
 ////////////////////
 
-struct MentalSubMixerWidget : ModuleWidget {
+/// 06 versions
+
+extern Model *MentalMults;
+extern Model *MentalSubMixer;
+extern Model *MentalMixer;
+extern Model *MentalFold;
+extern Model *MentalClip;
+extern Model *MentalGates;
+extern Model *MentalABSwitches;
+extern Model *MentalQuantiser;
+extern Model *MentalChord;
+extern Model *MentalMuxes;
+extern Model *MentalLogic;
+extern Model *MentalButtons;
+extern Model *MentalSums;
+extern Model *MentalPitchShift;
+extern Model *MentalClockDivider;
+extern Model *MentalCartesian;
+extern Model *MentalPatchMatrix;
+extern Model *MentalBinaryDecoder;
+extern Model *MentalSwitch8;
+extern Model *MentalMux8;
+extern Model *MentalCounters;
+extern Model *MentalKnobs;
+extern Model *MentalGateMaker;
+extern Model *MentalMasterClock;
+extern Model *MentalPatchNotes;
+extern Model *MentalQuadLFO;
+extern Model *MentalRadioButtons;
+
+
+/*struct MentalSubMixerWidget : ModuleWidget {
 	MentalSubMixerWidget();
 };
 
@@ -121,7 +152,7 @@ struct MentalQuadLFOWidget : ModuleWidget {
 
 struct MentalRadioButtonsWidget : ModuleWidget {
 	MentalRadioButtonsWidget();
-};
+}; */
 
 /////////////////////////////////////////////
 // ports

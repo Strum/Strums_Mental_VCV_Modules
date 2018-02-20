@@ -87,9 +87,18 @@ void MentalMux8::step()
   lights[INPUT_LEDS + decoded].value = 1.0; 
 }
 
-MentalMux8Widget::MentalMux8Widget() {
-	MentalMux8 *module = new MentalMux8();
-	setModule(module);
+//////////////////////////////////////////////////////////////
+struct MentalMux8Widget : ModuleWidget {
+  MentalMux8Widget(MentalMux8 *module);
+};
+
+MentalMux8Widget::MentalMux8Widget(MentalMux8 *module) : ModuleWidget(module)
+{
+
+//MentalMux8Widget::MentalMux8Widget() {
+//	MentalMux8 *module = new MentalMux8();
+//	setModule(module);
+
 	box.size = Vec(15*5, 380);
   
 	{
@@ -102,16 +111,18 @@ MentalMux8Widget::MentalMux8Widget() {
   int spacing = 25; 
   int top_space = 15;
   
-  addInput(createInput<GateInPort>(Vec(3, top_space), module, MentalMux8::INPUT_1));
-  addInput(createInput<GateInPort>(Vec(3, top_space + spacing), module, MentalMux8::INPUT_2));
-  addInput(createInput<GateInPort>(Vec(3, top_space + spacing * 2), module, MentalMux8::INPUT_4));
+  addInput(Port::create<GateInPort>(Vec(3, top_space), Port::INPUT, module, MentalMux8::INPUT_1));
+  addInput(Port::create<GateInPort>(Vec(3, top_space + spacing), Port::INPUT, module, MentalMux8::INPUT_2));
+  addInput(Port::create<GateInPort>(Vec(3, top_space + spacing * 2), Port::INPUT, module, MentalMux8::INPUT_4));
   
   for (int i = 0; i < 8 ; i++)
   {  
-   addInput(createInput<InPort>(Vec(3, top_space + spacing * i + 100), module, MentalMux8::SIG_INPUT + i));   	 
-   addChild(createLight<MediumLight<GreenLight>>(Vec(33, top_space +  spacing * i + 8 + 100), module, MentalMux8::INPUT_LEDS + i));
+   addInput(Port::create<InPort>(Vec(3, top_space + spacing * i + 100), Port::INPUT, module, MentalMux8::SIG_INPUT + i));   	 
+   addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(33, top_space +  spacing * i + 8 + 100), module, MentalMux8::INPUT_LEDS + i));
   }
   
-  addOutput(createOutput<OutPort>(Vec(30, top_space + spacing), module, MentalMux8::OUTPUT));  
+  addOutput(Port::create<OutPort>(Vec(30, top_space + spacing), Port::OUTPUT, module, MentalMux8::OUTPUT));  
   
 }
+
+Model *modelMentalMux8 = Model::create<MentalMux8, MentalMux8Widget>("mental", "MentalMux8", "8 Way Multiplexer", UTILITY_TAG);
