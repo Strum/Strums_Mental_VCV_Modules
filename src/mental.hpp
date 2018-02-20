@@ -10,33 +10,33 @@ extern Plugin *plugin;
 
 /// 06 versions
 
-extern Model *MentalMults;
-extern Model *MentalSubMixer;
-extern Model *MentalMixer;
-extern Model *MentalFold;
-extern Model *MentalClip;
-extern Model *MentalGates;
-extern Model *MentalABSwitches;
-extern Model *MentalQuantiser;
-extern Model *MentalChord;
-extern Model *MentalMuxes;
-extern Model *MentalLogic;
-extern Model *MentalButtons;
-extern Model *MentalSums;
-extern Model *MentalPitchShift;
-extern Model *MentalClockDivider;
-extern Model *MentalCartesian;
-extern Model *MentalPatchMatrix;
-extern Model *MentalBinaryDecoder;
-extern Model *MentalSwitch8;
-extern Model *MentalMux8;
-extern Model *MentalCounters;
-extern Model *MentalKnobs;
-extern Model *MentalGateMaker;
-extern Model *MentalMasterClock;
-extern Model *MentalPatchNotes;
-extern Model *MentalQuadLFO;
-extern Model *MentalRadioButtons;
+extern Model *modelMentalMults;
+extern Model *modelMentalSubMixer;
+extern Model *modelMentalMixer;
+extern Model *modelMentalFold;
+extern Model *modelMentalClip;
+extern Model *modelMentalGates;
+extern Model *modelMentalABSwitches;
+extern Model *modelMentalQuantiser;
+extern Model *modelMentalChord;
+extern Model *modelMentalMuxes;
+extern Model *modelMentalLogic;
+extern Model *modelMentalButtons;
+extern Model *modelMentalSums;
+extern Model *modelMentalPitchShift;
+extern Model *modelMentalClockDivider;
+extern Model *modelMentalCartesian;
+extern Model *modelMentalPatchMatrix;
+extern Model *modelMentalBinaryDecoder;
+extern Model *modelMentalSwitch8;
+extern Model *modelMentalMux8;
+extern Model *modelMentalCounters;
+extern Model *modelMentalKnobs;
+extern Model *modelMentalGateMaker;
+extern Model *modelMentalMasterClock;
+//extern Model *modelMentalPatchNotes;
+extern Model *modelMentalQuadLFO;
+extern Model *modelMentalRadioButtons;
 
 
 /*struct MentalSubMixerWidget : ModuleWidget {

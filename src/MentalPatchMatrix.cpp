@@ -149,9 +149,11 @@ struct MentalPatchMatrixWidget : ModuleWidget {
 MentalPatchMatrixWidget::MentalPatchMatrixWidget(MentalPatchMatrix *module) : ModuleWidget(module)
 {
 
-MentalPatchMatrixWidget::MentalPatchMatrixWidget() {
-	MentalPatchMatrix *module = new MentalPatchMatrix();
-	setModule(module);
+//MentalPatchMatrixWidget::MentalPatchMatrixWidget() {
+//	MentalPatchMatrix *module = new MentalPatchMatrix();
+//	setModule(module);
+
+  
 	box.size = Vec(15*19, 380);
   
   int top_row = 75;

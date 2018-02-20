@@ -73,7 +73,7 @@ struct MentalClockDivider : Module {
 
 ////////////////////////////////////////////////////////////////
 
-/*MentalClockDivider::MentalClockDivider() {
+MentalClockDivider::MentalClockDivider() {
 	params.resize(NUM_PARAMS);
 	inputs.resize(NUM_INPUTS);
 	outputs.resize(NUM_OUTPUTS);
@@ -89,9 +89,8 @@ struct MentalClockDivider : Module {
   trigger7.setThresholds(0.0, 1.0);
   trigger12.setThresholds(0.0, 1.0);
   
-	reset_trig.setThresholds(0.0, 1.0);
-} 
-*/
+	reset_trig.setThresholds(0.0, 1.0);*/
+}
 
 //const float lightLambda = 0.075;
 int divider2 = 2;

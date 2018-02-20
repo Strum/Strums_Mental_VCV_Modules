@@ -166,4 +166,4 @@ MentalQuantiserWidget::MentalQuantiserWidget(MentalQuantiser *module) : ModuleWi
   }
 }
 
-Model *modelMentalQuantiser = Model::create<MentalQuantiser, MentalQuantiserWidget>("mental", "MentalQuantiser", "Quantiser", QUANTISER_TAG);
+Model *modelMentalQuantiser = Model::create<MentalQuantiser, MentalQuantiserWidget>("mental", "MentalQuantiser", "Quantiser", QUANTIZER_TAG);

@@ -167,7 +167,7 @@ void MentalMixer::step() {
 /////////////////////////////////////////////////////////////////////////////
 struct MentalMixerWidget : ModuleWidget {
   MentalMixerWidget(MentalMixer *module);
-}
+};
 
 MentalMixerWidget::MentalMixerWidget(MentalMixer *module) : ModuleWidget(module)
 {
