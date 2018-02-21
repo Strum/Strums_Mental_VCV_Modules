@@ -81,19 +81,9 @@ struct MentalSubMixerWidget : ModuleWidget {
 MentalSubMixerWidget::MentalSubMixerWidget(MentalSubMixer *module) : ModuleWidget(module)
 {
 
-//MentalSubMixerWidget::MentalSubMixerWidget() {
-//	MentalSubMixer *module = new MentalSubMixer();
-//	setModule(module);
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalSubMixer.svg")));
 
-	box.size = Vec(15*8, 380);
-	int stripwidth = 28;
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		//panel->setBackground(SVG::load("plugins/mental/res/MentalSubMixer.svg"));
-	    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalSubMixer.svg")));
-		addChild(panel);
-	}
+    int stripwidth = 28;
 	// master section
   	addOutput(Port::create<OutPort>(Vec( 6 + stripwidth, 20), Port::OUTPUT, module, MentalSubMixer::MIX_OUTPUT_L));
 	addOutput(Port::create<OutPort>(Vec( 6 + stripwidth * 2 , 20), Port::OUTPUT, module, MentalSubMixer::MIX_OUTPUT_R));

@@ -43,15 +43,6 @@ struct MentalMuxes : Module {
     LEVEL_LED_C4,    
     NUM_LIGHTS
   };
-
-  /*float level_led_a1 = 0.0;
-  float level_led_a2 = 0.0;
-  float level_led_b1 = 0.0;
-  float level_led_b2 = 0.0;
-  float level_led_c1 = 0.0;
-  float level_led_c2 = 0.0;
-  float level_led_c3 = 0.0;
-  float level_led_c4 = 0.0; */
   
 	MentalMuxes() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 	void step() override;
@@ -66,17 +57,13 @@ void MentalMuxes::step()
   
   if (select_a > 0.0 )
   {
-    outputs[OUTPUT_A].value = signal_in_a2;
-    //level_led_a2 = abs((signal_in_a2 / 3));
-    //level_led_a1 = 0.0;
+    outputs[OUTPUT_A].value = signal_in_a2;    
     lights[LEVEL_LED_A2].value = std::abs((signal_in_a2 / 3));
     lights[LEVEL_LED_A1].value = 0.0;
   }
   else
   {
-    outputs[OUTPUT_A].value = signal_in_a1;
-    //level_led_a1 = abs((signal_in_a1 / 3));
-    //level_led_a2 = 0.0;
+    outputs[OUTPUT_A].value = signal_in_a1;    
     lights[LEVEL_LED_A1].value = std::abs((signal_in_a1 / 3));
     lights[LEVEL_LED_A2].value = 0.0;
   }
@@ -86,17 +73,13 @@ void MentalMuxes::step()
   
   if (select_b > 0.0 )
   {
-    outputs[OUTPUT_B].value = signal_in_b2;
-    //level_led_b2 = abs((signal_in_b2 / 3));
-    //level_led_b1 = 0.0;
+    outputs[OUTPUT_B].value = signal_in_b2;    
     lights[LEVEL_LED_B2].value = std::abs((signal_in_b2 / 3));
     lights[LEVEL_LED_B1].value = 0.0;
   }
   else
   {
-    outputs[OUTPUT_B].value = signal_in_b1;
-    //level_led_b1 = abs((signal_in_b1 / 3));
-    //level_led_b2 = 0.0;
+    outputs[OUTPUT_B].value = signal_in_b1;    
     lights[LEVEL_LED_B1].value = std::abs((signal_in_b1 / 3));
     lights[LEVEL_LED_B2].value = 0.0;
   }
@@ -111,11 +94,7 @@ void MentalMuxes::step()
     
   if (selector == 0 )
   {
-    outputs[OUTPUT_C].value = signal_in_c1;
-    //level_led_c1 = abs((signal_in_c1 / 3));
-    //level_led_c2 = 0.0;
-    //level_led_c3 = 0.0;
-    //level_led_c4 = 0.0; 
+    outputs[OUTPUT_C].value = signal_in_c1;    
     lights[LEVEL_LED_C1].value = std::abs((signal_in_c1 / 3));
     lights[LEVEL_LED_C2].value = 0.0;
     lights[LEVEL_LED_C3].value = 0.0;
@@ -124,11 +103,7 @@ void MentalMuxes::step()
   }
   if (selector == 1 )
   {
-    outputs[OUTPUT_C].value = signal_in_c2;
-    //level_led_c2 = abs((signal_in_c2 / 3));
-    //level_led_c1 = 0.0;
-    //level_led_c3 = 0.0;
-    //level_led_c4 = 0.0;
+    outputs[OUTPUT_C].value = signal_in_c2;    
     lights[LEVEL_LED_C2].value = std::abs((signal_in_c2 / 3));
     lights[LEVEL_LED_C1].value = 0.0;
     lights[LEVEL_LED_C3].value = 0.0;
@@ -136,11 +111,7 @@ void MentalMuxes::step()
   }
   if (selector == 2 )
   {
-    outputs[OUTPUT_C].value = signal_in_c3;
-    //level_led_c3 = abs((signal_in_c3 / 3));
-    //level_led_c1 = 0.0;
-    //level_led_c2 = 0.0;
-    //level_led_c4 = 0.0;
+    outputs[OUTPUT_C].value = signal_in_c3;    
     lights[LEVEL_LED_C3].value = std::abs((signal_in_c3 / 3));
     lights[LEVEL_LED_C2].value = 0.0;
     lights[LEVEL_LED_C2].value = 0.0;
@@ -148,11 +119,7 @@ void MentalMuxes::step()
   }
   if (selector == 3 )
   {
-    outputs[OUTPUT_C].value = signal_in_c4;
-    //level_led_c4 = abs((signal_in_c4 / 3));
-    //level_led_c1 = 0.0;
-    //level_led_c2 = 0.0;
-    //level_led_c3 = 0.0;
+    outputs[OUTPUT_C].value = signal_in_c4;    
     lights[LEVEL_LED_C4].value = std::abs((signal_in_c4 / 3));
     lights[LEVEL_LED_C1].value = 0.0;
     lights[LEVEL_LED_C2].value = 0.0;
@@ -168,19 +135,8 @@ struct MentalMuxesWidget : ModuleWidget {
 MentalMuxesWidget::MentalMuxesWidget(MentalMuxes *module) : ModuleWidget(module)
 {
 
-//MentalMuxesWidget::MentalMuxesWidget() {
-//	MentalMuxes *module = new MentalMuxes();
-//	setModule(module);
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalMuxes.svg")));
 
-	box.size = Vec(15*4, 380);
-  
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		//panel->setBackground(SVG::load("plugins/mental/res/MentalMuxes.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalMuxes.svg")));
-		addChild(panel);
-	}
 	int group_offset = 90;
   addInput(Port::create<GateInPort>(Vec(3, 75), Port::INPUT, module, MentalMuxes::SELECT_A));  
 	addInput(Port::create<InPort>(Vec(3, 25), Port::INPUT, module, MentalMuxes::INPUT_1A));

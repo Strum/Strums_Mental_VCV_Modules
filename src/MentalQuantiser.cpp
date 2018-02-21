@@ -37,8 +37,6 @@ struct MentalQuantiser : Module {
   SchmittTrigger button_triggers[12];
   
   bool button_states[12] = {true,true,true,true,true,true,true,true,true,true,true,true};
-  //float button_lights[12] = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
-  //float output_lights[12] = {0.0};
   float quantised = 0.0;
   bool found = false;
   int last_found = 0;
@@ -88,9 +86,7 @@ void MentalQuantiser::step() {
     {
 		  button_states[i] = !button_states[i];
 	  }
-	  //button_lights[i] = button_states[i] ? 1.0 : 0.0;
     lights[BUTTON_LIGHTS + i ].value  = (button_states[i]) ? 1.0 : 0.0;
-    //output_lights[i]= 0;
     lights[OUTPUT_LIGHTS + i].value = 0.0;
   }
 
@@ -121,7 +117,6 @@ void MentalQuantiser::step() {
   {    
     found = true;    
     outputs[OUTPUT].value = quantised;
-    //output_lights[semitone] = 1.0;
     lights[OUTPUT_LIGHTS + semitone].value  = 1.0;
   }     
 }
@@ -134,20 +129,8 @@ struct MentalQuantiserWidget : ModuleWidget {
 MentalQuantiserWidget::MentalQuantiserWidget(MentalQuantiser *module) : ModuleWidget(module)
 {
 
-//MentalQuantiserWidget::MentalQuantiserWidget() {
-//	MentalQuantiser *module = new MentalQuantiser();
-//	setModule(module);
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalQuantiser.svg")));
 
-
-	box.size = Vec(15*6, 380);
-
-  {
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		//panel->setBackground(SVG::load("plugins/mental/res/MentalQuantiser.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalQuantiser.svg")));
-		addChild(panel);
-	}
   int top_row = 50;
   int row_spacing = 25; 
 	

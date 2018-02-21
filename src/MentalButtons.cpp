@@ -32,10 +32,7 @@ struct MentalButtons : Module {
 	};
 
   SchmittTrigger button_triggers[7];
-  //SchmittTrigger momentary_trigger;
-  //float button_leds[7] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0};  
   bool button_states[7] = {0,0,0,0,0,0,0};
-  //float moment_leds[7] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0};
   
 	MentalButtons() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 	void step() override;
@@ -79,18 +76,15 @@ void MentalButtons::step()
     {
 		  button_states[i] = !button_states[i];
 	  }
-    //button_leds[i] = button_states[i] ? 1.0 : 0.0;
     lights[BUTTON_LEDS + i ].value  = (button_states[i]) ? 1.0 : 0.0;
     outputs[OUTPUT + i].value = button_states[i] * 10.0;
     if (params[MOMENT + i].value > 0.0)
     {
-	    //moment_leds[i] = 1.0;
       lights[MOMENT_LEDS + i ].value  = 1.0;
       outputs[MOMENT_OUT + i].value = 10.0;
 	  }
     else
     {
-	    //moment_leds[i] = 0.0;
       lights[MOMENT_LEDS + i ].value  = 0.0;
       outputs[MOMENT_OUT + i].value = 0.0;
 	  }
@@ -103,23 +97,10 @@ struct MentalButtonsWidget : ModuleWidget {
   MentalButtonsWidget(MentalButtons *module);
 };
 
-//MentalButtonsWidget::MentalButtonsWidget() {
-//	MentalButtons *module = new MentalButtons();
-//	setModule(module);
-
 MentalButtonsWidget::MentalButtonsWidget(MentalButtons *module) : ModuleWidget(module)
 {
 
-
-	box.size = Vec(15*4, 380);
-  
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		//panel->setBackground(SVG::load("plugins/mental/res/MentalButtons.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalButtons.svg")));
-		addChild(panel);
-	}
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalBUttons.svg")));
 	
   int spacing = 25; 
   int group_offset = 190;

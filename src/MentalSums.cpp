@@ -64,34 +64,22 @@ struct MentalSumsWidget : ModuleWidget {
 MentalSumsWidget::MentalSumsWidget(MentalSums *module) : ModuleWidget(module)
 {
 
-//MentalSumsWidget::MentalSumsWidget() {
-//	MentalSums *module = new MentalSums();
-//	setModule(module);
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalSums.svg")));
 
-	box.size = Vec(15*2, 380);
-  
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		//panel->setBackground(SVG::load("plugins/mental/res/MentalSums.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalSums.svg")));
-		addChild(panel);
-	}
   addOutput(Port::create<OutPort>(Vec(3, 22), Port::OUTPUT, module, MentalSums::OUTPUT_1));
   addOutput(Port::create<OutPort>(Vec(3, 190), Port::OUTPUT, module, MentalSums::OUTPUT_2));
   
   addInput(Port::create<InPort>(Vec(3, 58), Port::INPUT, module, MentalSums::INPUT_1));
-	addInput(Port::create<InPort>(Vec(3, 83), Port::INPUT, module, MentalSums::INPUT_2));
-	addInput(Port::create<InPort>(Vec(3, 108), Port::INPUT, module, MentalSums::INPUT_3));
-	addInput(Port::create<InPort>(Vec(3, 133), Port::INPUT, module, MentalSums::INPUT_4));
-	addInput(Port::create<InPort>(Vec(3, 158), Port::INPUT, module, MentalSums::INPUT_5));
+  addInput(Port::create<InPort>(Vec(3, 83), Port::INPUT, module, MentalSums::INPUT_2));
+  addInput(Port::create<InPort>(Vec(3, 108), Port::INPUT, module, MentalSums::INPUT_3));
+  addInput(Port::create<InPort>(Vec(3, 133), Port::INPUT, module, MentalSums::INPUT_4));
+  addInput(Port::create<InPort>(Vec(3, 158), Port::INPUT, module, MentalSums::INPUT_5));
   
   addInput(Port::create<InPort>(Vec(3, 230), Port::INPUT, module, MentalSums::INPUT_2_1));
-	addInput(Port::create<InPort>(Vec(3, 255), Port::INPUT, module, MentalSums::INPUT_2_2));
-	addInput(Port::create<InPort>(Vec(3, 280), Port::INPUT, module, MentalSums::INPUT_2_3));
-	addInput(Port::create<InPort>(Vec(3, 305), Port::INPUT, module, MentalSums::INPUT_2_4));
-	addInput(Port::create<InPort>(Vec(3, 330), Port::INPUT, module, MentalSums::INPUT_2_5));
-	
+  addInput(Port::create<InPort>(Vec(3, 255), Port::INPUT, module, MentalSums::INPUT_2_2));
+  addInput(Port::create<InPort>(Vec(3, 280), Port::INPUT, module, MentalSums::INPUT_2_3));
+  addInput(Port::create<InPort>(Vec(3, 305), Port::INPUT, module, MentalSums::INPUT_2_4));
+  addInput(Port::create<InPort>(Vec(3, 330), Port::INPUT, module, MentalSums::INPUT_2_5));	
 }
 
 Model *modelMentalSums = Model::create<MentalSums, MentalSumsWidget>("mental", "MentalSums", "Summing Mixer", MIXER_TAG, UTILITY_TAG);

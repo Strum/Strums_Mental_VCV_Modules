@@ -35,11 +35,8 @@ struct MentalRadioButtons : Module {
 
   SchmittTrigger button_triggers[7];
   SchmittTrigger button2_triggers[7];
-  //SchmittTrigger momentary_trigger;
-  //float button_leds[7] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0};  
   bool button_states[7] = {1,0,0,0,0,0,0};
   bool button2_states[7] = {1,0,0,0,0,0,0};
-  //float moment_leds[7] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0};
   
 	MentalRadioButtons() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 	void step() override;
@@ -105,7 +102,6 @@ void MentalRadioButtons::step()
       }
 		  button_states[i] = !button_states[i];      
 	  }
-    //button_leds[i] = button_states[i] ? 1.0 : 0.0;
     lights[BUTTON_LEDS + i ].value  = (button_states[i]) ? 1.0 : 0.0;
     outputs[OUTPUT + i].value = button_states[i] * 10.0;
     
@@ -117,7 +113,6 @@ void MentalRadioButtons::step()
       }
 		  button2_states[i] = !button2_states[i];      
 	  }
-    //button_leds[i] = button_states[i] ? 1.0 : 0.0;
     lights[BUTTON2_LEDS + i ].value  = (button2_states[i]) ? 1.0 : 0.0;
     outputs[BUTTON2_OUT + i].value = button2_states[i] * 10.0;    
   }
@@ -131,21 +126,9 @@ struct MentalRadioButtonsWidget : ModuleWidget {
 
 MentalRadioButtonsWidget::MentalRadioButtonsWidget(MentalRadioButtons *module) : ModuleWidget(module)
 {
-
-//entalRadioButtonsWidget::MentalRadioButtonsWidget() {
-//	MentalRadioButtons *module = new MentalRadioButtons();
-//	setModule(module);
-
-	box.size = Vec(15*6, 380);
-  
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		//panel->setBackground(SVG::load("plugins/mental/res/MentalButtons.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalRadioButtons.svg")));
-		addChild(panel);
-	}
 	
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalRadioButtons.svg")));
+
   int spacing = 25; 
   int group_offset = 190;
   int top_space = 15;

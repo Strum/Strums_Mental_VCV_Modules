@@ -28,14 +28,6 @@ struct MentalMults : Module {
 	void step() override;
 };
 
-/*
-MentalMults::MentalMults() {
-  params.resize(NUM_PARAMS);
-	inputs.resize(NUM_INPUTS);
-	outputs.resize(NUM_OUTPUTS);
-}*/
-
-
 void MentalMults::step() {
 	
   
@@ -64,20 +56,7 @@ struct MentalMultsWidget : ModuleWidget {
 MentalMultsWidget::MentalMultsWidget(MentalMults *module) : ModuleWidget(module)
 {
 
-//MentalMultsWidget::MentalMultsWidget() {
-//	MentalMults *module = new MentalMults();
-//	setModule(module);
-
-
-	box.size = Vec(15*2, 380);
-  
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		//panel->setBackground(SVG::load("plugins/mental/res/MentalMults.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalMults.svg")));
-		addChild(panel);
-	}
+	setPanel(SVG::load(assetPlugin(plugin, "res/MentalMults.svg")));
 	
 	addInput(Port::create<InPort>(Vec(3, 22), Port::INPUT, module, MentalMults::INPUT_1));
   addInput(Port::create<InPort>(Vec(3, 190), Port::INPUT, module, MentalMults::INPUT_2));

@@ -30,13 +30,6 @@ struct MentalClip : Module {
   void step() override;
 };
 
-/*
-MentalClip::MentalClip() {
-  params.resize(NUM_PARAMS);
-  inputs.resize(NUM_INPUTS);
-  outputs.resize(NUM_OUTPUTS);
-}*/
-
 /////////////////////////////////////////////////////
 void MentalClip::step() {
 
@@ -84,23 +77,8 @@ struct MentalClipWidget : ModuleWidget {
 
 MentalClipWidget::MentalClipWidget(MentalClip *module) : ModuleWidget(module)
 {
-
-
-//MentalClipWidget::MentalClipWidget() {
-//  MentalClip *module = new MentalClip();
-//  setModule(module);
-
-
-  box.size = Vec(15*2, 380);
-
-  {
-    SVGPanel *panel = new SVGPanel();
-    panel->box.size = box.size;
-    //panel->setBackground(SVG::load("plugins/mental/res/MentalClip.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalClip.svg")));
-    addChild(panel);
-  }
   
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalClip.svg")));
 
   // label
   addParam(ParamWidget::create<Trimpot>(Vec(6, box.size.y / 2 - 169), module, MentalClip::THRESH1_PARAM, 0.0, 1.0, 1.0));

@@ -46,14 +46,6 @@ struct MentalLogic : Module {
     OR_LED_3,
 		NUM_LIGHTS
 	};
-
-  /*float and_led_1 = 0.0;
-  float or_led_1 = 0.0;
-  float and_led_2 = 0.0;
-  float or_led_2 = 0.0;
-  float inv_led_1 = 0.0;
-  float inv_led_2 = 0.0;
-  float or_led_3 = 0.0; */
   
 	MentalLogic() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 	void step() override;
@@ -77,25 +69,21 @@ void MentalLogic::step()
   if (inv_1_input > 0.0)
   { 
     outputs[OUTPUT_INV_1].value = 0.0;
-    //inv_led_1 = 0.0;
     lights[INV_LED_1].value = 0.0;
   }
   else
   {
     outputs[OUTPUT_INV_1].value = 10.0;
-    //inv_led_1 = 1.0;
     lights[INV_LED_1].value = 1.0;
   }
   if (inv_2_input > 0.0)
   { 
     outputs[OUTPUT_INV_2].value = 0.0;
-    //inv_led_2 = 0.0;
     lights[INV_LED_2].value = 0.0;
   }
   else
   {
     outputs[OUTPUT_INV_2].value = 10.0;
-    //inv_led_2 = 1.0;
     lights[INV_LED_2].value = 1.0;
   }
     
@@ -104,63 +92,53 @@ void MentalLogic::step()
   if (signal_in_A1 > 0.0 && signal_in_B1 > 0.0 )
   {
     outputs[OUTPUT_AND_1].value = 10.0;    
-    //and_led_1 = 1.0;
     lights[AND_LED_1].value = 1.0;
   }
   else 
   {
     outputs[OUTPUT_AND_1].value = 0.0;    
-    //and_led_1 = 0.0;
     lights[AND_LED_1].value = 0.0;
   }
   if (signal_in_A1 > 0.0 || signal_in_B1 > 0.0 )
   {
     outputs[OUTPUT_OR_1].value = 10.0;
-    //or_led_1 = 1.0;
     lights[OR_LED_1].value = 1.0;
   }
   else 
   {
     outputs[OUTPUT_OR_1].value = 0.0;    
-    //or_led_1 = 0.0;
     lights[OR_LED_1].value = 0.0;
   }
   //////////////////////////////////////
   if (signal_in_A2 > 0.0 && signal_in_B2 > 0.0 )
   {
     outputs[OUTPUT_AND_2].value = 10.0;    
-    //and_led_2 = 1.0;
     lights[AND_LED_2].value = 1.0;
   }
   else 
   {
     outputs[OUTPUT_AND_2].value = 0.0;    
-    //and_led_2 = 0.0;
     lights[AND_LED_2].value = 0.0;
   }
   if (signal_in_A2 > 0.0 || signal_in_B2 > 0.0 )
   {
     outputs[OUTPUT_OR_2].value = 10.0;
-    //or_led_2 = 1.0;
     lights[OR_LED_2].value = 1.0;
   }
   else 
   {
     outputs[OUTPUT_OR_2].value = 0.0;    
-    //or_led_2 = 0.0;
     lights[OR_LED_2].value = 0.0;
   } 
   //////////////// Big or
   if ( or_3_A_input > 0.0 || or_3_B_input > 0.0 || or_3_C_input > 0.0 || or_3_D_input > 0.0 || or_3_E_input > 0.0 )
   {
     outputs[OUTPUT_OR_3].value = 10.0;
-    //or_led_3 = 1.0;
     lights[OR_LED_3].value = 1.0;
   }
   else 
   {
     outputs[OUTPUT_OR_3].value = 0.0;    
-    //or_led_3 = 0.0;
     lights[OR_LED_3].value = 0.0;
   } 
 }
@@ -172,21 +150,9 @@ struct MentalLogicWidget : ModuleWidget {
 
 MentalLogicWidget::MentalLogicWidget(MentalLogic *module) : ModuleWidget(module)
 {
-
-//MentalLogicWidget::MentalLogicWidget() {
-//	MentalLogic *module = new MentalLogic();
-//	setModule(module);
-
-	box.size = Vec(15*5, 380);
-  
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		//panel->setBackground(SVG::load("plugins/mental/res/MentalLogic.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalLogic.svg")));
-		addChild(panel);
-	}
 	
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalLogic.svg")));
+
   int input_column = 3;
   int output_column = 28;
   int led_column = 58;

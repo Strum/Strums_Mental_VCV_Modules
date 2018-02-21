@@ -45,7 +45,7 @@ struct MentalCounters : Module {
   int count_2 = 0;
   
 	MentalCounters();
-  // : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+ 
 	void step() override;
 };
 
@@ -53,11 +53,7 @@ MentalCounters::MentalCounters()
 {
   params.resize(NUM_PARAMS);
 	inputs.resize(NUM_INPUTS);
-	outputs.resize(NUM_OUTPUTS);
-	//clock_trigger.setThresholds(0.0, 1.0);
-	//reset_trigger.setThresholds(0.0, 1.0);
-  //clock_trigger_2.setThresholds(0.0, 1.0);
-	//reset_trigger_2.setThresholds(0.0, 1.0);
+	outputs.resize(NUM_OUTPUTS);	
 }
 
 void MentalCounters::step()
@@ -148,19 +144,7 @@ struct MentalCountersWidget : ModuleWidget {
 MentalCountersWidget::MentalCountersWidget(MentalCounters *module) : ModuleWidget(module)
 {
 
-//MentalCountersWidget::MentalCountersWidget() {
-//	MentalCounters *module = new MentalCounters();
-//	setModule(module);
-
-
-	box.size = Vec(15*4, 380);
-  
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalCounters.svg")));
-		addChild(panel);
-	}
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalCounters.svg")));
   
   int group_offset = 190;
   
