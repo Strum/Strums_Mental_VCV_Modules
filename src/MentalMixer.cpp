@@ -48,7 +48,6 @@ struct MentalMixer : Module {
 	};
   
   SchmittTrigger mute_triggers[12];
-  //float mute_lights[12] = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
   bool mute_states[12]= {1,1,1,1,1,1,1,1,1,1,1,1};
   float channel_ins[12];
   float pan_cv_ins[12];
@@ -113,7 +112,6 @@ void MentalMixer::step() {
 		  mute_states[i] = !mute_states[i];
 	  }
     lights[MUTE_LIGHTS + i ].value = mute_states[i] ? 1.0 : 0.0;
-    //mute_lights[i] = mute_states[i] ? 1.0 : 0.0;
   }
   for (int i = 0 ; i < 12 ; i++)
   {  
@@ -122,7 +120,6 @@ void MentalMixer::step() {
     if (!mute_states[i] || inputs[CH_MUTE_INPUT + i].value > 0.0 )
     {
       channel_ins[i] = 0.0;
-      //mute_lights[i] = 0;
       lights[MUTE_LIGHTS + i ].value = 0.0;      
     }
     
@@ -172,19 +169,8 @@ struct MentalMixerWidget : ModuleWidget {
 MentalMixerWidget::MentalMixerWidget(MentalMixer *module) : ModuleWidget(module)
 {
 
-//MentalMixerWidget::MentalMixerWidget() {
-//	MentalMixer *module = new MentalMixer();
-//	setModule(module);
+  setPanel(SVG::load(assetPlugin(plugin, "res/Mixer.svg")));
 
-	box.size = Vec(15*24, 380);
-
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		//panel->setBackground(SVG::load("plugins/mental/res/Mixer.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/Mixer.svg")));
-		addChild(panel);
-	}
   int port_col = 8;
   int pots_col = port_col + 3;
 

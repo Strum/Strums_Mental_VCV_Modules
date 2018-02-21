@@ -10,7 +10,6 @@ struct LowFrequencyOscillator {
 	bool invert = false;
 	SchmittTrigger resetTrigger;
 	LowFrequencyOscillator() {
-		//resetTrigger.setThresholds(0.0, 0.01);
 	}
   void setFreq(float freq_to_set)
   {
@@ -142,7 +141,6 @@ void MentalQuadLFO::step()
     {
       lights[MODE_LIGHTS + i].value = 0.0;
     }
-    //lights[MODE_LIGHTS + mode].value = 1.0;
   }
   
   lights[MODE_LIGHTS + mode].value = 1.0;
@@ -203,14 +201,8 @@ void MentalQuadLFO::step()
   
   for (int i = 0 ; i < 4 ; i++)
   {
-    //oscillator[i].setPitch((params[FREQ_PARAM + i].value * 10 - 5) + inputs[FREQ_INPUT + i].value);
-	  
-    //oscillator.setPulseWidth(params[PW_PARAM].value + params[PWM_PARAM].value * inputs[PW_INPUT].value / 10.0);
-	  //oscillator.offset = (params[OFFSET_PARAM].value > 0.0);
-	  //oscillator.invert = (params[INVERT_PARAM].value <= 0.0);
 	  
     oscillator[i].step(1.0 / engineGetSampleRate());
-	  //oscillator[i].setReset(inputs[RESET_INPUT + i].value);
 
 	  outputs[SIN_OUTPUT + i].value = 5.0 * oscillator[i].sin();
 	  outputs[TRI_OUTPUT + i].value = 5.0 * oscillator[i].tri();
@@ -229,13 +221,8 @@ struct MentalQuadLFOWidget : ModuleWidget {
 
 MentalQuadLFOWidget::MentalQuadLFOWidget(MentalQuadLFO *module) : ModuleWidget(module)
 {
-//MentalQuadLFOWidget::MentalQuadLFOWidget()
-//{
-//	MentalQuadLFO *module = new MentalQuadLFO();
-//	setModule(module);
 
-  box.size = Vec(8 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	setPanel(SVG::load(assetPlugin(plugin, "res/MentalQuadLFO.svg")));  
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalQuadLFO.svg")));
 
   int x_offset = 10.10;
   for (int i = 0 ; i < 4 ; i++)

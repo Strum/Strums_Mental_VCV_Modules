@@ -27,9 +27,7 @@ struct MentalSwitch8 : Module {
     OUTPUT_LEDS,
     NUM_LIGHTS = OUTPUT_LEDS + 8
   };
-  
-  //float input_leds[3] = {0.0,0.0,0.0};  
-  //float output_leds[8] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+    
   float in_1 = 0.0;
   float in_2 = 0.0;
   float in_4 = 0.0;
@@ -44,7 +42,6 @@ void MentalSwitch8::step()
 {
   for ( int i = 0 ; i < 8 ; i ++)
   {
-    //output_leds[i] = 0.0;
     lights[OUTPUT_LEDS + i].value = 0.0;
     outputs[OUTPUT + i].value = 0.0;
   }
@@ -56,34 +53,27 @@ void MentalSwitch8::step()
   if (in_1 > 0.0 ) 
   {
     one = 1;
-    //input_leds[0] = 1.0;
   } else
   {
     one = 0;
-    //input_leds[0] = 0.0;
   }
   if (in_2 > 0.0) 
   {
     two = 2;
-    //input_leds[1] = 1.0;
   } else
   {
     two = 0;
-    //input_leds[1] = 0.0;
   }
   if (in_4 > 0.0) 
   {
     four = 4;
-    //input_leds[2] = 1.0;
   } else
   {
     four = 0;
-    //input_leds[2] = 0.0;    
   }
   
   decoded = one + two + four;  
   outputs[OUTPUT + decoded].value = inputs[SIG_INPUT].value;
-  //output_leds[decoded] = 1.0;  
   lights[OUTPUT_LEDS + decoded].value = 1.0;
 }
 
@@ -95,18 +85,7 @@ struct MentalSwitch8Widget : ModuleWidget {
 MentalSwitch8Widget::MentalSwitch8Widget(MentalSwitch8 *module) : ModuleWidget(module)
 {
 
-//MentalSwitch8Widget::MentalSwitch8Widget() {
-//	MentalSwitch8 *module = new MentalSwitch8();
-//	setModule(module);
-
-	box.size = Vec(15*5, 380);
-  
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalSwitch8.svg")));
-		addChild(panel);
-	}
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalSwitch8.svg")));
 	
   int spacing = 25; 
   int top_space = 15;

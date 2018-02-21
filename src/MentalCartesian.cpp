@@ -51,16 +51,6 @@ struct MentalCartesian : Module {
     
   SchmittTrigger button_triggers[4][4];
     
-  /*float grid_lights[4][4] = {{0.0,0.0,0.0,0.0},
-                            {0.0,0.0,0.0,0.0},
-                            {0.0,0.0,0.0,0.0},
-                            {0.0,0.0,0.0,0.0}};
-                            
-  float button_lights[4][4] = {{0.0,0.0,0.0,0.0},
-                            {0.0,0.0,0.0,0.0},
-                            {0.0,0.0,0.0,0.0},
-                            {0.0,0.0,0.0,0.0}};*/
-    
   float row_outs[4] = {0.0,0.0,0.0,0.0};
   float column_outs[4] = {0.0,0.0,0.0,0.0};
   
@@ -79,7 +69,6 @@ void MentalCartesian::step() {
     bool step_up = false;
     bool step_down = false;
     
-    //grid_lights[x_position][y_position] = 1.0;
     lights[GRID_LIGHTS + x_position + y_position * 4].value = 1.0;
     
     // handle clock inputs
@@ -114,11 +103,9 @@ void MentalCartesian::step() {
     // resets
     if (resetTrigger.process(inputs[RESET].value))
     {
-      //grid_lights[x_position][y_position] = 0.0;
       lights[GRID_LIGHTS + x_position + y_position * 4].value = 0.0;
 		  x_position = 0;
       y_position = 0;
-      //grid_lights[x_position][y_position] = 1.0;
       lights[GRID_LIGHTS + x_position + y_position * 4].value = 1.0;
       step_right = false;
       step_left = false;
@@ -127,10 +114,8 @@ void MentalCartesian::step() {
 	  }
     if (x_resetTrigger.process(inputs[X_RESET].value))
     {
-      //grid_lights[x_position][y_position] = 0.0;
       lights[GRID_LIGHTS + x_position + y_position * 4].value = 0.0;
 		  x_position = 0;
-      //grid_lights[x_position][y_position] = 1.0;
       lights[GRID_LIGHTS + x_position + y_position * 4].value = 1.0;
       step_right = false;
       step_left = false;
@@ -139,10 +124,8 @@ void MentalCartesian::step() {
 	  }
     if (y_resetTrigger.process(inputs[Y_RESET].value))
     {
-      //grid_lights[x_position][y_position] = 0.0;
       lights[GRID_LIGHTS + x_position + y_position * 4].value = 0.0;
 		  y_position = 0;
-      //grid_lights[x_position][y_position] = 1.0;
       lights[GRID_LIGHTS + x_position + y_position * 4].value = 1.0;
       step_right = false;
       step_left = false;
@@ -155,20 +138,16 @@ void MentalCartesian::step() {
     if (x_cv > 3 ) x_cv = 3;
     std::div_t division_x;
     division_x = div(x_position + x_cv,4);
-    //grid_lights[x_position][y_position] = 0.0;
     lights[GRID_LIGHTS + x_position + y_position * 4].value = 0.0;
     x_position = division_x.rem;
-    //grid_lights[x_position][y_position] = 1.0;
     lights[GRID_LIGHTS + x_position + y_position * 4].value = 1.0;
     int y_cv = round(inputs[Y_CV].value);
     if (y_cv < 0 ) y_cv = 0;
     if (y_cv > 3 ) y_cv = 3;    
     std::div_t division_y;
     division_y = div(y_position + y_cv,4);
-    //grid_lights[x_position][y_position] = 0.0;
     lights[GRID_LIGHTS + x_position + y_position * 4].value = 0.0;
     y_position = division_y.rem;
-    //grid_lights[x_position][y_position] = 1.0;
     lights[GRID_LIGHTS + x_position + y_position * 4].value = 1.0;
     // handle button triggers
     for (int i = 0 ; i < 4 ; i++)
@@ -177,53 +156,42 @@ void MentalCartesian::step() {
       {
         if ((params[BUTTON_PARAM + i + j * 4].value))
         {
-          //button_lights[i][j] = 1.0;
           lights[BUTTON_LIGHTS + i + j * 4].value = 1.0;
-          //grid_lights[x_position][y_position] = 0.0;
           lights[GRID_LIGHTS + x_position + y_position * 4].value = 0.0;
           x_position = i;
           y_position = j;
-          //grid_lights[x_position][y_position] = 1.0;
           lights[GRID_LIGHTS + x_position + y_position * 4].value = 1.0;
-        } else lights[BUTTON_LIGHTS + i + j * 4].value = 0.0; //button_lights[i][j] = 0.0;
+        } else lights[BUTTON_LIGHTS + i + j * 4].value = 0.0;
       }		  
 	  }
     
     // change x and y    
     if (step_right)
     {
-      //grid_lights[x_position][y_position] = 0.0;
       lights[GRID_LIGHTS + x_position + y_position * 4].value = 0.0;
       x_position += 1;
       if (x_position > 3) x_position = 0;
-      //grid_lights[x_position][y_position] = 1.0;
       lights[GRID_LIGHTS + x_position + y_position * 4].value = 1.0;
     }
     if (step_left)
     {
-      //grid_lights[x_position][y_position] = 0.0;
       lights[GRID_LIGHTS + x_position + y_position * 4].value = 0.0;
       x_position -= 1;
       if (x_position < 0) x_position = 3;      
-      //grid_lights[x_position][y_position] = 1.0;
       lights[GRID_LIGHTS + x_position + y_position * 4].value = 1.0;
     }
     if (step_down)
     {
-      //grid_lights[x_position][y_position] = 0.0;
       lights[GRID_LIGHTS + x_position + y_position * 4].value = 0.0;
       y_position += 1;
       if (y_position > 3) y_position = 0;
-      //grid_lights[x_position][y_position] = 1.0;
       lights[GRID_LIGHTS + x_position + y_position * 4].value = 1.0;
     }
     if (step_up)
     {
-      //grid_lights[x_position][y_position] = 0.0;
       lights[GRID_LIGHTS + x_position + y_position * 4].value = 0.0;
       y_position -= 1;
       if (y_position < 0) y_position = 3;      
-      //grid_lights[x_position][y_position] = 1.0;
       lights[GRID_LIGHTS + x_position + y_position * 4].value = 1.0;
     }
     
@@ -252,23 +220,12 @@ struct MentalCartesianWidget : ModuleWidget {
   MentalCartesianWidget(MentalCartesian *module);
 };
 
-//MentalCartesianWidget::MentalCartesianWidget() {
-//	MentalCartesian *module = new MentalCartesian();
-//	setModule(module);
 
 MentalCartesianWidget::MentalCartesianWidget(MentalCartesian *module) : ModuleWidget(module)
 {
 
 
-
-	box.size = Vec(15*16, 380);
-  
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalCartesian.svg")));
-		addChild(panel);
-	}
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalCartesian.svg")));
  
   int top = 25;
   int left = 3;
