@@ -49,7 +49,7 @@ void MentalSubMixer::step() {
 
 	for (int i = 0 ; i < 4 ; i++)	{
 
-		channel_ins[i] = inputs[CH_INPUT + i].value * params[CH_VOL_PARAM + i].value * clampf(inputs[CH_VOL_INPUT + i].normalize(10.0) / 10.0, 0.0, 1.0);
+		channel_ins[i] = inputs[CH_INPUT + i].value * params[CH_VOL_PARAM + i].value * clamp(inputs[CH_VOL_INPUT + i].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
 		
     	pan_cv_ins[i] = inputs[CH_PAN_INPUT + i].value/5;
     	pan_positions[i] = pan_cv_ins[i] + params[CH_PAN_PARAM + i].value;   
@@ -61,8 +61,8 @@ void MentalSubMixer::step() {
     	left_sum += channel_outs_l[i];
     	right_sum += channel_outs_r[i];
     }
-    float mix_l = left_sum * params[MIX_PARAM].value * clampf(inputs[MIX_CV_INPUT].normalize(10.0) / 10.0, 0.0, 1.0);
-    float mix_r = right_sum * params[MIX_PARAM].value * clampf(inputs[MIX_CV_INPUT].normalize(10.0) / 10.0, 0.0, 1.0);
+    float mix_l = left_sum * params[MIX_PARAM].value * clamp(inputs[MIX_CV_INPUT].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
+    float mix_r = right_sum * params[MIX_PARAM].value * clamp(inputs[MIX_CV_INPUT].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
 
     outputs[MIX_OUTPUT_L].value = mix_l;
     outputs[MIX_OUTPUT_R].value = mix_r;
