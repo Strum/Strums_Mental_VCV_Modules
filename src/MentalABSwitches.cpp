@@ -10,7 +10,6 @@
 
 #include "dsp/digital.hpp"
 
-
 /////////////////////////////////////////////////
 struct MentalABSwitches : Module {
 	enum ParamIds {
@@ -37,11 +36,7 @@ struct MentalABSwitches : Module {
 
   SchmittTrigger button_triggers[4];
   bool button_on[4] = {0,0,0,0};
-  
-  //float button_lights[4] = {0.0,0.0,0.0};
-  //float a_leds[4] = {0.0,0.0,0.0,0.0};
-  //float b_leds[4] = {0.0,0.0,0.0,0.0};
-  
+      
 	MentalABSwitches() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 	void step() override;
   
@@ -88,14 +83,11 @@ void MentalABSwitches::step() {
     {
 	    button_on[i] = !button_on[i];
     }
-    //lights[BLINK_LIGHT].value = (blinkPhase < 0.5) ? 1.0 : 0.0;
-    //button_lights[i] = button_on[i] ? 1.0 : 0.0;
     if (button_on[i] || ( sel > 0.0))
     {
       outputs[OUTPUT_A + i].value = 0.0;
       outputs[OUTPUT_B + i].value = signal;
-      //b_leds[i] = 1.0;
-      //a_leds[i] = 0.0;
+      
       lights[B_LEDS + i].value = 1.0;
       lights[A_LEDS + i].value = 0.0;
     }
@@ -103,8 +95,7 @@ void MentalABSwitches::step() {
     {
       outputs[OUTPUT_A + i].value = signal;
       outputs[OUTPUT_B + i].value = 0.0;
-      //b_leds[i] = 0.0;
-      //a_leds[i] = 1.0;
+      
       lights[B_LEDS + i].value = 0.0;
       lights[A_LEDS + i].value = 1.0;
     }
@@ -116,24 +107,11 @@ struct MentalABSwitchesWidget : ModuleWidget {
   MentalABSwitchesWidget(MentalABSwitches *module);
 };
 
-//MentalABSwitchesWidget::MentalABSwitchesWidget() {
-//	MentalABSwitches *module = new MentalABSwitches();
-//	setModule(module);
-
 MentalABSwitchesWidget::MentalABSwitchesWidget(MentalABSwitches *module) : ModuleWidget(module)
 {
 
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalABSwitches.svg")));
 
-	box.size = Vec(15*5, 380);
-
-  {
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		
-    //panel->setBackground(SVG::load("plugins/mental/res/MentalABSwitches.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalABSwitches.svg")));
-		addChild(panel);
-	}
   int group_spacing = 85;
   
   for (int i = 0 ; i < 4 ; i++)
@@ -152,4 +130,4 @@ MentalABSwitchesWidget::MentalABSwitchesWidget(MentalABSwitches *module) : Modul
   }
 }
 
-Model *modelMentalABSwitches = Model::create<MentalABSwitches, MentalABSwitchesWidget>("mental", "MentalABSwitches", "Mental A/B Switches", SWITCH_TAG, UTILITY_TAG);
+Model *modelMentalABSwitches = Model::create<MentalABSwitches, MentalABSwitchesWidget>("mental", "MentalABSwitches", "A/B Switches", SWITCH_TAG, UTILITY_TAG);

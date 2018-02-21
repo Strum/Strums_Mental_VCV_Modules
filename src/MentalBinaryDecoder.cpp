@@ -26,9 +26,7 @@ struct MentalBinaryDecoder : Module {
 		OUTPUT_LEDS,
 		NUM_LIGHTS = OUTPUT_LEDS + 8
 	};
-  
-  //float input_leds[3] = {0.0,0.0,0.0};  
-  //float output_leds[8] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+    
   float in_1 = 0.0;
   float in_2 = 0.0;
   float in_4 = 0.0;
@@ -42,8 +40,7 @@ struct MentalBinaryDecoder : Module {
 void MentalBinaryDecoder::step()
 {
   for ( int i = 0 ; i < 8 ; i ++)
-  {
-    //output_leds[i] = 0.0;
+  {    
     lights[OUTPUT_LEDS + i].value = 0.0;
     outputs[OUTPUT + i].value = 0.0;
   }
@@ -55,34 +52,27 @@ void MentalBinaryDecoder::step()
   if (in_1 > 0.0 ) 
   {
     one = 1;
-    //input_leds[0] = 1.0;
   } else
   {
     one = 0;
-    //input_leds[0] = 0.0;
   }
   if (in_2 > 0.0) 
   {
     two = 2;
-    //input_leds[1] = 1.0;
   } else
   {
     two = 0;
-    //input_leds[1] = 0.0;
   }
   if (in_4 > 0.0) 
   {
     four = 4;
-    //input_leds[2] = 1.0;
   } else
   {
     four = 0;
-    //input_leds[2] = 0.0;    
   }
   
   decoded = one + two + four;  
   outputs[OUTPUT + decoded].value = 10.0;
-  //output_leds[decoded] = 1.0;
   lights[OUTPUT_LEDS + decoded].value = 1.0;  
 }
 
@@ -91,22 +81,11 @@ struct MentalBinaryDecoderWidget : ModuleWidget {
   MentalBinaryDecoderWidget(MentalBinaryDecoder *module);
 };
 
-//  MentalBinaryDecoderWidget::MentalBinaryDecoderWidget() {
-//	MentalBinaryDecoder *module = new MentalBinaryDecoder();
-//	setModule(module);
-
 MentalBinaryDecoderWidget::MentalBinaryDecoderWidget(MentalBinaryDecoder *module) : ModuleWidget(module)
 {
-
-	box.size = Vec(15*5, 380);
-  
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalBinaryDecoder.svg")));
-		addChild(panel);
-	}
 	
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalBinaryDecoder.svg")));
+
   int spacing = 25; 
   int top_space = 15;
   
@@ -118,8 +97,7 @@ MentalBinaryDecoderWidget::MentalBinaryDecoderWidget(MentalBinaryDecoder *module
   {  
    addOutput(Port::create<GateOutPort>(Vec(30, top_space + spacing * i), Port::OUTPUT, module, MentalBinaryDecoder::OUTPUT + i));   	 
    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(60, top_space +  spacing * i + 8), module, MentalBinaryDecoder::OUTPUT_LEDS + i));
-  }
-  
+  }  
 }
 
 Model *modelMentalBinaryDecoder = Model::create<MentalBinaryDecoder, MentalBinaryDecoderWidget>("mental", "MentalBinaryDecoder", "Binary Decoder", UTILITY_TAG);

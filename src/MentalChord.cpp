@@ -46,11 +46,6 @@ struct MentalChord : Module {
       OUTPUT_SEVENTH,
       NUM_OUTPUTS
 	};
-
-  //SchmittTrigger button_trigger;
-  //bool button_on = 0;
-  //float button_light = 0.0;
-  //float on_led = 0.0;
   
 	MentalChord() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
 	void step() override;
@@ -169,20 +164,8 @@ struct MentalChordWidget : ModuleWidget {
 MentalChordWidget::MentalChordWidget(MentalChord *module) : ModuleWidget(module)
 {
 
-//MentalChordWidget::MentalChordWidget() {
-//	MentalChord *module = new MentalChord();
-//	setModule(module);
+setPanel(SVG::load(assetPlugin(plugin, "res/MentalChord.svg")));
 
-
-	box.size = Vec(15*6, 380);
-
-  {
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		//panel->setBackground(SVG::load("plugins/mental/res/MentalChord.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalChord.svg")));
-		addChild(panel);
-	}
   addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(3, 20), module, MentalChord::OFFSET_PARAM, 0.0, 1.0, 0.5));
   addInput(Port::create<CVInPort>(Vec(3, 50), Port::INPUT, module, MentalChord::OFFSET_CV_INPUT));
   addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(33, 20), module, MentalChord::INVERSION_PARAM, 0.0, 1.0, 0.0));

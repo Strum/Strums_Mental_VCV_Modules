@@ -66,7 +66,6 @@ struct MentalMasterClock : Module {
   SchmittTrigger bars_trig;
   
   SchmittTrigger run_button_trig;
-  //float run_led = 1.0;
   bool running = true;
   
   int eighths_count = 0;
@@ -78,10 +77,9 @@ struct MentalMasterClock : Module {
   int quarters_count_limit = 4;
   int eighths_count_limit = 2;
   int bars_count_limit = 16;
-    
-  //float reset_led = 0.0;  
+   
   
-  MentalMasterClock(); // : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+  MentalMasterClock(); 
 	void step() override;
   
   json_t *toJson() override
@@ -112,10 +110,7 @@ MentalMasterClock::MentalMasterClock()
   params.resize(NUM_PARAMS);
 	inputs.resize(NUM_INPUTS);
 	outputs.resize(NUM_OUTPUTS);
-  lights.resize(NUM_LIGHTS);
-  //eighths_trig.setThresholds(0.0, 1.0);
-  //quarters_trig.setThresholds(0.0, 1.0);
-  //bars_trig.setThresholds(0.0, 1.0);
+  lights.resize(NUM_LIGHTS);  
 }
 
 void MentalMasterClock::step()
@@ -124,7 +119,6 @@ void MentalMasterClock::step()
     {
 		  running = !running;
 	  }
-    //run_led = running ? 1.0 : 0.0;
     lights[RUN_LED].value = running ? 1.0 : 0.0;
     
   tempo = std::round(params[TEMPO_PARAM].value);
@@ -258,20 +252,7 @@ struct MentalMasterClockWidget : ModuleWidget {
 MentalMasterClockWidget::MentalMasterClockWidget(MentalMasterClock *module) : ModuleWidget(module)
 {
 
-// MentalMasterClockWidget::MentalMasterClockWidget() {
-//	MentalMasterClock *module = new MentalMasterClock();
-//	setModule(module);
-
-
-	box.size = Vec(15*8, 380);
-  
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalMasterClock.svg")));
-		addChild(panel);
-	}
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalMasterClock.svg")));
    
     addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 20), module, MentalMasterClock::TEMPO_PARAM, 40.0, 250.0, 120.0));
     addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 50), module, MentalMasterClock::TIMESIGTOP_PARAM,2.0, 15.0, 4.0));

@@ -10,7 +10,6 @@
 #include "mental.hpp"
 #include "dsp/digital.hpp"
 
-////// Constructor
 struct MentalPatchMatrix : Module {
 	enum ParamIds {
     SWITCHES,
@@ -41,19 +40,7 @@ struct MentalPatchMatrix : Module {
   {0,0,0,0,0,0,0,0,0,0},
   {0,0,0,0,0,0,0,0,0,0},
   {0,0,0,0,0,0,0,0,0,0}};
-  
-  /*float switch_lights[10][10] = 
-  {{0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
-  {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
-  {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
-  {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
-  {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
-  {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
-  {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
-  {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
-  {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},
-  {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}};*/
-    
+   
   
   float input_values[10] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
   float sums[10] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}; 
@@ -115,7 +102,6 @@ void MentalPatchMatrix::step() {
      {
 		   switch_states[i][j] = !switch_states[i][j];
 	   }
-	   //switch_lights[i][j] = switch_states[i][j] ? 1.0 : 0.0;
      lights[SWITCH_LIGHTS + i + j * 10].value  = (switch_states[i][j]) ? 1.0 : 0.0;
    }
   }
@@ -148,24 +134,13 @@ struct MentalPatchMatrixWidget : ModuleWidget {
 
 MentalPatchMatrixWidget::MentalPatchMatrixWidget(MentalPatchMatrix *module) : ModuleWidget(module)
 {
-
-//MentalPatchMatrixWidget::MentalPatchMatrixWidget() {
-//	MentalPatchMatrix *module = new MentalPatchMatrix();
-//	setModule(module);
-
   
-	box.size = Vec(15*19, 380);
-  
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalPatchMatrix.svg")));
+
   int top_row = 75;
   int row_spacing = 25; 
   int column_spacing = 25;
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		//panel->setBackground(SVG::load("plugins/mental/res/MentalPatchMatrix.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalPatchMatrix.svg")));
-		addChild(panel);
-	}
+
 	for (int i = 0 ; i < 10 ; i++)
   {
 	 addInput(Port::create<InPort>(Vec(3, i * row_spacing + top_row), Port::INPUT, module, MentalPatchMatrix::INPUTS + i));  

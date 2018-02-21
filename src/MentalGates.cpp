@@ -34,8 +34,6 @@ struct MentalGates : Module {
 
   SchmittTrigger button_triggers[4];
   bool button_on[4] = {0,0,0,0};
-  //float button_lights[4] = {0.0,0.0,0.0};
-  //float on_leds[4] = {0.0,0.0,0.0};
   float signal[4] = {0.0,0.0,0.0};
   float on[4] = {0.0,0.0,0.0};
   
@@ -86,19 +84,16 @@ for (int i = 0 ; i < 4 ; i++)
     {
 	    button_on[i] = !button_on[i];
     }
-    //button_lights[i] = button_on[i] ? 1.0 : 0.0;
     lights[BUTTON_LIGHTS + i ].value  = (button_on[i]) ? 1.0 : 0.0;
 
     if (button_on[i] || ( on[i] > 0.0))
     {
       outputs[OUTPUT + i].value = 0.0;
-      //on_leds[i] = 1.0;
       lights[ON_LEDS + i].value = 1.0;
     }
     else
     {
       outputs[OUTPUT + i].value = signal[i];
-      //on_leds[i] = 0.0;
       lights[ON_LEDS + i].value = 0.0;
     }
   }
@@ -112,20 +107,8 @@ struct MentalGatesWidget : ModuleWidget {
 MentalGatesWidget::MentalGatesWidget(MentalGates *module) : ModuleWidget(module)
 {
 
-//MentalGatesWidget::MentalGatesWidget() {
-//	MentalGates *module = new MentalGates();
-//	setModule(module);
+setPanel(SVG::load(assetPlugin(plugin, "res/MentalGates.svg")));
 
-
-	box.size = Vec(15*4, 380);
-
-  {
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-    //panel->setBackground(SVG::load(assetPlugin(plugin,"res/ShiftReg.svg")));
-		panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalGates.svg")));
-		addChild(panel);
-	}
   int group_spacing = 85;
   for (int i = 0 ; i < 4 ; i++)
   {

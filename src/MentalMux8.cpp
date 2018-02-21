@@ -27,9 +27,7 @@ struct MentalMux8 : Module {
     INPUT_LEDS,
     NUM_LIGHTS = INPUT_LEDS + 8
   };
-  
-  //float input_leds[3] = {0.0,0.0,0.0};  
-  //float input_leds[8] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+    
   float in_1 = 0.0;
   float in_2 = 0.0;
   float in_4 = 0.0;
@@ -44,7 +42,6 @@ void MentalMux8::step()
 {
   for ( int i = 0 ; i < 8 ; i ++)
   {
-    //input_leds[i] = 0.0; 
     lights[INPUT_LEDS + i].value = 0.0;   
   }
   outputs[OUTPUT].value = 0.0;
@@ -56,34 +53,27 @@ void MentalMux8::step()
   if (in_1 > 0.0 ) 
   {
     one = 1;
-    //input_leds[0] = 1.0;
   } else
   {
     one = 0;
-    //input_leds[0] = 0.0;
   }
   if (in_2 > 0.0) 
   {
     two = 2;
-    //input_leds[1] = 1.0;
   } else
   {
     two = 0;
-    //input_leds[1] = 0.0;
   }
   if (in_4 > 0.0) 
   {
     four = 4;
-    //input_leds[2] = 1.0;
   } else
   {
     four = 0;
-    //input_leds[2] = 0.0;    
   }
   
   decoded = one + two + four;  
   outputs[OUTPUT].value = inputs[SIG_INPUT + decoded].value;
-  //input_leds[decoded] = 1.0; 
   lights[INPUT_LEDS + decoded].value = 1.0; 
 }
 
@@ -95,18 +85,7 @@ struct MentalMux8Widget : ModuleWidget {
 MentalMux8Widget::MentalMux8Widget(MentalMux8 *module) : ModuleWidget(module)
 {
 
-//MentalMux8Widget::MentalMux8Widget() {
-//	MentalMux8 *module = new MentalMux8();
-//	setModule(module);
-
-	box.size = Vec(15*5, 380);
-  
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalMux8.svg")));
-		addChild(panel);
-	}
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalMux8.svg")));
 	
   int spacing = 25; 
   int top_space = 15;

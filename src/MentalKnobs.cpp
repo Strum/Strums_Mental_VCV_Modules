@@ -43,10 +43,7 @@ struct MentalKnobs : Module {
   bool switch_states[3][3] = {{0,0,0},
                              {0,0,0},
                              {0,0,0}};
-  
-  /*float button_leds[3][3] = {{0.0,0.0,0.0},
-                            {0.0,0.0,0.0},
-                            {0.0,0.0,0.0}};*/
+    
                             
   int octaves[3] = {0,0,0};
   int semitones[3] = {0,0,0};
@@ -100,19 +97,16 @@ void MentalKnobs::step()
   {
 	  switch_states[0][i] = !switch_states[0][i];
 	}  
-  //button_leds[0][i] = switch_states[0][i] ? 1.0 : 0.0;
   lights[BUTTON_LEDS + i].value = switch_states[0][i] ? 1.0 : 0.0;
   if (stepsize_switch_trigger[i].process(params[STEPSIZE_SWITCH + i].value))
   {
 	  switch_states[1][i] = !switch_states[1][i];
 	}  
-  //button_leds[1][i] = switch_states[1][i] ? 1.0 : 0.0;
   lights[BUTTON_LEDS + 6 + i].value = switch_states[1][i] ? 1.0 : 0.0;
   if (bi_switch_trigger[i].process(params[BI_SWITCH + i].value))
   {
 	  switch_states[2][i] = !switch_states[2][i];
 	}  
-  //button_leds[2][i] = switch_states[2][i] ? 1.0 : 0.0;
   lights[BUTTON_LEDS + 3 + i].value = switch_states[2][i] ? 1.0 : 0.0;
   knob_value[i] = params[KNOB_PARAM + i].value;
   scale_value[i] = params[SCALE_PARAM + i].value;
@@ -184,22 +178,9 @@ struct MentalKnobsWidget : ModuleWidget {
 MentalKnobsWidget::MentalKnobsWidget(MentalKnobs *module) : ModuleWidget(module)
 {
 
-
-//MentalKnobsWidget::MentalKnobsWidget() {
-//	MentalKnobs *module = new MentalKnobs();
-//	setModule(module);
-
-
-	box.size = Vec(15*4, 380);
-  
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalKnobs.svg")));
-		addChild(panel);
-	}
 	
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalKnobs.svg")));
+
   int group_offset = 120;    
   for (int i = 0 ; i < 3 ; i++)
   {

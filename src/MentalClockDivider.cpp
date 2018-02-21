@@ -65,7 +65,6 @@ struct MentalClockDivider : Module {
 
 	SchmittTrigger reset_trig;
 
-  //float lights[9] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
 
 	MentalClockDivider();
 	void step() override;
@@ -78,21 +77,9 @@ MentalClockDivider::MentalClockDivider() {
 	inputs.resize(NUM_INPUTS);
 	outputs.resize(NUM_OUTPUTS);
   lights.resize(NUM_LIGHTS);
-	/*trigger2.setThresholds(0.0, 1.0);
-	trigger4.setThresholds(0.0, 1.0);
-	trigger8.setThresholds(0.0, 1.0);
-	trigger16.setThresholds(0.0, 1.0);
-	trigger32.setThresholds(0.0, 1.0);
-
-  trigger3.setThresholds(0.0, 1.0);
-  trigger5.setThresholds(0.0, 1.0);
-  trigger7.setThresholds(0.0, 1.0);
-  trigger12.setThresholds(0.0, 1.0);
-  
-	reset_trig.setThresholds(0.0, 1.0);*/
+	
 }
 
-//const float lightLambda = 0.075;
 int divider2 = 2;
 int divider4 = 4;
 int divider8 = 8;
@@ -125,7 +112,6 @@ void MentalClockDivider::step()
 		reset = true;
 	}
   
-  //if ((clock2Count >= divider2) || (reset_trig.process(inputs[RESET_INPUT].value)))
 	if (clock2Count >= divider2)
 	{
 		clock2Count = 0;		
@@ -178,7 +164,6 @@ void MentalClockDivider::step()
 		outputs[OUT2].value= 10.0;
 		if (clock2Count == 0)
 		{
-			//lights[0] = 1.0;
       lights[LIGHTS].value = 1.0;
 		}
 		else
@@ -192,7 +177,6 @@ void MentalClockDivider::step()
 	else
 	{
 		outputs[OUT2].value= 0.0;
-		//lights[0] = 0.0;
     lights[LIGHTS].value = 0.0;		
 	}
 
@@ -201,19 +185,16 @@ void MentalClockDivider::step()
 		outputs[OUT4].value= 10.0;
 		if (clock4Count == 0)
 		{
-			//lights[1] = 1.0;
       lights[LIGHTS + 1].value = 1.0;
 		}
 		else
 		{
-			//lights[1] -= lights[1] / lightLambda / engineGetSampleRate;
       lights[LIGHTS + 1].value = 0.0;
 		}		
 	}
 	else
 	{
 		outputs[OUT4].value= 0.0;
-		//lights[1] = 0.0;
     lights[LIGHTS + 1].value = 0.0;		
 	}
   
@@ -222,19 +203,16 @@ void MentalClockDivider::step()
 		outputs[OUT8].value= 10.0;
 		if (clock8Count == 0)
 		{
-			//lights[2] = 1.0;
       lights[LIGHTS + 2].value = 1.0;
 		}
 		else
 		{
-			//lights[2] -= lights[2] / lightLambda / engineGetSampleRate;
       lights[LIGHTS + 2].value = 0.0;
 		}	
 	}
 	else
 	{
 		outputs[OUT8].value= 0.0;
-		//lights[2] = 0.0;
     lights[LIGHTS + 2].value = 1.0;		
 	}
 
@@ -243,19 +221,16 @@ void MentalClockDivider::step()
 		outputs[OUT16].value= 10.0;
 		if (clock16Count == 0)
 		{
-			//lights[3] = 1.0;
       lights[LIGHTS + 3].value = 1.0;
 		}
 		else
 		{
-			//lights[3] -= lights[3] / lightLambda / engineGetSampleRate;
       lights[LIGHTS + 3].value = 0.0;
 		}		
 	}
 	else
 	{
 		outputs[OUT16].value= 0.0;
-		//lights[3] = 0.0;
     lights[LIGHTS + 3].value = 0.0;	
 	}
 
@@ -264,19 +239,16 @@ void MentalClockDivider::step()
 		outputs[OUT32].value= 10.0;
 		if (clock16Count == 0)
 		{
-			//lights[4] = 1.0;
       lights[LIGHTS + 4].value = 1.0;
 		}
 		else
 		{
-			//lights[4] -= lights[4] / lightLambda / engineGetSampleRate;
       lights[LIGHTS + 4].value = 0.0;
 		}		
 	}
 	else
 	{
 		outputs[OUT32].value= 0.0;
-		//lights[4] = 0.0;
     lights[LIGHTS + 4].value = 0.0;
 	}
   
@@ -314,22 +286,10 @@ struct MentalClockDividerWidget : ModuleWidget {
 	MentalClockDividerWidget(MentalClockDivider *module);	
 };
 
-//MentalClockDividerWidget::MentalClockDividerWidget() {
-//	MentalClockDivider *module = new MentalClockDivider();
-//	setModule(module);
-
 MentalClockDividerWidget::MentalClockDividerWidget(MentalClockDivider *module) : ModuleWidget(module)
 {
 
-
-	box.size = Vec(15 * 3, 380);
-
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		panel->setBackground(SVG::load(assetPlugin(plugin, "res/MentalClockDivider.svg")));
-		addChild(panel);
-	}
+	setPanel(SVG::load(assetPlugin(plugin, "res/MentalClockDivider.svg")));
 
 	addInput(Port::create<GateInPort>(Vec(3, 20), Port::INPUT, module, MentalClockDivider::CLOCK_INPUT));
 	addInput(Port::create<GateInPort>(Vec(3, 55), Port::INPUT, module, MentalClockDivider::RESET_INPUT));
@@ -346,8 +306,6 @@ MentalClockDividerWidget::MentalClockDividerWidget(MentalClockDivider *module) :
   addOutput(Port::create<GateOutPort>(Vec(2, 300), Port::OUTPUT, module, MentalClockDivider::OUT7));
   addOutput(Port::create<GateOutPort>(Vec(2, 325), Port::OUTPUT, module, MentalClockDivider::OUT12));
   
- //addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(42, 59), module, MyModule::BLINK_LIGHT));
- 
 	
 	addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(33, 120), module, MentalClockDivider::LIGHTS));
 	addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(33, 145), module, MentalClockDivider::LIGHTS+1));

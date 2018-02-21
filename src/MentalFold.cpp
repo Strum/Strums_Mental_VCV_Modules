@@ -86,19 +86,7 @@ struct MentalFoldWidget : ModuleWidget {
 MentalFoldWidget::MentalFoldWidget(MentalFold *module) : ModuleWidget(module)
 {
 
-//MentalFoldWidget::MentalFoldWidget() {
-//	MentalFold *module = new MentalFold();
-//	setModule(module);
-
-	box.size = Vec(15*2, 380);
-
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		//panel->setBackground(SVG::load("plugins/mental/res/MentalFold.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalFold.svg")));
-		addChild(panel);
-	}
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalFold.svg")));
   
   // label
   addParam(ParamWidget::create<Trimpot>(Vec(6, box.size.y / 2 - 169), module, MentalFold::THRESH_PARAM, 0.0, 1.0, 1.0));
@@ -120,7 +108,6 @@ MentalFoldWidget::MentalFoldWidget(MentalFold *module) : ModuleWidget(module)
   // output  
   addInput(Port::create<InPort>(Vec(3, box.size.y - 63), Port::INPUT, module, MentalFold::INPUT_2));
   addOutput(Port::create<OutPort>(Vec(3, box.size.y - 36), Port::OUTPUT, module, MentalFold::OUTPUT_2));
-
 
 }
 Model *modelMentalFold = Model::create<MentalFold, MentalFoldWidget>("mental", "MentalFold", "Wave Folder", DISTORTION_TAG);

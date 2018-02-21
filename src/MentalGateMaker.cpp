@@ -49,9 +49,7 @@ struct MentalGateMaker : Module {
   SchmittTrigger reset_trigger;
   SchmittTrigger cycle__button_trigger;
   SchmittTrigger trigger_trigger;
-  
-  //PulseGenerator end;
-  //float pulse_length = 0.05; 
+    
   
   int count_limit = 0;
   int count_on = 0;
@@ -63,10 +61,9 @@ struct MentalGateMaker : Module {
   bool cycle_button_state = true;
   
   bool triggered = false;
-  //float cycle_button_led = 0.0;
   bool mode = false;  
     
-  MentalGateMaker();//   : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+  MentalGateMaker();
 	void step() override;
 };
 
@@ -76,8 +73,6 @@ MentalGateMaker::MentalGateMaker()
 	inputs.resize(NUM_INPUTS);
 	outputs.resize(NUM_OUTPUTS);
   lights.resize(NUM_LIGHTS);
-	//clock_trigger.setThresholds(0.0, 1.0);
-	//reset_trigger.setThresholds(0.0, 1.0);  
 }
 
 void MentalGateMaker::step()
@@ -95,15 +90,11 @@ void MentalGateMaker::step()
   if (inputs[CYCLE_IN].value || cycle_button_state)
   {
     cycle = true;
-    //cycle_button_led = 1.0;
     lights[CYCLE_BUTTON_LED].value = 1.0;
-    //count = 0;
-    //outputs[OUTPUT].value = 0;
     
   } else
   { 
     cycle = false;
-    //cycle_button_led = 0.0;
     lights[CYCLE_BUTTON_LED].value = 0.0;
     
   }
@@ -131,7 +122,6 @@ void MentalGateMaker::step()
     outputs[OUTPUT].value = 0;
     outputs[FINISH_OUT].value = 0.0;     
   }
-  //if (count == 0) outputs[FINISH_OUT].value = 0.0;   
   if (reset == false && (cycle || triggered))
 	{
 		if (clock_trigger.process(inputs[CLK_IN].value) && count <= count_limit)
@@ -148,7 +138,6 @@ void MentalGateMaker::step()
     outputs[FINISH_OUT].value = 10.0; 
   }
   
-  //outputs[FINISH_OUT].value = end.process(1.0/engineGetSampleRate) ? 5.0 : 0.0;
 }
 
 ////////////////////////////////////
@@ -179,7 +168,7 @@ struct NumberDisplayWidget : TransparentWidget {
     std::stringstream to_display;   
     to_display << std::setw(3) << *value;
 
-    Vec textPos; // = Vec(0, 0);   
+    Vec textPos; 
     NVGcolor textColor = nvgRGB(0x33, 0x33, 0xff);
     nvgFillColor(vg, textColor);
     nvgText(vg, textPos.x, textPos.y, to_display.str().c_str(), NULL);
@@ -193,34 +182,8 @@ struct MentalGateMakerWidget : ModuleWidget {
 
 MentalGateMakerWidget::MentalGateMakerWidget(MentalGateMaker *module) : ModuleWidget(module)
 {
-//MentalGateMakerWidget::MentalGateMakerWidget() {
-//	MentalGateMaker *module = new MentalGateMaker();
-//	setModule(module);
 
-
-	box.size = Vec(15*8, 380);
-  
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalGateMaker.svg")));
-		addChild(panel);
-	}
-  /*RST_BUTTON,
-    TRIG_BUTTON,
-    MODE_BUTTON,
-    CYCLE_BUTTON,
-    COUNT_NUM_PARAM,
-    DELAY_PARAM,
-    TAIL_PARAM
-		
-    CLK_IN,
-   	RESET_IN,
-    TRIGGER_IN,
-    CYCLE_IN,
-    COUNT_CV,
-    DELAY_CV,*/
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalGateMaker.svg")));
 	
   addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 20), module, MentalGateMaker::COUNT_NUM_PARAM, 0.0, 32.0, 0.0));
   addInput(Port::create<CVInPort>(Vec(33, 20), Port::INPUT, module, MentalGateMaker::COUNT_CV));

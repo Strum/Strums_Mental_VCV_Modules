@@ -8,7 +8,6 @@
 
 #include "mental.hpp"
 
-
 //////////////////////////////////////////////////////
 struct MentalPitchShift : Module {
 	enum ParamIds {
@@ -42,18 +41,10 @@ struct MentalPitchShift : Module {
   float octave_1_out = 0.0;
   float octave_2_out = 0.0;
   float semitone_1_out = 0.0;
-  float semitone_2_out = 0.0;
-  
+  float semitone_2_out = 0.0;  
   
 	void step() override;
 };
-
-/*
-MentalPitchShift::MentalPitchShift() {
-  params.resize(NUM_PARAMS);
-	inputs.resize(NUM_INPUTS);
-	outputs.resize(NUM_OUTPUTS);
-}*/
 
 /////////////////////////////////////////////////////
 void MentalPitchShift::step() {
@@ -78,19 +69,7 @@ struct MentalPitchShiftWidget : ModuleWidget {
 MentalPitchShiftWidget::MentalPitchShiftWidget(MentalPitchShift *module) : ModuleWidget(module)
 {
 
-//MentalPitchShiftWidget::MentalPitchShiftWidget() {
-//	MentalPitchShift *module = new MentalPitchShift();
-//	setModule(module);
-
-	box.size = Vec(15*4, 380);
-
-	{
-		SVGPanel *panel = new SVGPanel();
-		panel->box.size = box.size;
-		//panel->setBackground(SVG::load("plugins/mental/res/MentalPitchShift.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalPitchShift.svg")));
-		addChild(panel);
-	}
+  setPanel(SVG::load(assetPlugin(plugin, "res/MentalPitchShift.svg")));
 
   addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 20), module, MentalPitchShift::OCTAVE_SHIFT_1, -4.5, 4.5, 0.0));
   addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 80), module, MentalPitchShift::OCTAVE_SHIFT_2, -4.5, 4.5, 0.0));
@@ -114,4 +93,4 @@ MentalPitchShiftWidget::MentalPitchShiftWidget(MentalPitchShift *module) : Modul
 
 }
 
-Model *modelMentalPitchShift = Model::create<MentalPitchShift, MentalPitchShiftWidget>("mental", "MentalPitchShift", "Mental A/B Switches", CONTROLLER_TAG);
+Model *modelMentalPitchShift = Model::create<MentalPitchShift, MentalPitchShiftWidget>("mental", "MentalPitchShift", "Pitch Shifter", CONTROLLER_TAG);
