@@ -1,5 +1,5 @@
 SLUG = mental
-VERSION = 0.5.b
+VERSION = 0.6.a
 
 # FLAGS will be passed to both the C and C++ compiler
 FLAGS +=
