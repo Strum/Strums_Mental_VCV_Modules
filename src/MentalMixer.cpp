@@ -115,7 +115,7 @@ void MentalMixer::step() {
   }
   for (int i = 0 ; i < 12 ; i++)
   {  
-    channel_ins[i] = inputs[CH_INPUT + i].value * params[VOL_PARAM + i].value * clampf(inputs[CH_VOL_INPUT + i].normalize(10.0) / 10.0, 0.0, 1.0);
+    channel_ins[i] = inputs[CH_INPUT + i].value * params[VOL_PARAM + i].value * clamp(inputs[CH_VOL_INPUT + i].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
     
     if (!mute_states[i] || inputs[CH_MUTE_INPUT + i].value > 0.0 )
     {
@@ -123,8 +123,8 @@ void MentalMixer::step() {
       lights[MUTE_LIGHTS + i ].value = 0.0;      
     }
     
-    channel_sends_1[i] = channel_ins[i] * params[AUX_1_PARAM + i].value * clampf(inputs[CH_VOL_INPUT + i].normalize(10.0) / 10.0, 0.0, 1.0);
-    channel_sends_2[i] = channel_ins[i] * params[AUX_2_PARAM + i].value * clampf(inputs[CH_VOL_INPUT + i].normalize(10.0) / 10.0, 0.0, 1.0);
+    channel_sends_1[i] = channel_ins[i] * params[AUX_1_PARAM + i].value * clamp(inputs[CH_VOL_INPUT + i].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
+    channel_sends_2[i] = channel_ins[i] * params[AUX_2_PARAM + i].value * clamp(inputs[CH_VOL_INPUT + i].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
 
     pan_cv_ins[i] = inputs[CH_PAN_INPUT + i].value/5;
     pan_positions[i] = pan_cv_ins[i] + params[PAN_PARAM+i].value;   
