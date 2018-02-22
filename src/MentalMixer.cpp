@@ -174,7 +174,7 @@ MentalMixerWidget::MentalMixerWidget() {
 		SVGPanel *panel = new SVGPanel();
 		panel->box.size = box.size;
 		//panel->setBackground(SVG::load("plugins/mental/res/Mixer.svg"));
-    panel->setBackground(SVG::load(assetPlugin(plugin,"res/Mixer.svg")));
+    panel->setBackground(SVG::load(assetPlugin(plugin,"res/MentalMixer.svg")));
 		addChild(panel);
 	}
   int port_col = 8;
