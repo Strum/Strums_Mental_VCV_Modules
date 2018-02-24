@@ -153,11 +153,7 @@ void MentalCartesian::step() {
     int x_cv = round(inputs[X_CV].value);
     if (x_cv < 0 ) x_cv = 0;
     if (x_cv > 3 ) x_cv = 3;
-    #ifdef __APPLE__
-      div_t division_x;
-    #else
-      std::div_t division_x;
-    #endif
+    std::div_t division_x;
     division_x = div(x_position + x_cv,4);
     //grid_lights[x_position][y_position] = 0.0;
     lights[GRID_LIGHTS + x_position + y_position * 4].value = 0.0;
@@ -167,11 +163,7 @@ void MentalCartesian::step() {
     int y_cv = round(inputs[Y_CV].value);
     if (y_cv < 0 ) y_cv = 0;
     if (y_cv > 3 ) y_cv = 3;    
-    #ifdef __APPLE__
-      div_t division_y;
-    #else
-      std::div_t division_y;
-    #endif
+    std::div_t division_y;
     division_y = div(y_position + y_cv,4);
     //grid_lights[x_position][y_position] = 0.0;
     lights[GRID_LIGHTS + x_position + y_position * 4].value = 0.0;
