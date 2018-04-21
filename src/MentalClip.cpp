@@ -81,10 +81,10 @@ MentalClipWidget::MentalClipWidget(MentalClip *module) : ModuleWidget(module)
   setPanel(SVG::load(assetPlugin(plugin, "res/MentalClip.svg")));
 
   // label
-  addParam(ParamWidget::create<Trimpot>(Vec(6, box.size.y / 2 - 169), module, MentalClip::THRESH1_PARAM, 0.0, 1.0, 1.0));
+  addParam(ParamWidget::create<SmlKnob>(Vec(6, box.size.y / 2 - 169), module, MentalClip::THRESH1_PARAM, 0.0, 1.0, 1.0));
   addInput(Port::create<CVInPort>(Vec(3, box.size.y / 2 - 148), Port::INPUT, module, MentalClip::THRESH1_CV_INPUT));
   // label
-  addParam(ParamWidget::create<Trimpot>(Vec(6, box.size.y / 2 - 112), module, MentalClip::GAIN1_PARAM, 0.0, 1.0, 0.5));
+  addParam(ParamWidget::create<SmlKnob>(Vec(6, box.size.y / 2 - 112), module, MentalClip::GAIN1_PARAM, 0.0, 1.0, 0.5));
   addInput(Port::create<CVInPort>(Vec(3, box.size.y / 2 - 91), Port::INPUT, module, MentalClip::GAIN1_CV_INPUT));
   // output  
   addInput(Port::create<InPort>(Vec(3, box.size.y / 2 - 55), Port::INPUT, module, MentalClip::INPUT1));
@@ -92,10 +92,10 @@ MentalClipWidget::MentalClipWidget(MentalClip *module) : ModuleWidget(module)
 
   
   // label
-  addParam(ParamWidget::create<Trimpot>(Vec(6, box.size.y - 175), module, MentalClip::THRESH2_PARAM, 0.0, 1.0, 1.0));
+  addParam(ParamWidget::create<SmlKnob>(Vec(6, box.size.y - 175), module, MentalClip::THRESH2_PARAM, 0.0, 1.0, 1.0));
   addInput(Port::create<CVInPort>(Vec(3, box.size.y - 154), Port::INPUT, module, MentalClip::THRESH2_CV_INPUT));
   // label
-  addParam(ParamWidget::create<Trimpot>(Vec(6, box.size.y - 118), module, MentalClip::GAIN2_PARAM, 0.0, 1.0, 0.5));
+  addParam(ParamWidget::create<SmlKnob>(Vec(6, box.size.y - 118), module, MentalClip::GAIN2_PARAM, 0.0, 1.0, 0.5));
   addInput(Port::create<CVInPort>(Vec(3, box.size.y - 97), Port::INPUT, module, MentalClip::GAIN2_CV_INPUT));
   // output  
   addInput(Port::create<InPort>(Vec(3, box.size.y - 61), Port::INPUT, module, MentalClip::INPUT2));

@@ -89,10 +89,10 @@ MentalFoldWidget::MentalFoldWidget(MentalFold *module) : ModuleWidget(module)
   setPanel(SVG::load(assetPlugin(plugin, "res/MentalFold.svg")));
   
   // label
-  addParam(ParamWidget::create<Trimpot>(Vec(6, box.size.y / 2 - 169), module, MentalFold::THRESH_PARAM, 0.0, 1.0, 1.0));
+  addParam(ParamWidget::create<SmlKnob>(Vec(6, box.size.y / 2 - 169), module, MentalFold::THRESH_PARAM, 0.0, 1.0, 1.0));
   addInput(Port::create<CVInPort>(Vec(3, box.size.y / 2 - 148), Port::INPUT, module, MentalFold::THRESH_CV_INPUT));
   // label
-  addParam(ParamWidget::create<Trimpot>(Vec(6, box.size.y / 2 - 112), module, MentalFold::GAIN_PARAM, 0.0, 1.0, 0.5));
+  addParam(ParamWidget::create<SmlKnob>(Vec(6, box.size.y / 2 - 112), module, MentalFold::GAIN_PARAM, 0.0, 1.0, 0.5));
   addInput(Port::create<CVInPort>(Vec(3, box.size.y / 2 - 91), Port::INPUT, module, MentalFold::GAIN_CV_INPUT));
   // output  
   addInput(Port::create<InPort>(Vec(3, box.size.y / 2 - 55), Port::INPUT, module, MentalFold::INPUT_1));
@@ -100,10 +100,10 @@ MentalFoldWidget::MentalFoldWidget(MentalFold *module) : ModuleWidget(module)
 
   
   // label
-  addParam(ParamWidget::create<Trimpot>(Vec(6, box.size.y - 177), module, MentalFold::THRESH_PARAM2, 0.0, 1.0, 1.0));
+  addParam(ParamWidget::create<SmlKnob>(Vec(6, box.size.y - 177), module, MentalFold::THRESH_PARAM2, 0.0, 1.0, 1.0));
   addInput(Port::create<CVInPort>(Vec(3, box.size.y - 156), Port::INPUT, module, MentalFold::THRESH_CV_INPUT2));
   // label
-  addParam(ParamWidget::create<Trimpot>(Vec(6, box.size.y - 120), module, MentalFold::GAIN_PARAM2, 0.0, 1.0, 0.5));
+  addParam(ParamWidget::create<SmlKnob>(Vec(6, box.size.y - 120), module, MentalFold::GAIN_PARAM2, 0.0, 1.0, 0.5));
   addInput(Port::create<CVInPort>(Vec(3, box.size.y - 99), Port::INPUT, module, MentalFold::GAIN_CV_INPUT2));
   // output  
   addInput(Port::create<InPort>(Vec(3, box.size.y - 63), Port::INPUT, module, MentalFold::INPUT_2));

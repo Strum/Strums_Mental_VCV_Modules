@@ -148,7 +148,7 @@ MentalCountersWidget::MentalCountersWidget(MentalCounters *module) : ModuleWidge
   
   int group_offset = 190;
   
-  addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 20), module, MentalCounters::COUNT_NUM_PARAM, 0.0, 32.0, 0.0)); 
+  addParam(ParamWidget::create<MedKnob>(Vec(2, 20), module, MentalCounters::COUNT_NUM_PARAM, 0.0, 32.0, 0.0)); 
   addInput(Port::create<GateInPort>(Vec(3, 90), Port::INPUT, module, MentalCounters::CLK_IN));
 	addInput(Port::create<GateInPort>(Vec(3, 120), Port::INPUT, module, MentalCounters::RESET_IN));
   
@@ -163,7 +163,7 @@ MentalCountersWidget::MentalCountersWidget(MentalCounters *module) : ModuleWidge
 	addChild(display);
   
   /////////// counter 2
-  addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 20 + group_offset), module, MentalCounters::COUNT_NUM_PARAM_2, 0.0, 32.0, 0.0)); 
+  addParam(ParamWidget::create<MedKnob>(Vec(2, 20 + group_offset), module, MentalCounters::COUNT_NUM_PARAM_2, 0.0, 32.0, 0.0)); 
   addInput(Port::create<GateInPort>(Vec(3, 90 + group_offset), Port::INPUT, module, MentalCounters::CLK_IN_2));
 	addInput(Port::create<GateInPort>(Vec(3, 120 + group_offset), Port::INPUT, module, MentalCounters::RESET_IN_2));
   

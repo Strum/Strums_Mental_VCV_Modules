@@ -204,3 +204,38 @@ struct GateOutPort : SVGPort {
 		box.size = background->box.size;
 	}
 };
+
+// Knobs
+
+struct LrgKnob : RoundKnob {
+	LrgKnob() {
+		setSVG(SVG::load(assetPlugin(plugin, "res/components/LrgKnob.svg")));
+		box.size = Vec(42,42);
+
+	}
+};
+
+struct MedKnob : RoundKnob {
+	MedKnob() {
+		setSVG(SVG::load(assetPlugin(plugin, "res/components/MedKnob.svg")));
+		box.size = Vec(26,26);
+
+	}
+};
+
+struct SmlKnob : RoundKnob {
+	SmlKnob() {
+		setSVG(SVG::load(assetPlugin(plugin, "res/components/SmlKnob.svg")));
+		box.size = Vec(20,20);
+	}
+};
+
+// switches
+
+struct ThreeWaySwitch : SVGSwitch, ToggleSwitch {
+	ThreeWaySwitch() {
+		addFrame(SVG::load(assetPlugin(plugin,"res/components/Three_2.svg")));
+		addFrame(SVG::load(assetPlugin(plugin,"res/components/Three_1.svg")));
+		addFrame(SVG::load(assetPlugin(plugin,"res/components/Three_0.svg")));
+	}
+};

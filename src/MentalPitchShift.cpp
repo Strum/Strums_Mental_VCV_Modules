@@ -71,10 +71,10 @@ MentalPitchShiftWidget::MentalPitchShiftWidget(MentalPitchShift *module) : Modul
 
   setPanel(SVG::load(assetPlugin(plugin, "res/MentalPitchShift.svg")));
 
-  addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 20), module, MentalPitchShift::OCTAVE_SHIFT_1, -4.5, 4.5, 0.0));
-  addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 80), module, MentalPitchShift::OCTAVE_SHIFT_2, -4.5, 4.5, 0.0));
-  addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 140), module, MentalPitchShift::SEMITONE_SHIFT_1, -6.5, 6.5, 0.0));
-  addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 200), module, MentalPitchShift::SEMITONE_SHIFT_2, -6.5, 6.5, 0.0));
+  addParam(ParamWidget::create<MedKnob>(Vec(2, 20), module, MentalPitchShift::OCTAVE_SHIFT_1, -4.5, 4.5, 0.0));
+  addParam(ParamWidget::create<MedKnob>(Vec(2, 80), module, MentalPitchShift::OCTAVE_SHIFT_2, -4.5, 4.5, 0.0));
+  addParam(ParamWidget::create<MedKnob>(Vec(2, 140), module, MentalPitchShift::SEMITONE_SHIFT_1, -6.5, 6.5, 0.0));
+  addParam(ParamWidget::create<MedKnob>(Vec(2, 200), module, MentalPitchShift::SEMITONE_SHIFT_2, -6.5, 6.5, 0.0));
 
   addInput(Port::create<CVInPort>(Vec(3, 50), Port::INPUT, module, MentalPitchShift::OCTAVE_SHIFT_1_INPUT));
 	addInput(Port::create<CVInPort>(Vec(3, 110), Port::INPUT, module, MentalPitchShift::OCTAVE_SHIFT_2_INPUT));

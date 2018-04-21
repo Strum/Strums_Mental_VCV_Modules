@@ -134,7 +134,7 @@ MentalQuantiserWidget::MentalQuantiserWidget(MentalQuantiser *module) : ModuleWi
   int top_row = 50;
   int row_spacing = 25; 
 	
-  addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(62, 15), module, MentalQuantiser::PITCH_PARAM, -6.5, 6.5, 0.0));
+  addParam(ParamWidget::create<MedKnob>(Vec(62, 15), module, MentalQuantiser::PITCH_PARAM, -6.5, 6.5, 0.0));
   addInput(Port::create<CVInPort>(Vec(63, 45), Port::INPUT, module, MentalQuantiser::PITCH_INPUT));
   
   addInput(Port::create<CVInPort>(Vec(3, top_row), Port::INPUT, module, MentalQuantiser::INPUT));

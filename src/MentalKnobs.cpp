@@ -184,8 +184,8 @@ MentalKnobsWidget::MentalKnobsWidget(MentalKnobs *module) : ModuleWidget(module)
   int group_offset = 120;    
   for (int i = 0 ; i < 3 ; i++)
   {
-    addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 20+group_offset*i), module, MentalKnobs::KNOB_PARAM + i, -1.0, 1.0, 0.0));
-    addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(32, 20+group_offset*i), module, MentalKnobs::SCALE_PARAM + i,0.0, 10.0, 1.0)); 
+    addParam(ParamWidget::create<MedKnob>(Vec(2, 20+group_offset*i), module, MentalKnobs::KNOB_PARAM + i, -1.0, 1.0, 0.0));
+    addParam(ParamWidget::create<MedKnob>(Vec(32, 20+group_offset*i), module, MentalKnobs::SCALE_PARAM + i,0.0, 10.0, 1.0)); 
     
     addParam(ParamWidget::create<LEDButton>(Vec(5, 50+group_offset*i), module, MentalKnobs::STEP_SWITCH + i, 0.0, 1.0, 0.0));
     addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(10, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + i ));

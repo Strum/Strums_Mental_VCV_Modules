@@ -254,9 +254,9 @@ MentalMasterClockWidget::MentalMasterClockWidget(MentalMasterClock *module) : Mo
 
   setPanel(SVG::load(assetPlugin(plugin, "res/MentalMasterClock.svg")));
    
-    addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 20), module, MentalMasterClock::TEMPO_PARAM, 40.0, 250.0, 120.0));
-    addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 50), module, MentalMasterClock::TIMESIGTOP_PARAM,2.0, 15.0, 4.0));
-    addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(2, 80), module, MentalMasterClock::TIMESIGBOTTOM_PARAM,0.0, 3.0, 1.0));
+    addParam(ParamWidget::create<MedKnob>(Vec(2, 20), module, MentalMasterClock::TEMPO_PARAM, 40.0, 250.0, 120.0));
+    addParam(ParamWidget::create<MedKnob>(Vec(2, 50), module, MentalMasterClock::TIMESIGTOP_PARAM,2.0, 15.0, 4.0));
+    addParam(ParamWidget::create<MedKnob>(Vec(2, 80), module, MentalMasterClock::TIMESIGBOTTOM_PARAM,0.0, 3.0, 1.0));
      
     addOutput(Port::create<GateOutPort>(Vec(90, 110), Port::OUTPUT, module, MentalMasterClock::BEAT_OUT)); 
     addOutput(Port::create<GateOutPort>(Vec(90, 140), Port::OUTPUT, module, MentalMasterClock::BAR_OUT)); 
