@@ -143,8 +143,8 @@ MentalQuantiserWidget::MentalQuantiserWidget(MentalQuantiser *module) : ModuleWi
   for (int i = 0; i < 12 ; i++)
   {  
     addParam(ParamWidget::create<LEDButton>(Vec(3, top_row + 30 + row_spacing * i), module, MentalQuantiser::BUTTON_PARAM + i, 0.0, 1.0, 0.0));
-	  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(3+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::BUTTON_LIGHTS + i));
-    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(30+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::OUTPUT_LIGHTS + i));
+	  addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(3+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::BUTTON_LIGHTS + i));
+    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(30+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::OUTPUT_LIGHTS + i));
     addOutput(Port::create<CVOutPort>(Vec(63, top_row + 30 + row_spacing * i), Port::OUTPUT, module, MentalQuantiser::REF_OUT + i));    
   }
 }

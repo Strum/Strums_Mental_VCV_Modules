@@ -99,7 +99,7 @@ MentalSwitch8Widget::MentalSwitch8Widget(MentalSwitch8 *module) : ModuleWidget(m
   for (int i = 0; i < 8 ; i++)
   {  
    addOutput(Port::create<OutPort>(Vec(30, top_space + spacing * i), Port::OUTPUT, module, MentalSwitch8::OUTPUT + i));   	 
-   addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(60, top_space +  spacing * i + 8), module,MentalSwitch8::OUTPUT_LEDS + i));
+   addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(60, top_space +  spacing * i + 8), module,MentalSwitch8::OUTPUT_LEDS + i));
   }
   
 }

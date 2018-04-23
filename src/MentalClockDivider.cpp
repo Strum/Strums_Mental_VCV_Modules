@@ -307,16 +307,16 @@ MentalClockDividerWidget::MentalClockDividerWidget(MentalClockDivider *module) :
   addOutput(Port::create<GateOutPort>(Vec(2, 325), Port::OUTPUT, module, MentalClockDivider::OUT12));
   
 	
-	addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(33, 120), module, MentalClockDivider::LIGHTS));
-	addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(33, 145), module, MentalClockDivider::LIGHTS+1));
-	addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(33, 170), module, MentalClockDivider::LIGHTS+2));
-	addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(33, 195), module, MentalClockDivider::LIGHTS+3));  
-  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(33, 220), module, MentalClockDivider::LIGHTS+4));
+	addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(33, 120), module, MentalClockDivider::LIGHTS));
+	addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(33, 145), module, MentalClockDivider::LIGHTS+1));
+	addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(33, 170), module, MentalClockDivider::LIGHTS+2));
+	addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(33, 195), module, MentalClockDivider::LIGHTS+3));  
+  addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(33, 220), module, MentalClockDivider::LIGHTS+4));
   
-	addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(33, 255), module, MentalClockDivider::LIGHTS+5));
-	addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(33, 275), module, MentalClockDivider::LIGHTS+6));
-	addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(33, 305), module, MentalClockDivider::LIGHTS+7));
-  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(33, 330), module, MentalClockDivider::LIGHTS+8));
+	addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(33, 255), module, MentalClockDivider::LIGHTS+5));
+	addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(33, 275), module, MentalClockDivider::LIGHTS+6));
+	addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(33, 305), module, MentalClockDivider::LIGHTS+7));
+  addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(33, 330), module, MentalClockDivider::LIGHTS+8));
 	
 
 }

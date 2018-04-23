@@ -96,7 +96,7 @@ MentalBinaryDecoderWidget::MentalBinaryDecoderWidget(MentalBinaryDecoder *module
   for (int i = 0; i < 8 ; i++)
   {  
    addOutput(Port::create<GateOutPort>(Vec(30, top_space + spacing * i), Port::OUTPUT, module, MentalBinaryDecoder::OUTPUT + i));   	 
-   addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(60, top_space +  spacing * i + 8), module, MentalBinaryDecoder::OUTPUT_LEDS + i));
+   addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(60, top_space +  spacing * i + 8), module, MentalBinaryDecoder::OUTPUT_LEDS + i));
   }  
 }
 

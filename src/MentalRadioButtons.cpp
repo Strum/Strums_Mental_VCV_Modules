@@ -137,13 +137,13 @@ MentalRadioButtonsWidget::MentalRadioButtonsWidget(MentalRadioButtons *module) :
     addInput(Port::create<GateInPort>(Vec(3, top_space + spacing * i), Port::INPUT, module, MentalRadioButtons::INS1 + i));
     addOutput(Port::create<GateOutPort>(Vec(63, top_space + spacing * i), Port::OUTPUT, module, MentalRadioButtons::OUTPUT + i));
     addParam(ParamWidget::create<LEDButton>(Vec(35, top_space + 3 + spacing * i), module, MentalRadioButtons::BUTTON_PARAM +i, 0.0, 1.0, 0.0));
-    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(40, top_space + 8 + spacing * i), module, MentalRadioButtons::BUTTON_LEDS + i));
+    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(40, top_space + 8 + spacing * i), module, MentalRadioButtons::BUTTON_LEDS + i));
   
 	  /// group 2
    addInput(Port::create<GateInPort>(Vec(3, 10 + group_offset + spacing * i), Port::INPUT, module, MentalRadioButtons::INS2 + i)); 
    addOutput(Port::create<GateOutPort>(Vec(63, 10 + group_offset +  spacing * i), Port::OUTPUT, module, MentalRadioButtons::BUTTON2_OUT + i));
    addParam(ParamWidget::create<LEDButton>(Vec(35, 10 + 3 + group_offset +  spacing * i), module, MentalRadioButtons::BUTTON2 + i, 0.0, 1.0, 0.0));
-   addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(40,10 + 8 + group_offset +  spacing * i), module, MentalRadioButtons::BUTTON2_LEDS + i));
+   addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(40,10 + 8 + group_offset +  spacing * i), module, MentalRadioButtons::BUTTON2_LEDS + i));
   }
   
 }

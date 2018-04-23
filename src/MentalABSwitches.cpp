@@ -122,11 +122,11 @@ MentalABSwitchesWidget::MentalABSwitchesWidget(MentalABSwitches *module) : Modul
     addOutput(Port::create<OutPort>(Vec(33, group_spacing * i + 25), Port::OUTPUT, module, MentalABSwitches::OUTPUT_A + i));
     addOutput(Port::create<OutPort>(Vec(33, group_spacing * i + 50), Port::OUTPUT, module, MentalABSwitches::OUTPUT_B + i));
 
-    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(62, group_spacing * i + 34), module, MentalABSwitches::A_LEDS + i ));
-    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(62, group_spacing * i + 59), module, MentalABSwitches::B_LEDS + i));
+    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(62, group_spacing * i + 34), module, MentalABSwitches::A_LEDS + i ));
+    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(62, group_spacing * i + 59), module, MentalABSwitches::B_LEDS + i));
   
     addParam(ParamWidget::create<LEDButton>(Vec(6, group_spacing * i + 54), module, MentalABSwitches::BUTTON_PARAM + i, 0.0, 1.0, 0.0));
-	  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(6+5, group_spacing * i + 54+5), module, MentalABSwitches::BUTTON_LIGHTS + i));
+	  addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(6+5, group_spacing * i + 54+5), module, MentalABSwitches::BUTTON_LIGHTS + i));
   }
 }
 

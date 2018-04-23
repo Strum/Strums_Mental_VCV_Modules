@@ -97,7 +97,7 @@ MentalMux8Widget::MentalMux8Widget(MentalMux8 *module) : ModuleWidget(module)
   for (int i = 0; i < 8 ; i++)
   {  
    addInput(Port::create<InPort>(Vec(3, top_space + spacing * i + 100), Port::INPUT, module, MentalMux8::SIG_INPUT + i));   	 
-   addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(33, top_space +  spacing * i + 8 + 100), module, MentalMux8::INPUT_LEDS + i));
+   addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(33, top_space +  spacing * i + 8 + 100), module, MentalMux8::INPUT_LEDS + i));
   }
   
   addOutput(Port::create<OutPort>(Vec(30, top_space + spacing), Port::OUTPUT, module, MentalMux8::OUTPUT));  

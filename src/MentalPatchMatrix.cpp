@@ -148,7 +148,7 @@ MentalPatchMatrixWidget::MentalPatchMatrixWidget(MentalPatchMatrix *module) : Mo
    for(int j = 0 ; j < 10 ; j++ )
    {
      addParam(ParamWidget::create<LEDButton>(Vec(35 + column_spacing * j, top_row + row_spacing * i), module, MentalPatchMatrix::SWITCHES + i + j * 10, 0.0, 1.0, 0.0));
-     addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(35 + column_spacing * j + 5, top_row + row_spacing * i + 5), module, MentalPatchMatrix::SWITCH_LIGHTS  + i + j * 10));
+     addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(35 + column_spacing * j + 5, top_row + row_spacing * i + 5), module, MentalPatchMatrix::SWITCH_LIGHTS  + i + j * 10));
    }
 	}  
 }
