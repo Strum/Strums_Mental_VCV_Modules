@@ -135,7 +135,7 @@ struct NumberDisplayWidget3 : TransparentWidget {
     to_display << std::setw(3) << *value;
 
     Vec textPos = Vec(6.0f, 17.0f);   
-    NVGcolor textColor = nvgRGB(0x33, 0x33, 0xff);
+    NVGcolor textColor = nvgRGB(0x00, 0x47, 0x7e);
     nvgFillColor(vg, textColor);
     nvgText(vg, textPos.x, textPos.y, to_display.str().c_str(), NULL);
   }

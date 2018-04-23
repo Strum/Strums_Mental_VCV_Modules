@@ -169,7 +169,7 @@ struct NumberDisplayWidget4 : TransparentWidget {
     to_display << std::setw(3) << *value;
 
     Vec textPos = Vec(6.0f, 17.0f);   
-    NVGcolor textColor = nvgRGB(0x33, 0x33, 0xff);
+    NVGcolor textColor = nvgRGB(0x00, 0x47, 0x7e);
     nvgFillColor(vg, textColor);
     nvgText(vg, textPos.x, textPos.y, to_display.str().c_str(), NULL);
   }
@@ -193,11 +193,11 @@ MentalKnobsWidget::MentalKnobsWidget(MentalKnobs *module) : ModuleWidget(module)
     addParam(ParamWidget::create<MedKnob>(Vec(32, 20+group_offset*i), module, MentalKnobs::SCALE_PARAM + i,0.0, 10.0, 1.0)); 
     
     addParam(ParamWidget::create<LEDButton>(Vec(5, 50+group_offset*i), module, MentalKnobs::STEP_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(10, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + i ));
+    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(10, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + i ));
     addParam(ParamWidget::create<LEDButton>(Vec(5, 75+group_offset*i), module, MentalKnobs::BI_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(10, 80+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 3 + i));
+    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(10, 80+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 3 + i));
     addParam(ParamWidget::create<LEDButton>(Vec(35, 50+group_offset*i), module, MentalKnobs::STEPSIZE_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(40, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 6 + i));
+    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(40, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 6 + i));
     
     addOutput(Port::create<CVOutPort>(Vec(33, 75+group_offset*i), Port::OUTPUT, module, MentalKnobs::OUTPUT + i));     
   }

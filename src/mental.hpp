@@ -34,125 +34,9 @@ extern Model *modelMentalCounters;
 extern Model *modelMentalKnobs;
 extern Model *modelMentalGateMaker;
 extern Model *modelMentalMasterClock;
-//extern Model *modelMentalPatchNotes;
 extern Model *modelMentalQuadLFO;
 extern Model *modelMentalRadioButtons;
 
-
-/*struct MentalSubMixerWidget : ModuleWidget {
-	MentalSubMixerWidget();
-};
-
-struct MentalMultsWidget : ModuleWidget {
-	MentalMultsWidget();
-};
-
-struct MentalMixerWidget : ModuleWidget {
-	MentalMixerWidget();
-};
-
-struct MentalFoldWidget : ModuleWidget {
-	MentalFoldWidget();
-};
-
-struct MentalClipWidget : ModuleWidget {
-	MentalClipWidget();
-};
-
-struct MentalGatesWidget : ModuleWidget {
-	MentalGatesWidget();
-};
-
-struct MentalABSwitchesWidget : ModuleWidget {
-	MentalABSwitchesWidget();
-};
-
-//struct MentalNoiseGateWidget : ModuleWidget {
-//	MentalNoiseGateWidget();
-//};
-
-struct MentalQuantiserWidget : ModuleWidget {
-	MentalQuantiserWidget();
-};
-
-struct MentalChordWidget : ModuleWidget {
-	MentalChordWidget();
-};
-
-struct MentalMuxesWidget : ModuleWidget {
-	MentalMuxesWidget();
-};
-
-struct MentalLogicWidget : ModuleWidget {
-	MentalLogicWidget();
-};
-
-struct MentalButtonsWidget : ModuleWidget {
-	MentalButtonsWidget();
-};
-
-struct MentalSumsWidget : ModuleWidget {
-	MentalSumsWidget();
-};
-
-struct MentalPitchShiftWidget : ModuleWidget {
-	MentalPitchShiftWidget();
-};
-
-struct MentalClockDividerWidget : ModuleWidget {
-	MentalClockDividerWidget();
-};
-
-struct MentalCartesianWidget : ModuleWidget {
-	MentalCartesianWidget();
-};
-
-struct MentalPatchMatrixWidget : ModuleWidget {
-	MentalPatchMatrixWidget();
-};
-
-struct MentalBinaryDecoderWidget : ModuleWidget {
-	MentalBinaryDecoderWidget();
-};
-
-struct MentalSwitch8Widget : ModuleWidget {
-	MentalSwitch8Widget();
-};
-
-struct MentalMux8Widget : ModuleWidget {
-	MentalMux8Widget();
-};
-
-struct MentalCountersWidget : ModuleWidget {
-	MentalCountersWidget();
-};
-
-struct MentalKnobsWidget : ModuleWidget {
-	MentalKnobsWidget();
-};
-
-struct MentalGateMakerWidget : ModuleWidget {
-	MentalGateMakerWidget();
-};
-
-struct MentalMasterClockWidget : ModuleWidget {
-	MentalMasterClockWidget();
-};
-
-struct MentalPatchNotesWidget : ModuleWidget {
-  TextField * patch_notes;
-	MentalPatchNotesWidget();
-  json_t *toJson() override;
-	void fromJson(json_t *rootJ) override;
-};
-
-struct MentalQuadLFOWidget : ModuleWidget {
-	MentalQuadLFOWidget();
-};
-
-struct MentalRadioButtonsWidget : ModuleWidget {
-	MentalRadioButtonsWidget();
-}; */
 
 /////////////////////////////////////////////
 // ports
@@ -239,3 +123,46 @@ struct ThreeWaySwitch : SVGSwitch, ToggleSwitch {
 		addFrame(SVG::load(assetPlugin(plugin,"res/components/Three_0.svg")));
 	}
 };
+
+// lights
+
+/// lights
+
+struct MentalLight : GrayModuleLightWidget{
+	MentalLight() { bgColor = nvgRGB(0x40, 0x40, 0x40); }
+};
+struct RedLED : MentalLight {
+ 	RedLED() {
+ 		addBaseColor(nvgRGB(0xff, 0x00, 0x00)); }
+};
+
+struct BlueLED : MentalLight {
+ 	BlueLED() {
+ 		addBaseColor(nvgRGB(0x00, 0x47, 0x7e)); }
+};
+
+struct OrangeLED : MentalLight {
+ 	OrangeLED() {
+ 		addBaseColor(COLOR_ORANGE); }
+};
+
+template <typename BASE>
+ struct TinyLight : BASE {
+ 	TinyLight() {
+ 		this->box.size = Vec(4, 4);
+ 	}
+ };
+
+template <typename BASE>
+ struct SmlLight : BASE {
+ 	SmlLight() {
+ 		this->box.size = Vec(8, 8);
+ 	}
+ };
+
+template <typename BASE>
+ struct MedLight : BASE {
+ 	MedLight() {
+ 		this->box.size = Vec(10, 10);
+ 	}
+ };

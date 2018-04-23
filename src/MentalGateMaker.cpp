@@ -175,7 +175,7 @@ struct NumberDisplayWidget : TransparentWidget {
     to_display << std::setw(3) << *value;
 
     Vec textPos = Vec(6.0f, 17.0f); 
-    NVGcolor textColor = nvgRGB(0x33, 0x33, 0xff);
+    NVGcolor textColor = nvgRGB(0x00, 0x47, 0x7e);
     nvgFillColor(vg, textColor);
     nvgText(vg, textPos.x, textPos.y, to_display.str().c_str(), NULL);
   }
@@ -224,7 +224,7 @@ MentalGateMakerWidget::MentalGateMakerWidget(MentalGateMaker *module) : ModuleWi
   addParam(ParamWidget::create<LEDButton>(Vec(35, 140 + offset), module, MentalGateMaker::TRIG_BUTTON, 0.0, 1.0, 0.0));  
   
   addParam(ParamWidget::create<LEDButton>(Vec(35, 170 + offset), module, MentalGateMaker::CYCLE_BUTTON, 0.0, 1.0, 0.0));
-  addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(35+5, 170 + offset + 5), module, MentalGateMaker::CYCLE_BUTTON_LED));
+  addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(35+5, 170 + offset + 5), module, MentalGateMaker::CYCLE_BUTTON_LED));
   addInput(Port::create<GateInPort>(Vec(3, 170 + offset), Port::INPUT, module, MentalGateMaker::CYCLE_IN));  
   
   addOutput(Port::create<GateOutPort>(Vec(93, 110), Port::OUTPUT, module, MentalGateMaker::OUTPUT)); 

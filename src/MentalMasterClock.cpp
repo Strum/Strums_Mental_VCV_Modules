@@ -277,10 +277,10 @@ MentalMasterClockWidget::MentalMasterClockWidget(MentalMasterClock *module) : Mo
     //addChild(ModuleLightWidget::create<MediumLight<GreenRedLight>>(Vec(33, 125), module, MentalClockDivider::LIGHTS));
     
     addParam(ParamWidget::create<LEDButton>(Vec(5, 140), module, MentalMasterClock::RESET_BUTTON, 0.0, 1.0, 0.0));
-    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(10, 145), module, MentalMasterClock::RESET_LED));
+    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(10, 145), module, MentalMasterClock::RESET_LED));
     
     addParam(ParamWidget::create<LEDButton>(Vec(5, 110), module, MentalMasterClock::RUN_SWITCH, 0.0, 1.0, 0.0));
-    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(10, 115), module, MentalMasterClock::RUN_LED));
+    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(10, 115), module, MentalMasterClock::RUN_LED));
     
   NumberDisplayWidget2 *display = new NumberDisplayWidget2();
 	display->box.pos = Vec(35,20);
