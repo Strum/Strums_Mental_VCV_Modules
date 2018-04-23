@@ -211,12 +211,12 @@ void MentalMasterClock::step()
 }
 
 ////////////////////////////////////
-struct NumberDisplayWidget : TransparentWidget {
+struct NumberDisplayWidget2 : TransparentWidget {
 
   int *value;
   std::shared_ptr<Font> font;
 
-  NumberDisplayWidget() {
+  NumberDisplayWidget2() {
     font = Font::load(assetPlugin(plugin, "res/Segment7Standard.ttf"));
   };
 
@@ -224,10 +224,16 @@ struct NumberDisplayWidget : TransparentWidget {
   {
     // Background
     NVGcolor backgroundColor = nvgRGB(0x00, 0x00, 0x00);
+    NVGcolor StrokeColor = nvgRGB(0x00, 0x47, 0x7e);
+    nvgBeginPath(vg);
+    nvgRoundedRect(vg, -1.0, -1.0, box.size.x+2, box.size.y+2, 4.0);
+    nvgFillColor(vg, StrokeColor);
+    nvgFill(vg);
     nvgBeginPath(vg);
     nvgRoundedRect(vg, 0.0, 0.0, box.size.x, box.size.y, 4.0);
     nvgFillColor(vg, backgroundColor);
-    nvgFill(vg);    
+    nvgFill(vg);
+
     
     // text 
     nvgFontSize(vg, 18);
@@ -238,7 +244,7 @@ struct NumberDisplayWidget : TransparentWidget {
     to_display << std::setw(3) << *value;
 
     Vec textPos = Vec(6.0f, 17.0f);   
-    NVGcolor textColor = nvgRGB(0x33, 0x33, 0xff);
+    NVGcolor textColor = nvgRGB(0x00, 0x47, 0x7e);
     nvgFillColor(vg, textColor);
     nvgText(vg, textPos.x, textPos.y, to_display.str().c_str(), NULL);
   }
@@ -276,19 +282,19 @@ MentalMasterClockWidget::MentalMasterClockWidget(MentalMasterClock *module) : Mo
     addParam(ParamWidget::create<LEDButton>(Vec(5, 110), module, MentalMasterClock::RUN_SWITCH, 0.0, 1.0, 0.0));
     addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(10, 115), module, MentalMasterClock::RUN_LED));
     
-  NumberDisplayWidget *display = new NumberDisplayWidget();
+  NumberDisplayWidget2 *display = new NumberDisplayWidget2();
 	display->box.pos = Vec(35,20);
 	display->box.size = Vec(50, 20);
 	display->value = &module->tempo;
 	addChild(display); 
     
-  NumberDisplayWidget *display2 = new NumberDisplayWidget();
+  NumberDisplayWidget2 *display2 = new NumberDisplayWidget2();
 	display2->box.pos = Vec(35,50);
 	display2->box.size = Vec(50, 20);
 	display2->value = &module->time_sig_top;
 	addChild(display2); 
   
-  NumberDisplayWidget *display3 = new NumberDisplayWidget();
+  NumberDisplayWidget2 *display3 = new NumberDisplayWidget2();
 	display3->box.pos = Vec(35,80);
 	display3->box.size = Vec(50, 20);
 	display3->value = &module->time_sig_bottom;

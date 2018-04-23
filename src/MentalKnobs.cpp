@@ -137,12 +137,12 @@ void MentalKnobs::step()
 
 ////////////////////////////////////
 
-struct NumberDisplayWidget : TransparentWidget {
+struct NumberDisplayWidget4 : TransparentWidget {
 
   int *value;
   std::shared_ptr<Font> font;
 
-  NumberDisplayWidget() {
+  NumberDisplayWidget4() {
     font = Font::load(assetPlugin(plugin, "res/Segment7Standard.ttf"));
   };
 
@@ -150,6 +150,11 @@ struct NumberDisplayWidget : TransparentWidget {
   {
     // Background
     NVGcolor backgroundColor = nvgRGB(0x00, 0x00, 0x00);
+    NVGcolor StrokeColor = nvgRGB(0x00, 0x47, 0x7e);
+    nvgBeginPath(vg);
+    nvgRoundedRect(vg, -1.0, -1.0, box.size.x+2, box.size.y+2, 4.0);
+    nvgFillColor(vg, StrokeColor);
+    nvgFill(vg);
     nvgBeginPath(vg);
     nvgRoundedRect(vg, 0.0, 0.0, box.size.x, box.size.y, 4.0);
     nvgFillColor(vg, backgroundColor);
@@ -197,19 +202,19 @@ MentalKnobsWidget::MentalKnobsWidget(MentalKnobs *module) : ModuleWidget(module)
     addOutput(Port::create<CVOutPort>(Vec(33, 75+group_offset*i), Port::OUTPUT, module, MentalKnobs::OUTPUT + i));     
   }
   
-  NumberDisplayWidget *display = new NumberDisplayWidget();
+  NumberDisplayWidget4 *display = new NumberDisplayWidget4();
 	display->box.pos = Vec(5,105);
 	display->box.size = Vec(50, 20);
 	display->value = &module->display_value[0];
 	addChild(display); 
     
-  NumberDisplayWidget *display2 = new NumberDisplayWidget();
+  NumberDisplayWidget4 *display2 = new NumberDisplayWidget4();
 	display2->box.pos = Vec(5,105+group_offset);
 	display2->box.size = Vec(50, 20);
 	display2->value = &module->display_value[1];
 	addChild(display2); 
   
-  NumberDisplayWidget *display3 = new NumberDisplayWidget();
+  NumberDisplayWidget4 *display3 = new NumberDisplayWidget4();
 	display3->box.pos = Vec(5,105+group_offset * 2);
 	display3->box.size = Vec(50, 20);
 	display3->value = &module->display_value[2];

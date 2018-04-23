@@ -140,6 +140,7 @@ void MentalGateMaker::step()
   
 }
 
+
 ////////////////////////////////////
 
 struct NumberDisplayWidget : TransparentWidget {
@@ -155,6 +156,11 @@ struct NumberDisplayWidget : TransparentWidget {
   {
     // Background
     NVGcolor backgroundColor = nvgRGB(0x00, 0x00, 0x00);
+    NVGcolor StrokeColor = nvgRGB(0x00, 0x47, 0x7e);
+    nvgBeginPath(vg);
+    nvgRoundedRect(vg, -1.0, -1.0, box.size.x+2, box.size.y+2, 4.0);
+    nvgFillColor(vg, StrokeColor);
+    nvgFill(vg);
     nvgBeginPath(vg);
     nvgRoundedRect(vg, 0.0, 0.0, box.size.x, box.size.y, 4.0);
     nvgFillColor(vg, backgroundColor);
@@ -168,7 +174,7 @@ struct NumberDisplayWidget : TransparentWidget {
     std::stringstream to_display;   
     to_display << std::setw(3) << *value;
 
-    Vec textPos; 
+    Vec textPos = Vec(6.0f, 17.0f); 
     NVGcolor textColor = nvgRGB(0x33, 0x33, 0xff);
     nvgFillColor(vg, textColor);
     nvgText(vg, textPos.x, textPos.y, to_display.str().c_str(), NULL);

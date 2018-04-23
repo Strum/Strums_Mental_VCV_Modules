@@ -103,12 +103,12 @@ void MentalCounters::step()
 
 
 ////////////////////////////////////
-struct NumberDisplayWidget : TransparentWidget {
+struct NumberDisplayWidget3 : TransparentWidget {
 
   int *value;
   std::shared_ptr<Font> font;
 
-  NumberDisplayWidget() {
+  NumberDisplayWidget3() {
     font = Font::load(assetPlugin(plugin, "res/Segment7Standard.ttf"));
   };
 
@@ -116,6 +116,11 @@ struct NumberDisplayWidget : TransparentWidget {
   {
     // Background
     NVGcolor backgroundColor = nvgRGB(0x00, 0x00, 0x00);
+    NVGcolor StrokeColor = nvgRGB(0x00, 0x47, 0x7e);
+    nvgBeginPath(vg);
+    nvgRoundedRect(vg, -1.0, -1.0, box.size.x+2, box.size.y+2, 4.0);
+    nvgFillColor(vg, StrokeColor);
+    nvgFill(vg);
     nvgBeginPath(vg);
     nvgRoundedRect(vg, 0.0, 0.0, box.size.x, box.size.y, 4.0);
     nvgFillColor(vg, backgroundColor);
@@ -156,7 +161,7 @@ MentalCountersWidget::MentalCountersWidget(MentalCounters *module) : ModuleWidge
   
   addOutput(Port::create<GateOutPort>(Vec(33, 90), Port::OUTPUT, module, MentalCounters::OUTPUT));
   
-  NumberDisplayWidget *display = new NumberDisplayWidget();
+  NumberDisplayWidget3 *display = new NumberDisplayWidget3();
 	display->box.pos = Vec(5,50);
 	display->box.size = Vec(50, 20);
 	display->value = &module->count_limit;
@@ -171,7 +176,7 @@ MentalCountersWidget::MentalCountersWidget(MentalCounters *module) : ModuleWidge
   
   addOutput(Port::create<GateOutPort>(Vec(33, 90 + group_offset), Port::OUTPUT, module, MentalCounters::OUTPUT_2));
   
-  NumberDisplayWidget *display_2 = new NumberDisplayWidget();
+  NumberDisplayWidget3 *display_2 = new NumberDisplayWidget3();
 	display_2->box.pos = Vec(5,50 + group_offset);
 	display_2->box.size = Vec(50, 20);
 	display_2->value = &module->count_limit_2;

@@ -218,7 +218,7 @@ struct LrgKnob : RoundKnob {
 struct MedKnob : RoundKnob {
 	MedKnob() {
 		setSVG(SVG::load(assetPlugin(plugin, "res/components/MedKnob.svg")));
-		box.size = Vec(26,26);
+		box.size = Vec(24,24);
 
 	}
 };
