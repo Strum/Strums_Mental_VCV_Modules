@@ -185,8 +185,8 @@ setPanel(SVG::load(assetPlugin(plugin, "res/MentalChord.svg")));
   addInput(Port::create<GateInPort>(Vec(3, 285), Port::INPUT, module, MentalChord::ONE_FOR_7_INPUT));
   addInput(Port::create<GateInPort>(Vec(3, 310), Port::INPUT, module, MentalChord::FLAT_9_INPUT));
   addInput(Port::create<GateInPort>(Vec(3, 335), Port::INPUT, module, MentalChord::SHARP_9_INPUT));
-  addInput(Port::create<GateInPort>(Vec(33, 322), Port::INPUT, module, MentalChord::SIX_FOR_7_INPUT));
-  addInput(Port::create<GateInPort>(Vec(33, 347), Port::INPUT, module, MentalChord::SHARP_5_INPUT));
+  addInput(Port::create<GateInPort>(Vec(33, 316), Port::INPUT, module, MentalChord::SIX_FOR_7_INPUT));
+  addInput(Port::create<GateInPort>(Vec(33, 341), Port::INPUT, module, MentalChord::SHARP_5_INPUT));
   
   
   addOutput(Port::create<CVOutPort>(Vec(63, 100), Port::OUTPUT, module, MentalChord::OUTPUT_ROOT));

@@ -131,7 +131,7 @@ MentalQuantiserWidget::MentalQuantiserWidget(MentalQuantiser *module) : ModuleWi
 
   setPanel(SVG::load(assetPlugin(plugin, "res/MentalQuantiser.svg")));
 
-  int top_row = 50;
+  int top_row = 40;
   int row_spacing = 25; 
 	
   addParam(ParamWidget::create<MedKnob>(Vec(62, 15), module, MentalQuantiser::PITCH_PARAM, -6.5, 6.5, 0.0));
@@ -145,7 +145,7 @@ MentalQuantiserWidget::MentalQuantiserWidget(MentalQuantiser *module) : ModuleWi
     addParam(ParamWidget::create<LEDButton>(Vec(3, top_row + 30 + row_spacing * i), module, MentalQuantiser::BUTTON_PARAM + i, 0.0, 1.0, 0.0));
 	  addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(3+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::BUTTON_LIGHTS + i));
     addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(30+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::OUTPUT_LIGHTS + i));
-    addOutput(Port::create<CVOutPort>(Vec(63, top_row + 30 + row_spacing * i), Port::OUTPUT, module, MentalQuantiser::REF_OUT + i));    
+    addOutput(Port::create<CVOutPort>(Vec(63, top_row + 40 + row_spacing * i), Port::OUTPUT, module, MentalQuantiser::REF_OUT + i));    
   }
 }
 

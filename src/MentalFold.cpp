@@ -106,8 +106,8 @@ MentalFoldWidget::MentalFoldWidget(MentalFold *module) : ModuleWidget(module)
   addParam(ParamWidget::create<SmlKnob>(Vec(6, box.size.y - 120), module, MentalFold::GAIN_PARAM2, 0.0, 1.0, 0.5));
   addInput(Port::create<CVInPort>(Vec(3, box.size.y - 99), Port::INPUT, module, MentalFold::GAIN_CV_INPUT2));
   // output  
-  addInput(Port::create<InPort>(Vec(3, box.size.y - 63), Port::INPUT, module, MentalFold::INPUT_2));
-  addOutput(Port::create<OutPort>(Vec(3, box.size.y - 36), Port::OUTPUT, module, MentalFold::OUTPUT_2));
+  addInput(Port::create<InPort>(Vec(3, box.size.y - 65), Port::INPUT, module, MentalFold::INPUT_2));
+  addOutput(Port::create<OutPort>(Vec(3, box.size.y - 38), Port::OUTPUT, module, MentalFold::OUTPUT_2));
 
 }
 Model *modelMentalFold = Model::create<MentalFold, MentalFoldWidget>("mental", "MentalFold", "Wave Folder", DISTORTION_TAG);

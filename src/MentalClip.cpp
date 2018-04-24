@@ -95,11 +95,11 @@ MentalClipWidget::MentalClipWidget(MentalClip *module) : ModuleWidget(module)
   addParam(ParamWidget::create<SmlKnob>(Vec(6, box.size.y - 175), module, MentalClip::THRESH2_PARAM, 0.0, 1.0, 1.0));
   addInput(Port::create<CVInPort>(Vec(3, box.size.y - 154), Port::INPUT, module, MentalClip::THRESH2_CV_INPUT));
   // label
-  addParam(ParamWidget::create<SmlKnob>(Vec(6, box.size.y - 118), module, MentalClip::GAIN2_PARAM, 0.0, 1.0, 0.5));
-  addInput(Port::create<CVInPort>(Vec(3, box.size.y - 97), Port::INPUT, module, MentalClip::GAIN2_CV_INPUT));
+  addParam(ParamWidget::create<SmlKnob>(Vec(6, box.size.y - 122), module, MentalClip::GAIN2_PARAM, 0.0, 1.0, 0.5));
+  addInput(Port::create<CVInPort>(Vec(3, box.size.y - 101), Port::INPUT, module, MentalClip::GAIN2_CV_INPUT));
   // output  
-  addInput(Port::create<InPort>(Vec(3, box.size.y - 61), Port::INPUT, module, MentalClip::INPUT2));
-  addOutput(Port::create<OutPort>(Vec(3, box.size.y - 34), Port::OUTPUT, module, MentalClip::OUTPUT2));
+  addInput(Port::create<InPort>(Vec(3, box.size.y - 65), Port::INPUT, module, MentalClip::INPUT2));
+  addOutput(Port::create<OutPort>(Vec(3, box.size.y - 38), Port::OUTPUT, module, MentalClip::OUTPUT2));
 
 }
 

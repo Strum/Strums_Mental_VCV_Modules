@@ -174,7 +174,7 @@ MentalMixerWidget::MentalMixerWidget(MentalMixer *module) : ModuleWidget(module)
   int port_col = 8;
   int pots_col = port_col + 3;
 
-  int top_row = 120;
+  int top_row = 117;
   int row_spacing = 28;
   int column_spacing = 29;
 

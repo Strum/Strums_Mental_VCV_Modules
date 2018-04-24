@@ -235,7 +235,7 @@ MentalQuadLFOWidget::MentalQuadLFOWidget(MentalQuadLFO *module) : ModuleWidget(m
 	  addOutput(Port::create<OutPort>(mm2px(Vec(1.003 + i * x_offset, 83.759)), Port::OUTPUT, module, MentalQuadLFO::SIN_OUTPUT + i));
 	  addOutput(Port::create<OutPort>(mm2px(Vec(1.003 + i * x_offset, 94.173)), Port::OUTPUT, module, MentalQuadLFO::TRI_OUTPUT + i));
 	  addOutput(Port::create<OutPort>(mm2px(Vec(1.003 + i * x_offset, 105.169)), Port::OUTPUT, module, MentalQuadLFO::SAW_OUTPUT + i));
-	  addOutput(Port::create<OutPort>(mm2px(Vec(1.003 + i * x_offset, 116.583)), Port::OUTPUT, module, MentalQuadLFO::SQR_OUTPUT + i));
+	  addOutput(Port::create<OutPort>(mm2px(Vec(1.003 + i * x_offset, 114.583)), Port::OUTPUT, module, MentalQuadLFO::SQR_OUTPUT + i));
   	
     addChild(ModuleLightWidget::create<SmallLight<GreenRedLight>>(Vec(13 + i * 30, 125), module, MentalQuadLFO::PHASE_POS_LIGHT + i));
   }

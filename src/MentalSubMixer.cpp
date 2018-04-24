@@ -100,7 +100,7 @@ MentalSubMixerWidget::MentalSubMixerWidget(MentalSubMixer *module) : ModuleWidge
 		addParam(ParamWidget::create<SmlKnob>(Vec( 9 + stripwidth * i , box.size.y - 92 ), module, MentalSubMixer::CH_PAN_PARAM + i, 0.0, 1.0, 0.5));
 		addInput(Port::create<CVInPort>(Vec( 6 + stripwidth * i , box.size.y - 70 ), Port::INPUT, module, MentalSubMixer::CH_PAN_INPUT + i));
 		// output
-		addOutput(Port::create<OutPort>(Vec( 6 + stripwidth * i , box.size.y - 36 ), Port::OUTPUT, module, MentalSubMixer::CH_OUTPUT + i));
+		addOutput(Port::create<OutPort>(Vec( 6 + stripwidth * i , box.size.y - 40 ), Port::OUTPUT, module, MentalSubMixer::CH_OUTPUT + i));
 	}
 }
 

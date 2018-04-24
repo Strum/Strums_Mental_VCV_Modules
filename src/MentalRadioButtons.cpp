@@ -130,7 +130,7 @@ MentalRadioButtonsWidget::MentalRadioButtonsWidget(MentalRadioButtons *module) :
   setPanel(SVG::load(assetPlugin(plugin, "res/MentalRadioButtons.svg")));
 
   int spacing = 25; 
-  int group_offset = 190;
+  int group_offset = 184;
   int top_space = 15;
   for (int i = 0; i < 7 ; i++)
   {  
