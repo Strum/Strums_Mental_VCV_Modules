@@ -4,9 +4,9 @@ strum@softhome.net
 
 Simple but useful modules for VCVRack
 
-Version : v0.6.2
+Version : v0.6.3
 
-Date : 24th April 2018
+Date : 27th April 2018
 
 Based largely on the fundamental modules but I have also used some code from other module
 developers and learned various ways of doing things from the other suites of modules as well.
