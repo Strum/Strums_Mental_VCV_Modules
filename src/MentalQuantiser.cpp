@@ -8,7 +8,6 @@
 
 #include "mental.hpp"
 
-#include "dsp/digital.hpp"
 
 /////////////////////////////////////////////////
 struct MentalQuantiser : Module {
@@ -34,17 +33,26 @@ struct MentalQuantiser : Module {
 		NUM_LIGHTS = OUTPUT_LIGHTS + 12
 	};
 
-  SchmittTrigger button_triggers[12];
+  dsp::SchmittTrigger button_triggers[12];
   
   bool button_states[12] = {true,true,true,true,true,true,true,true,true,true,true,true};
   float quantised = 0.0;
   bool found = false;
   int last_found = 0;
    
-  MentalQuantiser() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
-	void step() override;
+  MentalQuantiser() {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+
+    configParam(MentalQuantiser::PITCH_PARAM, -6.5, 6.5, 0.0, "");
+    for (int i = 0; i < 12; ++i)
+    {
+      configParam(MentalQuantiser::BUTTON_PARAM + i, 0.0, 1.0, 0.0, ""); 
+    }
+    
+  }
+	void process(const ProcessArgs& args) override;
   
-  json_t *toJson() override
+  json_t *dataToJson() override
   {
 		json_t *rootJ = json_object();
     
@@ -59,7 +67,7 @@ struct MentalQuantiser : Module {
     return rootJ;
   }
   
-  void fromJson(json_t *rootJ) override
+  void dataFromJson(json_t *rootJ) override
   {
     // button states
 		json_t *button_statesJ = json_object_get(rootJ, "buttons");
@@ -77,12 +85,12 @@ struct MentalQuantiser : Module {
 
 
 /////////////////////////////////////////////////////
-void MentalQuantiser::step() {
+void MentalQuantiser::process(const ProcessArgs& args) {
 
   ////// handle button presses
   for  (int i = 0 ; i < 12 ; i++)
   {
-    if (button_triggers[i].process(params[BUTTON_PARAM+i].value))
+    if (button_triggers[i].process(params[BUTTON_PARAM+i].getValue()))
     {
 		  button_states[i] = !button_states[i];
 	  }
@@ -91,17 +99,17 @@ void MentalQuantiser::step() {
   }
 
   // pitch offset
-  float pitch_in = round(inputs[PITCH_INPUT].value)/12;
-  float root_pitch = (pitch_in * (1/12.0)) + (round(params[PITCH_PARAM].value) * (1/12.0)); 
+  float pitch_in = round(inputs[PITCH_INPUT].getVoltage())/12;
+  float root_pitch = (pitch_in * (1/12.0)) + (round(params[PITCH_PARAM].getValue()) * (1/12.0)); 
     
   // set reference outputs
   for  (int i = 0 ; i < 12 ; i++)
   {
-    outputs[REF_OUT + i].value = root_pitch + i * (1/12.0);
+    outputs[REF_OUT + i].setVoltage(root_pitch + i * (1/12.0));
   }
   
   //////// quantise pitch to chromatic scale
-  float in = inputs[INPUT].value;  
+  float in = inputs[INPUT].getVoltage();  
   int octave = round(in);
   float octaves_removed = in - 1.0*octave;
   int semitone = round(octaves_removed*12);
@@ -116,37 +124,36 @@ void MentalQuantiser::step() {
   if (button_states[semitone])
   {    
     found = true;    
-    outputs[OUTPUT].value = quantised;
+    outputs[OUTPUT].setVoltage(quantised);
     lights[OUTPUT_LIGHTS + semitone].value  = 1.0;
   }     
 }
 
 //////////////////////////////////////////////////////////////////
 struct MentalQuantiserWidget : ModuleWidget {
-  MentalQuantiserWidget(MentalQuantiser *module);
-};
+  MentalQuantiserWidget(MentalQuantiser *module){
 
-MentalQuantiserWidget::MentalQuantiserWidget(MentalQuantiser *module) : ModuleWidget(module)
-{
+    setModule(module);
 
-  setPanel(SVG::load(assetPlugin(plugin, "res/MentalQuantiser.svg")));
+  setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalQuantiser.svg")));
 
   int top_row = 40;
   int row_spacing = 25; 
 	
-  addParam(ParamWidget::create<MedKnob>(Vec(62, 15), module, MentalQuantiser::PITCH_PARAM, -6.5, 6.5, 0.0));
-  addInput(Port::create<CVInPort>(Vec(63, 45), Port::INPUT, module, MentalQuantiser::PITCH_INPUT));
+  addParam(createParam<MedKnob>(Vec(62, 15), module, MentalQuantiser::PITCH_PARAM));
+  addInput(createInput<CVInPort>(Vec(63, 45), module, MentalQuantiser::PITCH_INPUT));
   
-  addInput(Port::create<CVInPort>(Vec(3, top_row), Port::INPUT, module, MentalQuantiser::INPUT));
-  addOutput(Port::create<CVOutPort>(Vec(32, top_row), Port::OUTPUT, module, MentalQuantiser::OUTPUT));
+  addInput(createInput<CVInPort>(Vec(3, top_row), module, MentalQuantiser::INPUT));
+  addOutput(createOutput<CVOutPort>(Vec(32, top_row), module, MentalQuantiser::OUTPUT));
   
   for (int i = 0; i < 12 ; i++)
   {  
-    addParam(ParamWidget::create<LEDButton>(Vec(3, top_row + 30 + row_spacing * i), module, MentalQuantiser::BUTTON_PARAM + i, 0.0, 1.0, 0.0));
-	  addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(3+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::BUTTON_LIGHTS + i));
-    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(30+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::OUTPUT_LIGHTS + i));
-    addOutput(Port::create<CVOutPort>(Vec(63, top_row + 40 + row_spacing * i), Port::OUTPUT, module, MentalQuantiser::REF_OUT + i));    
+    addParam(createParam<LEDButton>(Vec(3, top_row + 30 + row_spacing * i), module, MentalQuantiser::BUTTON_PARAM + i));
+	  addChild(createLight<MedLight<BlueLED>>(Vec(3+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::BUTTON_LIGHTS + i));
+    addChild(createLight<MedLight<BlueLED>>(Vec(30+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::OUTPUT_LIGHTS + i));
+    addOutput(createOutput<CVOutPort>(Vec(63, top_row + 40 + row_spacing * i), module, MentalQuantiser::REF_OUT + i));    
   }
-}
+  }
+};
 
-Model *modelMentalQuantiser = Model::create<MentalQuantiser, MentalQuantiserWidget>("mental", "MentalQuantiser", "Quantiser", QUANTIZER_TAG);
+Model *modelMentalQuantiser = createModel<MentalQuantiser, MentalQuantiserWidget>("MentalQuantiser");

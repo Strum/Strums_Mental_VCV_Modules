@@ -1,12 +1,12 @@
-Strum's Mental VCV Module Suite
+# Strum's Mental VCV Module Suite
 
 strum@softhome.net
 
 Simple but useful modules for VCVRack
 
-Version : v0.6.3
+Version : v1.0.0
 
-Date : 27th April 2018
+Date : 22nd September 2019
 
 Based largely on the fundamental modules but I have also used some code from other module
 developers and learned various ways of doing things from the other suites of modules as well.
@@ -30,7 +30,6 @@ Logic -
 
 Mults - 
   Simple 2*5 Multiples
-
 Muxes - 
   2 * 2 into 1 muxes and 1 4 into 1 mux
 

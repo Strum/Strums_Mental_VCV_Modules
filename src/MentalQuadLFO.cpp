@@ -1,6 +1,5 @@
 #include "mental.hpp"
 
-#include "dsp/digital.hpp"
 
 struct LowFrequencyOscillator {
 	float phase = 0.0;
@@ -8,7 +7,7 @@ struct LowFrequencyOscillator {
 	float freq = 1.0;
 	bool offset = false;
 	bool invert = false;
-	SchmittTrigger resetTrigger;
+	dsp::SchmittTrigger resetTrigger;
 	LowFrequencyOscillator() {
 	}
   void setFreq(float freq_to_set)
@@ -99,13 +98,18 @@ struct MentalQuadLFO : Module {
  
   LowFrequencyOscillator oscillator[4];
   
-  SchmittTrigger mode_button_trigger;
+  dsp::SchmittTrigger mode_button_trigger;
   int mode = 0;
   
-	MentalQuadLFO() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
-	void step() override;
+	MentalQuadLFO() {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+
+    configParam(MentalQuadLFO::MODE_BUTTON_PARAM, 0.0, 1.0, 0.0, "");
+    
+  }
+	void process(const ProcessArgs& args) override;
   
-  json_t *toJson() override
+  json_t *dataToJson() override
   {
 		json_t *rootJ = json_object();
     
@@ -116,7 +120,7 @@ struct MentalQuadLFO : Module {
     return rootJ;
   }
   
-  void fromJson(json_t *rootJ) override
+  void dataFromJson(json_t *rootJ) override
   {
     // read mode
 		json_t *modeJ = json_object_get(rootJ, "mode");
@@ -127,9 +131,9 @@ struct MentalQuadLFO : Module {
   }
 };
 
-void MentalQuadLFO::step()
+void MentalQuadLFO::process(const ProcessArgs& args)
 {
-  if (mode_button_trigger.process(params[MODE_BUTTON_PARAM].value))
+  if (mode_button_trigger.process(params[MODE_BUTTON_PARAM].getValue()))
   {
     mode ++;
     for (int i = 0 ; i < 4 ; i ++)
@@ -148,16 +152,16 @@ void MentalQuadLFO::step()
   {
     for (int i = 0 ; i < 4 ; i++)
     {
-      oscillator[i].setPitch((params[FREQ_PARAM + i].value * 10 - 5) + inputs[FREQ_INPUT + i].value);
-      oscillator[i].setReset(inputs[RESET_INPUT + i].value);
+      oscillator[i].setPitch((params[FREQ_PARAM + i].getValue() * 10 - 5) + inputs[FREQ_INPUT + i].getVoltage());
+      oscillator[i].setReset(inputs[RESET_INPUT + i].getVoltage());
     }
   } else
   if (mode == 1)
   {
     for (int i = 0 ; i < 4 ; i++)
     {
-      oscillator[i].setPitch((params[FREQ_PARAM].value * 10 - 5) + inputs[FREQ_INPUT].value);
-      oscillator[i].setReset(inputs[RESET_INPUT].value);
+      oscillator[i].setPitch((params[FREQ_PARAM].getValue() * 10 - 5) + inputs[FREQ_INPUT].getVoltage());
+      oscillator[i].setReset(inputs[RESET_INPUT].getVoltage());
       oscillator[i].setPhase(oscillator[0].phase + i * 0.25);
     }
   } else
@@ -165,32 +169,32 @@ void MentalQuadLFO::step()
   {
     for (int i = 0 ; i < 4 ; i++)
     {
-      oscillator[i].setPitch((params[FREQ_PARAM].value * 10 - 5) + inputs[FREQ_INPUT].value);
-      oscillator[i].setReset(inputs[RESET_INPUT].value);
-      if (i > 0) oscillator[i].setPhase(oscillator[0].phase + (params[FREQ_PARAM + i].value));
+      oscillator[i].setPitch((params[FREQ_PARAM].getValue() * 10 - 5) + inputs[FREQ_INPUT].getVoltage());
+      oscillator[i].setReset(inputs[RESET_INPUT].getVoltage());
+      if (i > 0) oscillator[i].setPhase(oscillator[0].phase + (params[FREQ_PARAM + i].getValue()));
     }
   } else
   if (mode == 3)
   {
-    oscillator[0].setPitch((params[FREQ_PARAM].value * 10 - 5) + inputs[FREQ_INPUT].value);
-    oscillator[1].setFreq(oscillator[0].freq / (std::round(params[FREQ_PARAM + 1].value * 11 + 1)));
-    oscillator[2].setFreq(oscillator[0].freq / (std::round(params[FREQ_PARAM + 2].value * 11 + 1)));
-    oscillator[3].setFreq(oscillator[0].freq / (std::round(params[FREQ_PARAM + 3].value * 11 + 1)));
-    oscillator[0].setReset(inputs[RESET_INPUT].value); 
-    oscillator[1].setReset(inputs[RESET_INPUT].value);
-    oscillator[2].setReset(inputs[RESET_INPUT].value);
-    oscillator[3].setReset(inputs[RESET_INPUT].value);  
+    oscillator[0].setPitch((params[FREQ_PARAM].getValue() * 10 - 5) + inputs[FREQ_INPUT].getVoltage());
+    oscillator[1].setFreq(oscillator[0].freq / (std::round(params[FREQ_PARAM + 1].getValue() * 11 + 1)));
+    oscillator[2].setFreq(oscillator[0].freq / (std::round(params[FREQ_PARAM + 2].getValue() * 11 + 1)));
+    oscillator[3].setFreq(oscillator[0].freq / (std::round(params[FREQ_PARAM + 3].getValue() * 11 + 1)));
+    oscillator[0].setReset(inputs[RESET_INPUT].getVoltage()); 
+    oscillator[1].setReset(inputs[RESET_INPUT].getVoltage());
+    oscillator[2].setReset(inputs[RESET_INPUT].getVoltage());
+    oscillator[3].setReset(inputs[RESET_INPUT].getVoltage());  
   }
   if (mode == 4)
   {
-    oscillator[0].setPitch((params[FREQ_PARAM].value * 10 - 5) + inputs[FREQ_INPUT].value);
-    oscillator[1].setFreq(oscillator[0].freq * (std::round(params[FREQ_PARAM + 1].value * 11 + 1)));
-    oscillator[2].setFreq(oscillator[0].freq * (std::round(params[FREQ_PARAM + 2].value * 11 + 1)));
-    oscillator[3].setFreq(oscillator[0].freq * (std::round(params[FREQ_PARAM + 3].value * 11 + 1)));
-    oscillator[0].setReset(inputs[RESET_INPUT].value); 
-    oscillator[1].setReset(inputs[RESET_INPUT].value);
-    oscillator[2].setReset(inputs[RESET_INPUT].value);
-    oscillator[3].setReset(inputs[RESET_INPUT].value);
+    oscillator[0].setPitch((params[FREQ_PARAM].getValue() * 10 - 5) + inputs[FREQ_INPUT].getVoltage());
+    oscillator[1].setFreq(oscillator[0].freq * (std::round(params[FREQ_PARAM + 1].getValue() * 11 + 1)));
+    oscillator[2].setFreq(oscillator[0].freq * (std::round(params[FREQ_PARAM + 2].getValue() * 11 + 1)));
+    oscillator[3].setFreq(oscillator[0].freq * (std::round(params[FREQ_PARAM + 3].getValue() * 11 + 1)));
+    oscillator[0].setReset(inputs[RESET_INPUT].getVoltage()); 
+    oscillator[1].setReset(inputs[RESET_INPUT].getVoltage());
+    oscillator[2].setReset(inputs[RESET_INPUT].getVoltage());
+    oscillator[3].setReset(inputs[RESET_INPUT].getVoltage());
     if (oscillator[0].phase == 0.0)
     {
       oscillator[1].setReset(5.0);
@@ -202,12 +206,12 @@ void MentalQuadLFO::step()
   for (int i = 0 ; i < 4 ; i++)
   {
 	  
-    oscillator[i].step(1.0 / engineGetSampleRate());
+    oscillator[i].step(1.0 / args.sampleRate);
 
-	  outputs[SIN_OUTPUT + i].value = 5.0 * oscillator[i].sin();
-	  outputs[TRI_OUTPUT + i].value = 5.0 * oscillator[i].tri();
-	  outputs[SAW_OUTPUT + i].value = 5.0 * oscillator[i].saw();
-	  outputs[SQR_OUTPUT + i].value = 5.0 * oscillator[i].sqr();
+	  outputs[SIN_OUTPUT + i].setVoltage(5.0 * oscillator[i].sin());
+	  outputs[TRI_OUTPUT + i].setVoltage(5.0 * oscillator[i].tri());
+	  outputs[SAW_OUTPUT + i].setVoltage(5.0 * oscillator[i].saw());
+	  outputs[SQR_OUTPUT + i].setVoltage(5.0 * oscillator[i].sqr());
 
 	  lights[PHASE_POS_LIGHT + i].setBrightnessSmooth(fmaxf(0.0, oscillator[i].light()));
 	  lights[PHASE_NEG_LIGHT + i].setBrightnessSmooth(fmaxf(0.0, -oscillator[i].light()));
@@ -216,35 +220,35 @@ void MentalQuadLFO::step()
 
 ////////////////////////////////////////////////////////////////////////////////
 struct MentalQuadLFOWidget : ModuleWidget {
-	MentalQuadLFOWidget(MentalQuadLFO *module);
-};
-
-MentalQuadLFOWidget::MentalQuadLFOWidget(MentalQuadLFO *module) : ModuleWidget(module)
+	MentalQuadLFOWidget(MentalQuadLFO *module)  
 {
+  setModule(module);
 
-  setPanel(SVG::load(assetPlugin(plugin, "res/MentalQuadLFO.svg")));
+  setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalQuadLFO.svg")));
 
   int x_offset = 10.10;
   for (int i = 0 ; i < 4 ; i++)
   {
-	  addParam(ParamWidget::create<BefacoSlidePot>(mm2px(Vec(2.792 + i * x_offset, 3.937)), module,MentalQuadLFO::FREQ_PARAM + i, 0.0, 1.0, 0.0));
 
-	  addInput(Port::create<CVInPort>(mm2px(Vec(1.003 + i * x_offset, 61.915)), Port::INPUT, module, MentalQuadLFO::FREQ_INPUT + i));
-	  addInput(Port::create<GateInPort>(mm2px(Vec(1.003 + i * x_offset, 72.858)), Port::INPUT, module, MentalQuadLFO::RESET_INPUT + i));
+	  //addParam(createParam<BefacoSlidePot>(mm2px(Vec(2.792 + i * x_offset, 3.937)), module,MentalQuadLFO::FREQ_PARAM + i, 0.0, 1.0, 0.0));
+    addParam(createParam<LEDSliderGreen>(mm2px(Vec(2.792 + i * x_offset, 3.937)), module,MentalQuadLFO::FREQ_PARAM + i));
 
-	  addOutput(Port::create<OutPort>(mm2px(Vec(1.003 + i * x_offset, 83.759)), Port::OUTPUT, module, MentalQuadLFO::SIN_OUTPUT + i));
-	  addOutput(Port::create<OutPort>(mm2px(Vec(1.003 + i * x_offset, 94.173)), Port::OUTPUT, module, MentalQuadLFO::TRI_OUTPUT + i));
-	  addOutput(Port::create<OutPort>(mm2px(Vec(1.003 + i * x_offset, 105.169)), Port::OUTPUT, module, MentalQuadLFO::SAW_OUTPUT + i));
-	  addOutput(Port::create<OutPort>(mm2px(Vec(1.003 + i * x_offset, 114.583)), Port::OUTPUT, module, MentalQuadLFO::SQR_OUTPUT + i));
+	  addInput(createInput<CVInPort>(mm2px(Vec(1.003 + i * x_offset, 61.915)), module, MentalQuadLFO::FREQ_INPUT + i));
+	  addInput(createInput<GateInPort>(mm2px(Vec(1.003 + i * x_offset, 72.858)), module, MentalQuadLFO::RESET_INPUT + i));
+
+	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 83.759)), module, MentalQuadLFO::SIN_OUTPUT + i));
+	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 94.173)), module, MentalQuadLFO::TRI_OUTPUT + i));
+	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 105.169)), module, MentalQuadLFO::SAW_OUTPUT + i));
+	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 114.583)), module, MentalQuadLFO::SQR_OUTPUT + i));
   	
-    addChild(ModuleLightWidget::create<SmallLight<GreenRedLight>>(Vec(13 + i * 30, 125), module, MentalQuadLFO::PHASE_POS_LIGHT + i));
+    addChild(createLight<SmallLight<GreenRedLight>>(Vec(13 + i * 30, 125), module, MentalQuadLFO::PHASE_POS_LIGHT + i));
   }
   for (int i = 0 ; i < 5 ; i++)
   {
-    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(mm2px(Vec(2.905 + i * 8 , 50.035)), module, MentalQuadLFO::MODE_LIGHTS + i));
+    addChild(createLight<MedLight<BlueLED>>(mm2px(Vec(2.905 + i * 8 , 50.035)), module, MentalQuadLFO::MODE_LIGHTS + i));
   }
-  addParam(ParamWidget::create<LEDButton>(Vec(50, 160), module, MentalQuadLFO::MODE_BUTTON_PARAM, 0.0, 1.0, 0.0));
-  
-}
+  addParam(createParam<LEDButton>(Vec(50, 160), module, MentalQuadLFO::MODE_BUTTON_PARAM));
+  }
+};
 
-Model *modelMentalQuadLFO = Model::create<MentalQuadLFO, MentalQuadLFOWidget>("mental", "MentalQuadLFO", "Quad LFO", LFO_TAG, QUAD_TAG, CLOCK_TAG);
+Model *modelMentalQuadLFO = createModel<MentalQuadLFO, MentalQuadLFOWidget>("MentalQuadLFO");

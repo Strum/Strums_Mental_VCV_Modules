@@ -38,21 +38,31 @@ struct MentalSubMixer : Module {
 	float left_sum = 0.0;
 	float right_sum = 0.0;
 	
-	MentalSubMixer() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {};
-	void step() override;
+	MentalSubMixer() {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS);
+		configParam(MentalSubMixer::MIX_PARAM, 0.0, 1.0, 0.5, "");
+		for (int i = 0; i < 4; ++i)
+		{
+			configParam(MentalSubMixer::CH_VOL_PARAM + i, 0.0, 1.0, 0.0, "");
+			configParam(MentalSubMixer::CH_PAN_PARAM + i, 0.0, 1.0, 0.5, "");
+		}
+
+
+	};
+	void process(const ProcessArgs& args) override;
 };
 
 
-void MentalSubMixer::step() {
+void MentalSubMixer::process(const ProcessArgs& args) {
 	left_sum = 0.0;
 	right_sum = 0.0;
 
 	for (int i = 0 ; i < 4 ; i++)	{
 
-		channel_ins[i] = inputs[CH_INPUT + i].value * params[CH_VOL_PARAM + i].value * clamp(inputs[CH_VOL_INPUT + i].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
+		channel_ins[i] = inputs[CH_INPUT + i].getVoltage() * params[CH_VOL_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
 		
-    	pan_cv_ins[i] = inputs[CH_PAN_INPUT + i].value/5;
-    	pan_positions[i] = pan_cv_ins[i] + params[CH_PAN_PARAM + i].value;   
+    	pan_cv_ins[i] = inputs[CH_PAN_INPUT + i].getVoltage()/5;
+    	pan_positions[i] = pan_cv_ins[i] + params[CH_PAN_PARAM + i].getValue();   
     	if (pan_positions[i] < 0) pan_positions[i] = 0;
     	if (pan_positions[i] > 1) pan_positions[i] = 1;
     	channel_outs_l[i]= channel_ins[i] * (1-pan_positions[i])* 2;
@@ -61,47 +71,47 @@ void MentalSubMixer::step() {
     	left_sum += channel_outs_l[i];
     	right_sum += channel_outs_r[i];
     }
-    float mix_l = left_sum * params[MIX_PARAM].value * clamp(inputs[MIX_CV_INPUT].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
-    float mix_r = right_sum * params[MIX_PARAM].value * clamp(inputs[MIX_CV_INPUT].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
+    
+    float mix_l = left_sum * params[MIX_PARAM].getValue() * clamp(inputs[MIX_CV_INPUT].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
+    float mix_r = right_sum * params[MIX_PARAM].getValue() * clamp(inputs[MIX_CV_INPUT].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
 
-    outputs[MIX_OUTPUT_L].value = mix_l;
-    outputs[MIX_OUTPUT_R].value = mix_r;
+    outputs[MIX_OUTPUT_L].setVoltage(mix_l);
+    outputs[MIX_OUTPUT_R].setVoltage(mix_r);
 
-   	outputs[CH_OUTPUT ].value = channel_ins[0];
-	outputs[CH_OUTPUT + 1].value = channel_ins[1];
-	outputs[CH_OUTPUT + 2].value = channel_ins[2];
-	outputs[CH_OUTPUT + 3].value = channel_ins[3];
+   	outputs[CH_OUTPUT ].setVoltage(channel_ins[0]);
+	outputs[CH_OUTPUT + 1].setVoltage(channel_ins[1]);
+	outputs[CH_OUTPUT + 2].setVoltage(channel_ins[2]);
+	outputs[CH_OUTPUT + 3].setVoltage(channel_ins[3]);
 }
 
 ////////////////////////////////////////////////////////////
 struct MentalSubMixerWidget : ModuleWidget {
-	MentalSubMixerWidget(MentalSubMixer *module);
-};
+	MentalSubMixerWidget(MentalSubMixer *module)
+	{
 
-MentalSubMixerWidget::MentalSubMixerWidget(MentalSubMixer *module) : ModuleWidget(module)
-{
-
-  setPanel(SVG::load(assetPlugin(plugin, "res/MentalSubMixer.svg")));
+		setModule(module);
+  		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalSubMixer.svg")));
 
     int stripwidth = 28;
 	// master section
-  	addOutput(Port::create<OutPort>(Vec( 6 + stripwidth, 20), Port::OUTPUT, module, MentalSubMixer::MIX_OUTPUT_L));
-	addOutput(Port::create<OutPort>(Vec( 6 + stripwidth * 2 , 20), Port::OUTPUT, module, MentalSubMixer::MIX_OUTPUT_R));
-	addParam(ParamWidget::create<LrgKnob>(Vec( 9 + stripwidth , 50), module, MentalSubMixer::MIX_PARAM, 0.0, 1.0, 0.5));
-	addInput(Port::create<CVInPort>(Vec( 6 + stripwidth * 1.5 , 100), Port::INPUT, module, MentalSubMixer::MIX_CV_INPUT));
+  	addOutput(createOutput<OutPort>(Vec( 6 + stripwidth, 20), module, MentalSubMixer::MIX_OUTPUT_L));
+	addOutput(createOutput<OutPort>(Vec( 6 + stripwidth * 2 , 20), module, MentalSubMixer::MIX_OUTPUT_R));
+	addParam(createParam<LrgKnob>(Vec( 9 + stripwidth , 50), module, MentalSubMixer::MIX_PARAM));
+	addInput(createInput<CVInPort>(Vec( 6 + stripwidth * 1.5 , 100), module, MentalSubMixer::MIX_CV_INPUT));
 	// channel strips
 	for (int i = 0 ; i < 4 ; i++)	{
 		// input
-		addInput(Port::create<InPort>(Vec( 6 + stripwidth * i , box.size.y - 182 ), Port::INPUT, module, MentalSubMixer::CH_INPUT + i));
+		addInput(createInput<InPort>(Vec( 6 + stripwidth * i , box.size.y - 182 ), module, MentalSubMixer::CH_INPUT + i));
 		// gain
-		addParam(ParamWidget::create<SmlKnob>(Vec( 9 + stripwidth * i , box.size.y - 148 ), module, MentalSubMixer::CH_VOL_PARAM + i, 0.0, 1.0, 0.0));
-		addInput(Port::create<CVInPort>(Vec( 6 + stripwidth * i , box.size.y - 126 ), Port::INPUT, module, MentalSubMixer::CH_VOL_INPUT + i));
+		addParam(createParam<SmlKnob>(Vec( 9 + stripwidth * i , box.size.y - 148 ), module, MentalSubMixer::CH_VOL_PARAM + i));
+		addInput(createInput<CVInPort>(Vec( 6 + stripwidth * i , box.size.y - 126 ), module, MentalSubMixer::CH_VOL_INPUT + i));
 		// pan
-		addParam(ParamWidget::create<SmlKnob>(Vec( 9 + stripwidth * i , box.size.y - 92 ), module, MentalSubMixer::CH_PAN_PARAM + i, 0.0, 1.0, 0.5));
-		addInput(Port::create<CVInPort>(Vec( 6 + stripwidth * i , box.size.y - 70 ), Port::INPUT, module, MentalSubMixer::CH_PAN_INPUT + i));
+		addParam(createParam<SmlKnob>(Vec( 9 + stripwidth * i , box.size.y - 92 ), module, MentalSubMixer::CH_PAN_PARAM + i));
+		addInput(createInput<CVInPort>(Vec( 6 + stripwidth * i , box.size.y - 70 ), module, MentalSubMixer::CH_PAN_INPUT + i));
 		// output
-		addOutput(Port::create<OutPort>(Vec( 6 + stripwidth * i , box.size.y - 40 ), Port::OUTPUT, module, MentalSubMixer::CH_OUTPUT + i));
+		addOutput(createOutput<OutPort>(Vec( 6 + stripwidth * i , box.size.y - 40 ), module, MentalSubMixer::CH_OUTPUT + i));
 	}
 }
+};
 
-Model *modelMentalSubMixer = Model::create<MentalSubMixer, MentalSubMixerWidget>("mental", "MentalSubMixer", "Sub Mixer", MIXER_TAG);
+Model *modelMentalSubMixer = createModel<MentalSubMixer, MentalSubMixerWidget>("MentalSubMixer");

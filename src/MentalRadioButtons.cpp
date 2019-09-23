@@ -8,7 +8,6 @@
 
 #include "mental.hpp"
 
-#include "dsp/digital.hpp"
 
 
 struct MentalRadioButtons : Module {
@@ -33,15 +32,22 @@ struct MentalRadioButtons : Module {
 		NUM_LIGHTS = BUTTON2_LEDS + 7
 	};
 
-  SchmittTrigger button_triggers[7];
-  SchmittTrigger button2_triggers[7];
+  dsp::SchmittTrigger button_triggers[7];
+  dsp::SchmittTrigger button2_triggers[7];
   bool button_states[7] = {1,0,0,0,0,0,0};
   bool button2_states[7] = {1,0,0,0,0,0,0};
   
-	MentalRadioButtons() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
-	void step() override;
+	MentalRadioButtons() {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+    for (int i = 0; i < 7; ++i)
+    {    
+      configParam(MentalRadioButtons::BUTTON_PARAM +i, 0.0, 1.0, 0.0, "");
+      configParam(MentalRadioButtons::BUTTON2 + i, 0.0, 1.0, 0.0, "");
+    }
+  }
+	void process(const ProcessArgs& args) override;
   
-  json_t *toJson() override
+  json_t *dataToJson() override
   {
 		json_t *rootJ = json_object();
     
@@ -64,7 +70,7 @@ struct MentalRadioButtons : Module {
     return rootJ;
   }
   
-  void fromJson(json_t *rootJ) override
+  void dataFromJson(json_t *rootJ) override
   {
     // button states
 		json_t *button_statesJ = json_object_get(rootJ, "buttons");
@@ -90,11 +96,11 @@ struct MentalRadioButtons : Module {
   }
 };
 
-void MentalRadioButtons::step()
+void MentalRadioButtons::process(const ProcessArgs& args)
 {
   for  (int i = 0 ; i < 7 ; i++)
   {
-    if (button_triggers[i].process(params[BUTTON_PARAM + i].value) || button_triggers[i].process(inputs[INS1 + i].value))
+    if (button_triggers[i].process(params[BUTTON_PARAM + i].getValue()) || button_triggers[i].process(inputs[INS1 + i].getVoltage()))
     {
       for (int j = 0 ; j < 7 ; j ++)
       {
@@ -103,9 +109,9 @@ void MentalRadioButtons::step()
 		  button_states[i] = !button_states[i];      
 	  }
     lights[BUTTON_LEDS + i ].value  = (button_states[i]) ? 1.0 : 0.0;
-    outputs[OUTPUT + i].value = button_states[i] * 10.0;
+    outputs[OUTPUT + i].setVoltage(button_states[i] * 10.0);
     
-    if (button2_triggers[i].process(params[BUTTON2 + i].value) || button_triggers[i].process(inputs[INS2 + i].value))
+    if (button2_triggers[i].process(params[BUTTON2 + i].getValue()) || button_triggers[i].process(inputs[INS2 + i].getVoltage()))
     {
       for (int j = 0 ; j < 7 ; j ++)
       {        
@@ -114,38 +120,37 @@ void MentalRadioButtons::step()
 		  button2_states[i] = !button2_states[i];      
 	  }
     lights[BUTTON2_LEDS + i ].value  = (button2_states[i]) ? 1.0 : 0.0;
-    outputs[BUTTON2_OUT + i].value = button2_states[i] * 10.0;    
+    outputs[BUTTON2_OUT + i].setVoltage(button2_states[i] * 10.0);    
   }
   
 }
 
 /////////////////////////////////////////////////////////////////////////
 struct MentalRadioButtonsWidget : ModuleWidget {
-  MentalRadioButtonsWidget(MentalRadioButtons *module);
-};
-
-MentalRadioButtonsWidget::MentalRadioButtonsWidget(MentalRadioButtons *module) : ModuleWidget(module)
+  MentalRadioButtonsWidget(MentalRadioButtons *module)
 {
+  setModule(module);
 	
-  setPanel(SVG::load(assetPlugin(plugin, "res/MentalRadioButtons.svg")));
+  setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalRadioButtons.svg")));
 
   int spacing = 25; 
   int group_offset = 184;
   int top_space = 15;
   for (int i = 0; i < 7 ; i++)
   {  
-    addInput(Port::create<GateInPort>(Vec(3, top_space + spacing * i), Port::INPUT, module, MentalRadioButtons::INS1 + i));
-    addOutput(Port::create<GateOutPort>(Vec(63, top_space + spacing * i), Port::OUTPUT, module, MentalRadioButtons::OUTPUT + i));
-    addParam(ParamWidget::create<LEDButton>(Vec(35, top_space + 3 + spacing * i), module, MentalRadioButtons::BUTTON_PARAM +i, 0.0, 1.0, 0.0));
-    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(40, top_space + 8 + spacing * i), module, MentalRadioButtons::BUTTON_LEDS + i));
+    addInput(createInput<GateInPort>(Vec(3, top_space + spacing * i), module, MentalRadioButtons::INS1 + i));
+    addOutput(createOutput<GateOutPort>(Vec(63, top_space + spacing * i), module, MentalRadioButtons::OUTPUT + i));
+    addParam(createParam<LEDButton>(Vec(35, top_space + 3 + spacing * i), module, MentalRadioButtons::BUTTON_PARAM +i));
+    addChild(createLight<MedLight<BlueLED>>(Vec(40, top_space + 8 + spacing * i), module, MentalRadioButtons::BUTTON_LEDS + i));
   
 	  /// group 2
-   addInput(Port::create<GateInPort>(Vec(3, 10 + group_offset + spacing * i), Port::INPUT, module, MentalRadioButtons::INS2 + i)); 
-   addOutput(Port::create<GateOutPort>(Vec(63, 10 + group_offset +  spacing * i), Port::OUTPUT, module, MentalRadioButtons::BUTTON2_OUT + i));
-   addParam(ParamWidget::create<LEDButton>(Vec(35, 10 + 3 + group_offset +  spacing * i), module, MentalRadioButtons::BUTTON2 + i, 0.0, 1.0, 0.0));
-   addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(40,10 + 8 + group_offset +  spacing * i), module, MentalRadioButtons::BUTTON2_LEDS + i));
+   addInput(createInput<GateInPort>(Vec(3, 10 + group_offset + spacing * i), module, MentalRadioButtons::INS2 + i)); 
+   addOutput(createOutput<GateOutPort>(Vec(63, 10 + group_offset +  spacing * i), module, MentalRadioButtons::BUTTON2_OUT + i));
+   addParam(createParam<LEDButton>(Vec(35, 10 + 3 + group_offset +  spacing * i), module, MentalRadioButtons::BUTTON2 + i));
+   addChild(createLight<MedLight<BlueLED>>(Vec(40,10 + 8 + group_offset +  spacing * i), module, MentalRadioButtons::BUTTON2_LEDS + i));
   }
   
 }
+};
 
-Model *modelMentalRadioButtons = Model::create<MentalRadioButtons, MentalRadioButtonsWidget>("mental", "MentalRadioButtons", "Radio Buttons", CONTROLLER_TAG, SWITCH_TAG, UTILITY_TAG);
+Model *modelMentalRadioButtons = createModel<MentalRadioButtons, MentalRadioButtonsWidget>("MentalRadioButtons");

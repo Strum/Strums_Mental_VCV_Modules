@@ -1,43 +1,57 @@
 ///////////////////////////////////////////////////
 //
-//   Buttons VCV Module
+//   Mental Plugin
+//   Buttons
 //
-//   Strum 2017
+//   Strum 2017-19
+//   strum@softhome.net
 //
 ///////////////////////////////////////////////////
 
 #include "mental.hpp"
 
-#include "dsp/digital.hpp"
-
-
-struct MentalButtons : Module {
-	enum ParamIds {
+struct MentalButtons : Module
+{
+	enum ParamIds
+  {
     MOMENT,
     BUTTON_PARAM = MOMENT + 7,
 		NUM_PARAMS = BUTTON_PARAM + 7
 	};  
-	enum InputIds {		  
+	enum InputIds
+  {		  
 		NUM_INPUTS
 	};
-	enum OutputIds {
+	enum OutputIds
+  {
     MOMENT_OUT,
 		OUTPUT = MOMENT_OUT +7,    
 		NUM_OUTPUTS = OUTPUT + 7
 	};
-  enum LightIds {
+  enum LightIds
+  {
 		BUTTON_LEDS,
     MOMENT_LEDS = BUTTON_LEDS + 7,
 		NUM_LIGHTS = MOMENT_LEDS + 7
 	};
 
-  SchmittTrigger button_triggers[7];
+  dsp::SchmittTrigger button_triggers[7];
   bool button_states[7] = {0,0,0,0,0,0,0};
   
-	MentalButtons() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
-	void step() override;
+	MentalButtons()
+  {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+    for (int i = 0; i < 7; ++i)
+    {
+      configParam(MentalButtons::BUTTON_PARAM +i, 0.0, 1.0, 0.0, "");
+      configParam(MentalButtons::MOMENT + i, 0.0, 1.0, 0.0, "");
+    }
+    
+  }
+
+	void process(const ProcessArgs& args) override;
   
-  json_t *toJson() override
+  json_t *dataToJson() override
   {
 		json_t *rootJ = json_object();
     
@@ -52,7 +66,7 @@ struct MentalButtons : Module {
     return rootJ;
   }
   
-  void fromJson(json_t *rootJ) override
+  void dataFromJson(json_t *rootJ) override
   {
     // button states
 		json_t *button_statesJ = json_object_get(rootJ, "buttons");
@@ -68,55 +82,53 @@ struct MentalButtons : Module {
   }
 };
 
-void MentalButtons::step()
+void MentalButtons::process(const ProcessArgs& args)
 {
   for  (int i = 0 ; i < 7 ; i++)
   {
-    if (button_triggers[i].process(params[BUTTON_PARAM + i].value))
+    if (button_triggers[i].process(params[BUTTON_PARAM + i].getValue()))
     {
 		  button_states[i] = !button_states[i];
 	  }
     lights[BUTTON_LEDS + i ].value  = (button_states[i]) ? 1.0 : 0.0;
-    outputs[OUTPUT + i].value = button_states[i] * 10.0;
-    if (params[MOMENT + i].value > 0.0)
+    outputs[OUTPUT + i].setVoltage(button_states[i] * 10.0);
+    if (params[MOMENT + i].getValue() > 0.0)
     {
       lights[MOMENT_LEDS + i ].value  = 1.0;
-      outputs[MOMENT_OUT + i].value = 10.0;
+      outputs[MOMENT_OUT + i].setVoltage(10.0);
 	  }
     else
     {
       lights[MOMENT_LEDS + i ].value  = 0.0;
-      outputs[MOMENT_OUT + i].value = 0.0;
+      outputs[MOMENT_OUT + i].setVoltage(0.0);
 	  }
-  }
-  
+  }  
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
-struct MentalButtonsWidget : ModuleWidget {
-  MentalButtonsWidget(MentalButtons *module);
+struct MentalButtonsWidget : ModuleWidget
+{
+  MentalButtonsWidget(MentalButtons *module)
+  {
+    setModule(module);
+
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalBUttons.svg")));
+  	
+    int spacing = 25; 
+    int group_offset = 184;
+    int top_space = 15;
+    for (int i = 0; i < 7 ; i++)
+    {  
+      addOutput(createOutput<GateOutPort>(Vec(33, top_space + spacing * i), module, MentalButtons::OUTPUT + i));
+      addParam(createParam<LEDButton>(Vec(5, top_space + 3 + spacing * i), module, MentalButtons::BUTTON_PARAM +i));
+      addChild(createLight<MedLight<BlueLED>>(Vec(10, top_space + 8 + spacing * i), module, MentalButtons::BUTTON_LEDS + i));
+    
+  	  /// momentarys
+     addOutput(createOutput<GateOutPort>(Vec(33, 10 + group_offset +  spacing * i), module, MentalButtons::MOMENT_OUT + i));
+     addParam(createParam<LEDButton>(Vec(5, 10 + 3 + group_offset +  spacing * i), module, MentalButtons::MOMENT + i));
+     addChild(createLight<MedLight<BlueLED>>(Vec(10,10 + 8 + group_offset +  spacing * i), module, MentalButtons::MOMENT_LEDS + i));
+    }
+  }
 };
 
-MentalButtonsWidget::MentalButtonsWidget(MentalButtons *module) : ModuleWidget(module)
-{
-
-  setPanel(SVG::load(assetPlugin(plugin, "res/MentalBUttons.svg")));
-	
-  int spacing = 25; 
-  int group_offset = 184;
-  int top_space = 15;
-  for (int i = 0; i < 7 ; i++)
-  {  
-    addOutput(Port::create<GateOutPort>(Vec(33, top_space + spacing * i), Port::OUTPUT, module, MentalButtons::OUTPUT + i));
-    addParam(ParamWidget::create<LEDButton>(Vec(5, top_space + 3 + spacing * i), module, MentalButtons::BUTTON_PARAM +i, 0.0, 1.0, 0.0));
-    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(10, top_space + 8 + spacing * i), module, MentalButtons::BUTTON_LEDS + i));
-  
-	  /// momentarys
-   addOutput(Port::create<GateOutPort>(Vec(33, 10 + group_offset +  spacing * i), Port::OUTPUT, module, MentalButtons::MOMENT_OUT + i));
-   addParam(ParamWidget::create<LEDButton>(Vec(5, 10 + 3 + group_offset +  spacing * i), module, MentalButtons::MOMENT + i, 0.0, 1.0, 0.0));
-   addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(10,10 + 8 + group_offset +  spacing * i), module, MentalButtons::MOMENT_LEDS + i));
-  }
-  
-}
-
-Model *modelMentalButtons = Model::create<MentalButtons, MentalButtonsWidget>("mental", "MentalButtons", "Buttons",  UTILITY_TAG);
+Model *modelMentalButtons = createModel<MentalButtons, MentalButtonsWidget>("MentalButtons");

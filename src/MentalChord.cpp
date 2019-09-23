@@ -1,23 +1,28 @@
 ///////////////////////////////////////////////////
 //
-//   Chord Creator VCV Module
+//   Mental Plugin
+//   Chord
 //
-//   Strum 2017
+//   Strum 2017-19
+//   strum@softhome.net
 //
 ///////////////////////////////////////////////////
 
 #include "mental.hpp"
 
 /////////////////////////////////////////////////
-struct MentalChord : Module {
-	enum ParamIds {
+struct MentalChord : Module
+{
+	enum ParamIds
+  {
       OFFSET_PARAM,
       INVERSION_PARAM,
       VOICING_PARAM,
       NUM_PARAMS
 	};
 
-	enum InputIds {
+	enum InputIds
+  {
       INPUT,
       OFFSET_CV_INPUT,
       INVERSION_CV_INPUT,
@@ -35,7 +40,8 @@ struct MentalChord : Module {
       SHARP_5_INPUT,      
       NUM_INPUTS
 	};
-	enum OutputIds {
+	enum OutputIds
+  {
       OUTPUT_1,
       OUTPUT_2,
       OUTPUT_3,
@@ -47,33 +53,39 @@ struct MentalChord : Module {
       NUM_OUTPUTS
 	};
   
-	MentalChord() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-	void step() override;
+	MentalChord()
+  {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS);
+
+    configParam(MentalChord::OFFSET_PARAM, 0.0, 1.0, 0.5, "");
+    configParam(MentalChord::INVERSION_PARAM, 0.0, 1.0, 0.0, "");
+    configParam(MentalChord::VOICING_PARAM, 0.0, 1.0, 0.0, "");
+  }
+	void process(const ProcessArgs& args) override;
 };
 
 
 /////////////////////////////////////////////////////
-void MentalChord::step() {
-
-  float in = inputs[INPUT].value;  
+void MentalChord::process(const ProcessArgs& args)
+{
+  float in = inputs[INPUT].getVoltage();  
   int octave = round(in);
   
-  float offset_raw = (params[OFFSET_PARAM].value) * 12 - 6 + (inputs[OFFSET_CV_INPUT].value) / 1.5;
+  float offset_raw = (params[OFFSET_PARAM].getValue()) * 12 - 6 + (inputs[OFFSET_CV_INPUT].getVoltage()) / 1.5;
   float pitch_offset = round(offset_raw) / 12;
   
   float root = in - 1.0*octave + pitch_offset;
   float root_or_2nd = root;
   
-  float inversion_raw = (params[INVERSION_PARAM].value) * 4 - 1 + (inputs[INVERSION_CV_INPUT].value / 3);
+  float inversion_raw = (params[INVERSION_PARAM].getValue()) * 4 - 1 + (inputs[INVERSION_CV_INPUT].getVoltage() / 3);
   int inversion = round(inversion_raw);
   if (inversion > 2) inversion = 2;
   if (inversion < -1) inversion = -1;
   
-  float voicing_raw = (params[VOICING_PARAM].value) * 5 - 2 + (inputs[VOICING_CV_INPUT].value / 3);
+  float voicing_raw = (params[VOICING_PARAM].getValue()) * 5 - 2 + (inputs[VOICING_CV_INPUT].getVoltage() / 3);
   int voicing = round(voicing_raw);
   if (voicing > 2) voicing = 2;
-  if (voicing < -2) voicing = -2;
-  
+  if (voicing < -2) voicing = -2;  
   
   float voice_1 = 0.0;
   float voice_2 = 0.0;
@@ -84,28 +96,25 @@ void MentalChord::step() {
   int fifth = 7;
   int seventh = 11;
     
-  if (inputs[FLAT_3RD_INPUT].value > 0.0) third = 3;
-  if (inputs[FLAT_5TH_INPUT].value > 0.0) fifth = 6;
-  if (inputs[SHARP_5_INPUT].value > 0.0) fifth = 8;
-  if (inputs[FLAT_7TH_INPUT].value > 0.0) seventh = 10;
+  if (inputs[FLAT_3RD_INPUT].getVoltage() > 0.0) third = 3;
+  if (inputs[FLAT_5TH_INPUT].getVoltage() > 0.0) fifth = 6;
+  if (inputs[SHARP_5_INPUT].getVoltage() > 0.0) fifth = 8;
+  if (inputs[FLAT_7TH_INPUT].getVoltage() > 0.0) seventh = 10;
   
-  if (inputs[SUS_2_INPUT].value > 0.0) root_or_2nd = root + (2 * (1.0/12.0));
-  if (inputs[SUS_4_INPUT].value > 0.0) third = 5;
-  if (inputs[SIX_FOR_5_INPUT].value > 0.0) fifth = 9;
-  if (inputs[SIX_FOR_7_INPUT].value > 0.0) seventh = 9;
+  if (inputs[SUS_2_INPUT].getVoltage() > 0.0) root_or_2nd = root + (2 * (1.0/12.0));
+  if (inputs[SUS_4_INPUT].getVoltage() > 0.0) third = 5;
+  if (inputs[SIX_FOR_5_INPUT].getVoltage() > 0.0) fifth = 9;
+  if (inputs[SIX_FOR_7_INPUT].getVoltage() > 0.0) seventh = 9;  
   
+  if (inputs[FLAT_9_INPUT].getVoltage() > 0.0) root_or_2nd = root + 1.0/12.0;
+  if (inputs[SHARP_9_INPUT].getVoltage() > 0.0) root_or_2nd = root + (3 * (1.0/12.0));
+  if (inputs[ONE_FOR_7_INPUT].getVoltage() > 0.0) seventh = 12;
   
-  if (inputs[FLAT_9_INPUT].value > 0.0) root_or_2nd = root + 1.0/12.0;
-  if (inputs[SHARP_9_INPUT].value > 0.0) root_or_2nd = root + (3 * (1.0/12.0));
-  if (inputs[ONE_FOR_7_INPUT].value > 0.0) seventh = 12;
-  
-  outputs[OUTPUT_ROOT].value = root;
-  outputs[OUTPUT_THIRD].value = root + third * (1.0/12.0);
-  outputs[OUTPUT_FIFTH].value = root + fifth * (1.0/12.0);
-  outputs[OUTPUT_SEVENTH].value = root + seventh * (1.0/12.0);
-  
-  
-  
+  outputs[OUTPUT_ROOT].setVoltage(root);
+  outputs[OUTPUT_THIRD].setVoltage(root + third * (1.0/12.0));
+  outputs[OUTPUT_FIFTH].setVoltage(root + fifth * (1.0/12.0));
+  outputs[OUTPUT_SEVENTH].setVoltage(root + seventh * (1.0/12.0));
+    
   if (inversion == -1 )
   {
     voice_1 = root_or_2nd;
@@ -146,59 +155,56 @@ void MentalChord::step() {
   {
     voice_2 += 1.0;
     voice_4 += 1.0;
-  }
+  }  
   
-  
-  outputs[OUTPUT_1].value = voice_1;
-  outputs[OUTPUT_2].value = voice_2;
-  outputs[OUTPUT_3].value = voice_3;
-  outputs[OUTPUT_4].value = voice_4;  
- 
+  outputs[OUTPUT_1].setVoltage(voice_1);
+  outputs[OUTPUT_2].setVoltage(voice_2);
+  outputs[OUTPUT_3].setVoltage(voice_3);
+  outputs[OUTPUT_4].setVoltage(voice_4); 
 }
 
 //////////////////////////////////////////////////////////////////
-struct MentalChordWidget : ModuleWidget {
-  MentalChordWidget(MentalChord *module);
+struct MentalChordWidget : ModuleWidget
+{
+  MentalChordWidget(MentalChord *module)
+  {
+    setModule(module);
+
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalChord.svg")));
+
+    addParam(createParam<MedKnob>(Vec(3, 20), module, MentalChord::OFFSET_PARAM));
+    addInput(createInput<CVInPort>(Vec(3, 50), module, MentalChord::OFFSET_CV_INPUT));
+    addParam(createParam<MedKnob>(Vec(33, 20), module, MentalChord::INVERSION_PARAM));
+    addParam(createParam<MedKnob>(Vec(63, 20), module, MentalChord::VOICING_PARAM));
+  	
+    addInput(createInput<CVInPort>(Vec(3, 100), module, MentalChord::INPUT));
+    addInput(createInput<CVInPort>(Vec(33, 50), module, MentalChord::INVERSION_CV_INPUT));
+    addInput(createInput<CVInPort>(Vec(63, 50), module, MentalChord::VOICING_CV_INPUT));
+    
+    addInput(createInput<GateInPort>(Vec(3, 130), module, MentalChord::FLAT_3RD_INPUT));
+    addInput(createInput<GateInPort>(Vec(3, 155), module, MentalChord::FLAT_5TH_INPUT));
+    addInput(createInput<GateInPort>(Vec(3, 180), module, MentalChord::FLAT_7TH_INPUT));
+    
+    addInput(createInput<GateInPort>(Vec(3, 210), module, MentalChord::SUS_2_INPUT));
+    addInput(createInput<GateInPort>(Vec(3, 235), module, MentalChord::SUS_4_INPUT));
+    addInput(createInput<GateInPort>(Vec(3, 260), module, MentalChord::SIX_FOR_5_INPUT));
+    addInput(createInput<GateInPort>(Vec(3, 285), module, MentalChord::ONE_FOR_7_INPUT));
+    addInput(createInput<GateInPort>(Vec(3, 310), module, MentalChord::FLAT_9_INPUT));
+    addInput(createInput<GateInPort>(Vec(3, 335), module, MentalChord::SHARP_9_INPUT));
+    addInput(createInput<GateInPort>(Vec(33, 316), module, MentalChord::SIX_FOR_7_INPUT));
+    addInput(createInput<GateInPort>(Vec(33, 341), module, MentalChord::SHARP_5_INPUT));
+    
+    
+    addOutput(createOutput<CVOutPort>(Vec(63, 100), module, MentalChord::OUTPUT_ROOT));
+    addOutput(createOutput<CVOutPort>(Vec(63, 125), module, MentalChord::OUTPUT_THIRD));
+    addOutput(createOutput<CVOutPort>(Vec(63, 150), module, MentalChord::OUTPUT_FIFTH));
+    addOutput(createOutput<CVOutPort>(Vec(63, 175), module, MentalChord::OUTPUT_SEVENTH));  
+      
+    addOutput(createOutput<CVOutPort>(Vec(63, 250), module, MentalChord::OUTPUT_1));
+    addOutput(createOutput<CVOutPort>(Vec(63, 275), module, MentalChord::OUTPUT_2));
+    addOutput(createOutput<CVOutPort>(Vec(63, 300), module, MentalChord::OUTPUT_3));
+    addOutput(createOutput<CVOutPort>(Vec(63, 325), module, MentalChord::OUTPUT_4));
+  }  
 };
 
-MentalChordWidget::MentalChordWidget(MentalChord *module) : ModuleWidget(module)
-{
-
-setPanel(SVG::load(assetPlugin(plugin, "res/MentalChord.svg")));
-
-  addParam(ParamWidget::create<MedKnob>(Vec(3, 20), module, MentalChord::OFFSET_PARAM, 0.0, 1.0, 0.5));
-  addInput(Port::create<CVInPort>(Vec(3, 50), Port::INPUT, module, MentalChord::OFFSET_CV_INPUT));
-  addParam(ParamWidget::create<MedKnob>(Vec(33, 20), module, MentalChord::INVERSION_PARAM, 0.0, 1.0, 0.0));
-  addParam(ParamWidget::create<MedKnob>(Vec(63, 20), module, MentalChord::VOICING_PARAM, 0.0, 1.0, 0.0));
-	
-  addInput(Port::create<CVInPort>(Vec(3, 100), Port::INPUT, module, MentalChord::INPUT));
-  addInput(Port::create<CVInPort>(Vec(33, 50), Port::INPUT, module, MentalChord::INVERSION_CV_INPUT));
-  addInput(Port::create<CVInPort>(Vec(63, 50), Port::INPUT, module, MentalChord::VOICING_CV_INPUT));
-  
-  addInput(Port::create<GateInPort>(Vec(3, 130), Port::INPUT, module, MentalChord::FLAT_3RD_INPUT));
-  addInput(Port::create<GateInPort>(Vec(3, 155), Port::INPUT, module, MentalChord::FLAT_5TH_INPUT));
-  addInput(Port::create<GateInPort>(Vec(3, 180), Port::INPUT, module, MentalChord::FLAT_7TH_INPUT));
-  
-  addInput(Port::create<GateInPort>(Vec(3, 210), Port::INPUT, module, MentalChord::SUS_2_INPUT));
-  addInput(Port::create<GateInPort>(Vec(3, 235), Port::INPUT, module, MentalChord::SUS_4_INPUT));
-  addInput(Port::create<GateInPort>(Vec(3, 260), Port::INPUT, module, MentalChord::SIX_FOR_5_INPUT));
-  addInput(Port::create<GateInPort>(Vec(3, 285), Port::INPUT, module, MentalChord::ONE_FOR_7_INPUT));
-  addInput(Port::create<GateInPort>(Vec(3, 310), Port::INPUT, module, MentalChord::FLAT_9_INPUT));
-  addInput(Port::create<GateInPort>(Vec(3, 335), Port::INPUT, module, MentalChord::SHARP_9_INPUT));
-  addInput(Port::create<GateInPort>(Vec(33, 316), Port::INPUT, module, MentalChord::SIX_FOR_7_INPUT));
-  addInput(Port::create<GateInPort>(Vec(33, 341), Port::INPUT, module, MentalChord::SHARP_5_INPUT));
-  
-  
-  addOutput(Port::create<CVOutPort>(Vec(63, 100), Port::OUTPUT, module, MentalChord::OUTPUT_ROOT));
-  addOutput(Port::create<CVOutPort>(Vec(63, 125), Port::OUTPUT, module, MentalChord::OUTPUT_THIRD));
-  addOutput(Port::create<CVOutPort>(Vec(63, 150), Port::OUTPUT, module, MentalChord::OUTPUT_FIFTH));
-  addOutput(Port::create<CVOutPort>(Vec(63, 175), Port::OUTPUT, module, MentalChord::OUTPUT_SEVENTH));  
-    
-  addOutput(Port::create<CVOutPort>(Vec(63, 250), Port::OUTPUT, module, MentalChord::OUTPUT_1));
-  addOutput(Port::create<CVOutPort>(Vec(63, 275), Port::OUTPUT, module, MentalChord::OUTPUT_2));
-  addOutput(Port::create<CVOutPort>(Vec(63, 300), Port::OUTPUT, module, MentalChord::OUTPUT_3));
-  addOutput(Port::create<CVOutPort>(Vec(63, 325), Port::OUTPUT, module, MentalChord::OUTPUT_4));
-    
-}
-
-Model *modelMentalChord = Model::create<MentalChord, MentalChordWidget>("mental", "MentalChord", "Chord", CONTROLLER_TAG);
+Model *modelMentalChord = createModel<MentalChord, MentalChordWidget>("MentalChord");

@@ -34,21 +34,22 @@ struct MentalMux8 : Module {
   
   int one, two, four, decoded;
   
-	MentalMux8() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
-	void step() override;  
+	MentalMux8() {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);}
+	void process(const ProcessArgs& args) override;  
 };
 
-void MentalMux8::step()
+void MentalMux8::process(const ProcessArgs& args)
 {
   for ( int i = 0 ; i < 8 ; i ++)
   {
     lights[INPUT_LEDS + i].value = 0.0;   
   }
-  outputs[OUTPUT].value = 0.0;
+  outputs[OUTPUT].setVoltage(0.0);
   
-  in_1 = inputs[INPUT_1].value;
-  in_2 = inputs[INPUT_2].value;
-  in_4 = inputs[INPUT_4].value;
+  in_1 = inputs[INPUT_1].getVoltage();
+  in_2 = inputs[INPUT_2].getVoltage();
+  in_4 = inputs[INPUT_4].getVoltage();
   
   if (in_1 > 0.0 ) 
   {
@@ -73,35 +74,35 @@ void MentalMux8::step()
   }
   
   decoded = one + two + four;  
-  outputs[OUTPUT].value = inputs[SIG_INPUT + decoded].value;
+  outputs[OUTPUT].setVoltage(inputs[SIG_INPUT + decoded].getVoltage());
   lights[INPUT_LEDS + decoded].value = 1.0; 
 }
 
 //////////////////////////////////////////////////////////////
 struct MentalMux8Widget : ModuleWidget {
-  MentalMux8Widget(MentalMux8 *module);
-};
-
-MentalMux8Widget::MentalMux8Widget(MentalMux8 *module) : ModuleWidget(module)
+  MentalMux8Widget(MentalMux8 *module)
 {
 
-  setPanel(SVG::load(assetPlugin(plugin, "res/MentalMux8.svg")));
+  setModule(module);
+  
+  setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalMux8.svg")));
 	
   int spacing = 25; 
   int top_space = 15;
   
-  addInput(Port::create<GateInPort>(Vec(3, top_space), Port::INPUT, module, MentalMux8::INPUT_1));
-  addInput(Port::create<GateInPort>(Vec(3, top_space + spacing), Port::INPUT, module, MentalMux8::INPUT_2));
-  addInput(Port::create<GateInPort>(Vec(3, top_space + spacing * 2), Port::INPUT, module, MentalMux8::INPUT_4));
+  addInput(createInput<GateInPort>(Vec(3, top_space), module, MentalMux8::INPUT_1));
+  addInput(createInput<GateInPort>(Vec(3, top_space + spacing), module, MentalMux8::INPUT_2));
+  addInput(createInput<GateInPort>(Vec(3, top_space + spacing * 2), module, MentalMux8::INPUT_4));
   
   for (int i = 0; i < 8 ; i++)
   {  
-   addInput(Port::create<InPort>(Vec(3, top_space + spacing * i + 100), Port::INPUT, module, MentalMux8::SIG_INPUT + i));   	 
-   addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(33, top_space +  spacing * i + 8 + 100), module, MentalMux8::INPUT_LEDS + i));
+   addInput(createInput<InPort>(Vec(3, top_space + spacing * i + 100), module, MentalMux8::SIG_INPUT + i));   	 
+   addChild(createLight<MedLight<BlueLED>>(Vec(33, top_space +  spacing * i + 8 + 100), module, MentalMux8::INPUT_LEDS + i));
   }
   
-  addOutput(Port::create<OutPort>(Vec(30, top_space + spacing), Port::OUTPUT, module, MentalMux8::OUTPUT));  
+  addOutput(createOutput<OutPort>(Vec(30, top_space + spacing), module, MentalMux8::OUTPUT));  
   
 }
+};
 
-Model *modelMentalMux8 = Model::create<MentalMux8, MentalMux8Widget>("mental", "MentalMux8", "8 Way Multiplexer", UTILITY_TAG);
+Model *modelMentalMux8 = createModel<MentalMux8, MentalMux8Widget>("MentalMux8");

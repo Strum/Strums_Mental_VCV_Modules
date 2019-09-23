@@ -1,14 +1,22 @@
+///////////////////////////////////////////////////
+//
+//   Mental Plugin for VCV Version 1
+//
+//   Strum 2018-19
+//   strum@softhome.net
+//
+///////////////////////////////////////////////////
+
 #include "rack.hpp"
 
 using namespace rack;
 
-extern Plugin *plugin;
+extern Plugin *pluginInstance;
 
 ////////////////////
 // module widgets
 ////////////////////
 
-/// 06 versions
 
 extern Model *modelMentalMults;
 extern Model *modelMentalSubMixer;
@@ -31,138 +39,165 @@ extern Model *modelMentalBinaryDecoder;
 extern Model *modelMentalSwitch8;
 extern Model *modelMentalMux8;
 extern Model *modelMentalCounters;
-extern Model *modelMentalKnobs;
-extern Model *modelMentalGateMaker;
-extern Model *modelMentalMasterClock;
-extern Model *modelMentalQuadLFO;
+extern Model *modelMentalKnobs; 
+//extern Model *modelMentalGateMaker; //stops whole module loading, back in jail
+extern Model *modelMentalMasterClock; // crashes browser, back in jail
+extern Model *modelMentalQuadLFO; 
 extern Model *modelMentalRadioButtons;
 
 
 /////////////////////////////////////////////
-// ports
+// Components
 
-struct OutPort : SVGPort {
-	OutPort() {
-		background->svg = SVG::load(assetPlugin(plugin, "res/components/OutPort.svg"));
-		background->wrap();
-		box.size = background->box.size;
+// Ports
+
+// InPort
+
+struct InPort : SvgPort
+{
+	InPort()
+	{
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/InPort.svg")));
 	}
 };
 
-struct InPort : SVGPort {
-	InPort() {
-		background->svg = SVG::load(assetPlugin(plugin, "res/components/InPort.svg"));
-		background->wrap();
-		box.size = background->box.size;
+// OutPort
+
+struct OutPort : SvgPort
+{
+	OutPort()
+	{
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/OutPort.svg")));
 	}
 };
 
-struct CVInPort : SVGPort {
-	CVInPort() {
-		background->svg = SVG::load(assetPlugin(plugin, "res/components/CVInPort.svg"));
-		background->wrap();
-		box.size = background->box.size;
+// GateInPort
+
+struct GateInPort : SvgPort
+{
+	GateInPort()
+	{
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/GateInPort.svg")));
 	}
 };
 
-struct CVOutPort : SVGPort {
-	CVOutPort() {
-		background->svg = SVG::load(assetPlugin(plugin, "res/components/CVOutPort.svg"));
-		background->wrap();
-		box.size = background->box.size;
+// GateOutPort
+
+struct GateOutPort : SvgPort
+{
+	GateOutPort()
+	{
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/GateOutPort.svg")));
 	}
 };
 
-struct GateInPort : SVGPort {
-	GateInPort() {
-		background->svg = SVG::load(assetPlugin(plugin, "res/components/GateInPort.svg"));
-		background->wrap();
-		box.size = background->box.size;
+// GateInPort
+
+struct CVInPort : SvgPort
+{
+	CVInPort()
+	{
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/CVInPort.svg")));
 	}
 };
 
-struct GateOutPort : SVGPort {
-	GateOutPort() {
-		background->svg = SVG::load(assetPlugin(plugin, "res/components/GateOutPort.svg"));
-		background->wrap();
-		box.size = background->box.size;
+// GateOutPort
+
+struct CVOutPort : SvgPort
+{
+	CVOutPort()
+	{
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/CVOutPort.svg")));
 	}
 };
+
+// ThreeWaySwitch
+
+struct ThreeWaySwitch : SvgSwitch
+{
+	ThreeWaySwitch()
+	{
+		addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/Three_0.svg")));
+		addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/Three_1.svg")));
+		addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/Three_2.svg")));
+	}
+};
+
+struct VThreeWaySwitch : SvgSwitch
+{
+	VThreeWaySwitch()
+	{
+		addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/VThree_0.svg")));
+		addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/VThree_1.svg")));
+		addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/VThree_2.svg")));
+	}
+};
+
 
 // Knobs
 
-struct LrgKnob : RoundKnob {
-	LrgKnob() {
-		setSVG(SVG::load(assetPlugin(plugin, "res/components/LrgKnob.svg")));
-		box.size = Vec(42,42);
-
+struct LrgKnob : RoundKnob
+{
+	LrgKnob()
+	{
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/LrgKnob.svg")));
+		box.size = Vec(45,45);
 	}
 };
 
-struct MedKnob : RoundKnob {
-	MedKnob() {
-		setSVG(SVG::load(assetPlugin(plugin, "res/components/MedKnob.svg")));
-		box.size = Vec(24,24);
-
+struct MedKnob : RoundKnob
+{
+	MedKnob()
+	{
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/MedKnob.svg")));
+		box.size = Vec(32,32);
 	}
 };
 
-struct SmlKnob : RoundKnob {
-	SmlKnob() {
-		setSVG(SVG::load(assetPlugin(plugin, "res/components/SmlKnob.svg")));
-		box.size = Vec(20,20);
+struct SmlKnob : RoundKnob
+{
+	SmlKnob()
+	{
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/components/SmlKnob.svg")));
+		box.size = Vec(25,25);
 	}
 };
-
-// switches
-
-struct ThreeWaySwitch : SVGSwitch, ToggleSwitch {
-	ThreeWaySwitch() {
-		addFrame(SVG::load(assetPlugin(plugin,"res/components/Three_2.svg")));
-		addFrame(SVG::load(assetPlugin(plugin,"res/components/Three_1.svg")));
-		addFrame(SVG::load(assetPlugin(plugin,"res/components/Three_0.svg")));
-	}
-};
-
-// lights
 
 /// lights
 
-struct MentalLight : GrayModuleLightWidget{
+struct MentalLight : GrayModuleLightWidget
+{
 	MentalLight() { bgColor = nvgRGB(0x40, 0x40, 0x40); }
 };
-struct RedLED : MentalLight {
- 	RedLED() {
- 		addBaseColor(nvgRGB(0xff, 0x00, 0x00)); }
+struct RedLED : MentalLight
+{
+ 	RedLED() { addBaseColor(nvgRGB(0xff, 0x00, 0x00)); }
 };
 
-struct BlueLED : MentalLight {
- 	BlueLED() {
- 		addBaseColor(nvgRGB(0x00, 0x47, 0x7e)); }
+struct BlueLED : MentalLight
+{
+ 	BlueLED() { addBaseColor(nvgRGB(0x00, 0x47, 0x7e)); }
 };
 
-struct OrangeLED : MentalLight {
- 	OrangeLED() {
- 		addBaseColor(COLOR_ORANGE); }
+struct OrangeLED : MentalLight
+{
+ 	OrangeLED() { addBaseColor(nvgRGB(0xff, 0xA5, 0x00)); }
 };
 
 template <typename BASE>
- struct TinyLight : BASE {
- 	TinyLight() {
- 		this->box.size = Vec(4, 4);
- 	}
+ struct TinyLight : BASE
+ {
+ 	TinyLight() { this->box.size = Vec(4, 4); }
  };
 
 template <typename BASE>
- struct SmlLight : BASE {
- 	SmlLight() {
- 		this->box.size = Vec(8, 8);
- 	}
+ struct SmlLight : BASE
+ {
+ 	SmlLight() { this->box.size = Vec(8, 8); }
  };
 
 template <typename BASE>
- struct MedLight : BASE {
- 	MedLight() {
- 		this->box.size = Vec(10, 10);
- 	}
+ struct MedLight : BASE
+ {
+ 	MedLight(){ this->box.size = Vec(10, 10);}
  };

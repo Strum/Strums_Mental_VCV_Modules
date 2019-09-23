@@ -4,3 +4,4 @@
 /src/MentalTemplate.cpp
 /src/MentalNoiseGate.cpp
 ./plugin.dll
+./backup_plugin.json

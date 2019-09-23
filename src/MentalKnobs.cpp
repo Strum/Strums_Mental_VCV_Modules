@@ -9,8 +9,6 @@
 
 #include "mental.hpp"
 
-#include "dsp/digital.hpp"
-
 #include <sstream>
 #include <iomanip>
 
@@ -39,7 +37,7 @@ struct MentalKnobs : Module {
   float scale_value[3] = {0.0,0.0,0.0};
   float output_value[3] = {0.0,0.0,0.0};
   int display_value[3] = {0,0,0};
-  SchmittTrigger step_switch_trigger[3],bi_switch_trigger[3],stepsize_switch_trigger[3];
+  dsp::SchmittTrigger step_switch_trigger[3],bi_switch_trigger[3],stepsize_switch_trigger[3];
   bool switch_states[3][3] = {{0,0,0},
                              {0,0,0},
                              {0,0,0}};
@@ -47,10 +45,22 @@ struct MentalKnobs : Module {
                             
   int octaves[3] = {0,0,0};
   int semitones[3] = {0,0,0};
-  MentalKnobs() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
-	void step() override;
+  MentalKnobs() {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+    for (int i = 0; i < 3; ++i)
+    {
+      configParam(MentalKnobs::KNOB_PARAM + i, -1.0, 1.0, 0.0, "");
+      configParam(MentalKnobs::SCALE_PARAM + i,0.0, 10.0, 1.0, "");
+      configParam(MentalKnobs::STEP_SWITCH + i, 0.0, 1.0, 0.0, "");
+      configParam(MentalKnobs::BI_SWITCH + i, 0.0, 1.0, 0.0, "");
+      configParam(MentalKnobs::STEPSIZE_SWITCH + i, 0.0, 1.0, 0.0, "");  
+    }
+    
+  }
+
+	void process(const ProcessArgs& args) override;
   
-  json_t *toJson() override
+  json_t *dataToJson() override
   {
 		json_t *rootJ = json_object();
     
@@ -68,7 +78,7 @@ struct MentalKnobs : Module {
     return rootJ;
   }
   
-  void fromJson(json_t *rootJ) override
+  void dataFromJson(json_t *rootJ) override
   {
     // button states
 		json_t *switch_statesJ = json_object_get(rootJ, "switches");
@@ -88,28 +98,28 @@ struct MentalKnobs : Module {
 };
 
 
-void MentalKnobs::step()
+void MentalKnobs::process(const ProcessArgs& args)
 {
   for ( int i = 0 ; i < 3 ; i++)
   {
   // button triggers
-  if (step_switch_trigger[i].process(params[STEP_SWITCH + i].value))
+  if (step_switch_trigger[i].process(params[STEP_SWITCH + i].getValue()))
   {
 	  switch_states[0][i] = !switch_states[0][i];
 	}  
   lights[BUTTON_LEDS + i].value = switch_states[0][i] ? 1.0 : 0.0;
-  if (stepsize_switch_trigger[i].process(params[STEPSIZE_SWITCH + i].value))
+  if (stepsize_switch_trigger[i].process(params[STEPSIZE_SWITCH + i].getValue()))
   {
 	  switch_states[1][i] = !switch_states[1][i];
 	}  
   lights[BUTTON_LEDS + 6 + i].value = switch_states[1][i] ? 1.0 : 0.0;
-  if (bi_switch_trigger[i].process(params[BI_SWITCH + i].value))
+  if (bi_switch_trigger[i].process(params[BI_SWITCH + i].getValue()))
   {
 	  switch_states[2][i] = !switch_states[2][i];
 	}  
   lights[BUTTON_LEDS + 3 + i].value = switch_states[2][i] ? 1.0 : 0.0;
-  knob_value[i] = params[KNOB_PARAM + i].value;
-  scale_value[i] = params[SCALE_PARAM + i].value;
+  knob_value[i] = params[KNOB_PARAM + i].getValue();
+  scale_value[i] = params[SCALE_PARAM + i].getValue();
   if (!switch_states[2][i]) // bi switch
   {
     knob_value[i] = std::abs(knob_value[i]); 
@@ -131,7 +141,7 @@ void MentalKnobs::step()
   }  
   
   display_value[i] = std::round(output_value[i]);
-  outputs[OUTPUT + i].value = output_value[i];
+  outputs[OUTPUT + i].setVoltage(output_value[i]);
   }  
 }
 
@@ -140,86 +150,97 @@ void MentalKnobs::step()
 struct NumberDisplayWidget4 : TransparentWidget {
 
   int *value;
+
+  MentalKnobs *module;
   std::shared_ptr<Font> font;
 
   NumberDisplayWidget4() {
-    font = Font::load(assetPlugin(plugin, "res/Segment7Standard.ttf"));
+    font = APP->window->loadFont(asset::plugin(pluginInstance, "res/Segment7Standard.ttf"));
   };
 
-  void draw(NVGcontext *vg) override
+  void draw(const DrawArgs& args) override
   {
     // Background
     NVGcolor backgroundColor = nvgRGB(0x00, 0x00, 0x00);
     NVGcolor StrokeColor = nvgRGB(0x00, 0x47, 0x7e);
-    nvgBeginPath(vg);
-    nvgRoundedRect(vg, -1.0, -1.0, box.size.x+2, box.size.y+2, 4.0);
-    nvgFillColor(vg, StrokeColor);
-    nvgFill(vg);
-    nvgBeginPath(vg);
-    nvgRoundedRect(vg, 0.0, 0.0, box.size.x, box.size.y, 4.0);
-    nvgFillColor(vg, backgroundColor);
-    nvgFill(vg);    
+    nvgBeginPath(args.vg);
+    nvgRoundedRect(args.vg, -1.0, -1.0, box.size.x+2, box.size.y+2, 4.0);
+    nvgFillColor(args.vg, StrokeColor);
+    nvgFill(args.vg);
+    nvgBeginPath(args.vg);
+    nvgRoundedRect(args.vg, 0.0, 0.0, box.size.x, box.size.y, 4.0);
+    nvgFillColor(args.vg, backgroundColor);
+    nvgFill(args.vg);    
     
     // text 
-    nvgFontSize(vg, 18);
-    nvgFontFaceId(vg, font->handle);
-    nvgTextLetterSpacing(vg, 2.5);
+    nvgFontSize(args.vg, 18);
+    nvgFontFaceId(args.vg, font->handle);
+    nvgTextLetterSpacing(args.vg, 2.5);
 
-    std::stringstream to_display;   
-    to_display << std::setw(3) << *value;
+    std::stringstream to_display;
+
+    //to_display << std::setw(3) << *value;
+    if(module) {
+        to_display << std::setw(3) << *value;
+      }
+      else {
+        to_display << std::setw(3) << "00";
+      }
 
     Vec textPos = Vec(6.0f, 17.0f);   
     NVGcolor textColor = nvgRGB(0x00, 0x47, 0x7e);
-    nvgFillColor(vg, textColor);
-    nvgText(vg, textPos.x, textPos.y, to_display.str().c_str(), NULL);
+    nvgFillColor(args.vg, textColor);
+    nvgText(args.vg, textPos.x, textPos.y, to_display.str().c_str(), NULL);
   }
 };
 
 //////////////////////////////////
 struct MentalKnobsWidget : ModuleWidget {
-  MentalKnobsWidget(MentalKnobs *module);
-};
-
-MentalKnobsWidget::MentalKnobsWidget(MentalKnobs *module) : ModuleWidget(module)
+  MentalKnobsWidget(MentalKnobs *module)
 {
 
+  setModule(module);
 	
-  setPanel(SVG::load(assetPlugin(plugin, "res/MentalKnobs.svg")));
+  setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalKnobs.svg")));
 
   int group_offset = 120;    
   for (int i = 0 ; i < 3 ; i++)
   {
-    addParam(ParamWidget::create<MedKnob>(Vec(2, 20+group_offset*i), module, MentalKnobs::KNOB_PARAM + i, -1.0, 1.0, 0.0));
-    addParam(ParamWidget::create<MedKnob>(Vec(32, 20+group_offset*i), module, MentalKnobs::SCALE_PARAM + i,0.0, 10.0, 1.0)); 
+    addParam(createParam<MedKnob>(Vec(2, 20+group_offset*i), module, MentalKnobs::KNOB_PARAM + i));
+    addParam(createParam<MedKnob>(Vec(32, 20+group_offset*i), module, MentalKnobs::SCALE_PARAM + i)); 
     
-    addParam(ParamWidget::create<LEDButton>(Vec(5, 50+group_offset*i), module, MentalKnobs::STEP_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(10, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + i ));
-    addParam(ParamWidget::create<LEDButton>(Vec(5, 75+group_offset*i), module, MentalKnobs::BI_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(10, 80+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 3 + i));
-    addParam(ParamWidget::create<LEDButton>(Vec(35, 50+group_offset*i), module, MentalKnobs::STEPSIZE_SWITCH + i, 0.0, 1.0, 0.0));
-    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(40, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 6 + i));
+    addParam(createParam<LEDButton>(Vec(5, 50+group_offset*i), module, MentalKnobs::STEP_SWITCH + i));
+    addChild(createLight<MedLight<BlueLED>>(Vec(10, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + i ));
+    addParam(createParam<LEDButton>(Vec(5, 75+group_offset*i), module, MentalKnobs::BI_SWITCH + i));
+    addChild(createLight<MedLight<BlueLED>>(Vec(10, 80+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 3 + i));
+    addParam(createParam<LEDButton>(Vec(35, 50+group_offset*i), module, MentalKnobs::STEPSIZE_SWITCH + i));
+    addChild(createLight<MedLight<BlueLED>>(Vec(40, 55+group_offset*i), module, MentalKnobs::BUTTON_LEDS + 6 + i));
     
-    addOutput(Port::create<CVOutPort>(Vec(33, 75+group_offset*i), Port::OUTPUT, module, MentalKnobs::OUTPUT + i));     
+    addOutput(createOutput<CVOutPort>(Vec(33, 75+group_offset*i), module, MentalKnobs::OUTPUT + i));     
   }
   
   NumberDisplayWidget4 *display = new NumberDisplayWidget4();
 	display->box.pos = Vec(5,105);
 	display->box.size = Vec(50, 20);
+  display->module = module;
 	display->value = &module->display_value[0];
 	addChild(display); 
     
   NumberDisplayWidget4 *display2 = new NumberDisplayWidget4();
 	display2->box.pos = Vec(5,105+group_offset);
 	display2->box.size = Vec(50, 20);
+  display2->module = module;
 	display2->value = &module->display_value[1];
 	addChild(display2); 
   
   NumberDisplayWidget4 *display3 = new NumberDisplayWidget4();
 	display3->box.pos = Vec(5,105+group_offset * 2);
 	display3->box.size = Vec(50, 20);
+  display3->module = module;
 	display3->value = &module->display_value[2];
 	addChild(display3); 
  
 }
+};
 
-Model *modelMentalKnobs = Model::create<MentalKnobs, MentalKnobsWidget>("mental", "MentalKnobs", "Knobs", CONTROLLER_TAG, UTILITY_TAG);
+Model *modelMentalKnobs = createModel<MentalKnobs, MentalKnobsWidget>("MentalKnobs");

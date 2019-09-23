@@ -8,7 +8,6 @@
 ///////////////////////////////////////////////////////////////////
 
 #include "mental.hpp"
-#include "dsp/digital.hpp"
 
 struct MentalPatchMatrix : Module {
 	enum ParamIds {
@@ -28,7 +27,7 @@ struct MentalPatchMatrix : Module {
     NUM_LIGHTS = SWITCH_LIGHTS + 100
 	};
 
-  SchmittTrigger switch_triggers[10][10];
+  dsp::SchmittTrigger switch_triggers[10][10];
   bool switch_states[10][10] = 
   {{0,0,0,0,0,0,0,0,0,0},
   {0,0,0,0,0,0,0,0,0,0},
@@ -45,10 +44,21 @@ struct MentalPatchMatrix : Module {
   float input_values[10] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
   float sums[10] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}; 
   
-	MentalPatchMatrix() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
-	void step() override;
+	MentalPatchMatrix() {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+
+    for (int i = 0; i < 10; ++i)
+    {
+      for (int j = 0; j < 10; ++j)
+      {
+        configParam(MentalPatchMatrix::SWITCHES + i + j * 10, 0.0, 1.0, 0.0, "");   
+      }
+    }    
+
+  }
+	void process(const ProcessArgs& args) override;
   
-  json_t *toJson() override
+  json_t *dataToJson() override
   {
 		json_t *rootJ = json_object();
     
@@ -67,7 +77,7 @@ struct MentalPatchMatrix : Module {
     return rootJ;
   }
   
-  void fromJson(json_t *rootJ) override
+  void dataFromJson(json_t *rootJ) override
   {
     // button states
 		json_t *button_statesJ = json_object_get(rootJ, "buttons");
@@ -87,7 +97,7 @@ struct MentalPatchMatrix : Module {
 };
 
 ////// Step function
-void MentalPatchMatrix::step() {
+void MentalPatchMatrix::process(const ProcessArgs& args) {
 	
   for ( int i = 0 ; i < 10 ; i++)
   {
@@ -98,7 +108,7 @@ void MentalPatchMatrix::step() {
   {
    for (int j = 0 ; j < 10 ; j++)
    {
-     if (switch_triggers[i][j].process(params[SWITCHES+j*10 + i].value))
+     if (switch_triggers[i][j].process(params[SWITCHES+j*10 + i].getValue()))
      {
 		   switch_states[i][j] = !switch_states[i][j];
 	   }
@@ -108,7 +118,7 @@ void MentalPatchMatrix::step() {
   // get inputs
   for (int i = 0 ; i < 10 ; i++)
   {
-    input_values[i] = inputs[INPUTS + i].value;
+    input_values[i] = inputs[INPUTS + i].getVoltage();
   }
   
   // add inputs 
@@ -123,19 +133,19 @@ void MentalPatchMatrix::step() {
   /// outputs  
   for (int i = 0 ; i < 10 ; i++)
   {
-    outputs[OUTPUTS + i].value = sums[i];    
+    outputs[OUTPUTS + i].setVoltage(sums[i]);    
   }  
 }
 
 ///// Gui
 struct MentalPatchMatrixWidget : ModuleWidget {
-  MentalPatchMatrixWidget(MentalPatchMatrix *module);
-};
+  MentalPatchMatrixWidget(MentalPatchMatrix *module)
 
-MentalPatchMatrixWidget::MentalPatchMatrixWidget(MentalPatchMatrix *module) : ModuleWidget(module)
 {
-  
-  setPanel(SVG::load(assetPlugin(plugin, "res/MentalPatchMatrix.svg")));
+
+  setModule(module);
+
+  setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalPatchMatrix.svg")));
 
   int top_row = 75;
   int row_spacing = 25; 
@@ -143,14 +153,15 @@ MentalPatchMatrixWidget::MentalPatchMatrixWidget(MentalPatchMatrix *module) : Mo
 
 	for (int i = 0 ; i < 10 ; i++)
   {
-	 addInput(Port::create<InPort>(Vec(3, i * row_spacing + top_row), Port::INPUT, module, MentalPatchMatrix::INPUTS + i));  
-   addOutput(Port::create<OutPort>(Vec(33 + i * column_spacing , top_row + 10 * row_spacing), Port::OUTPUT, module, MentalPatchMatrix::OUTPUTS + i));
+	 addInput(createInput<InPort>(Vec(3, i * row_spacing + top_row), module, MentalPatchMatrix::INPUTS + i));  
+   addOutput(createOutput<OutPort>(Vec(33 + i * column_spacing , top_row + 10 * row_spacing), module, MentalPatchMatrix::OUTPUTS + i));
    for(int j = 0 ; j < 10 ; j++ )
    {
-     addParam(ParamWidget::create<LEDButton>(Vec(35 + column_spacing * j, top_row + row_spacing * i), module, MentalPatchMatrix::SWITCHES + i + j * 10, 0.0, 1.0, 0.0));
-     addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(35 + column_spacing * j + 5, top_row + row_spacing * i + 5), module, MentalPatchMatrix::SWITCH_LIGHTS  + i + j * 10));
+     addParam(createParam<LEDButton>(Vec(35 + column_spacing * j, top_row + row_spacing * i), module, MentalPatchMatrix::SWITCHES + i + j * 10));
+     addChild(createLight<MedLight<BlueLED>>(Vec(35 + column_spacing * j + 5, top_row + row_spacing * i + 5), module, MentalPatchMatrix::SWITCH_LIGHTS  + i + j * 10));
    }
 	}  
 }
+};
 
-Model *modelMentalPatchMatrix = Model::create<MentalPatchMatrix, MentalPatchMatrixWidget>("mental", "MentalPatchMatrix", "Patch Matrix", UTILITY_TAG);
+Model *modelMentalPatchMatrix = createModel<MentalPatchMatrix, MentalPatchMatrixWidget>("MentalPatchMatrix");

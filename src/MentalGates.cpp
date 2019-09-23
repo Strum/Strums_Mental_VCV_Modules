@@ -8,7 +8,6 @@
 
 #include "mental.hpp"
 
-#include "dsp/digital.hpp"
 /////////////////////////////////////////////////
 
 struct MentalGates : Module {
@@ -32,15 +31,23 @@ struct MentalGates : Module {
 		NUM_LIGHTS = ON_LEDS + 4
 	};
 
-  SchmittTrigger button_triggers[4];
+  dsp::SchmittTrigger button_triggers[4];
   bool button_on[4] = {0,0,0,0};
   float signal[4] = {0.0,0.0,0.0};
   float on[4] = {0.0,0.0,0.0};
   
-	MentalGates() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
-	void step() override;
+	MentalGates() {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+    for (int i = 0; i < 4; ++i)
+    {
+      configParam(MentalGates::BUTTON_PARAM + i, 0.0, 1.0, 0.0, "");
+    }
+    
+  }
+
+	void process(const ProcessArgs& args) override;
   
-  json_t *toJson() override
+  json_t *dataToJson() override
   {
 		json_t *rootJ = json_object();
     
@@ -55,7 +62,7 @@ struct MentalGates : Module {
     return rootJ;
   }
   
-  void fromJson(json_t *rootJ) override
+  void dataFromJson(json_t *rootJ) override
   {
     // button states
 		json_t *button_statesJ = json_object_get(rootJ, "buttons");
@@ -73,14 +80,14 @@ struct MentalGates : Module {
 
 /////////////////////////////////////////////////////
 
-void MentalGates::step() {
+void MentalGates::process(const ProcessArgs& args) {
 
 for (int i = 0 ; i < 4 ; i++)
   {
-    signal[i] = inputs[INPUT + i].value;
-    on[i] = inputs[GATE_INPUT + i].value;
+    signal[i] = inputs[INPUT + i].getVoltage();
+    on[i] = inputs[GATE_INPUT + i].getVoltage();
   
-    if (button_triggers[i].process(params[BUTTON_PARAM + i].value))
+    if (button_triggers[i].process(params[BUTTON_PARAM + i].getValue()))
     {
 	    button_on[i] = !button_on[i];
     }
@@ -88,12 +95,12 @@ for (int i = 0 ; i < 4 ; i++)
 
     if (button_on[i] || ( on[i] > 0.0))
     {
-      outputs[OUTPUT + i].value = 0.0;
+      outputs[OUTPUT + i].setVoltage(0.0);
       lights[ON_LEDS + i].value = 1.0;
     }
     else
     {
-      outputs[OUTPUT + i].value = signal[i];
+      outputs[OUTPUT + i].setVoltage(signal[i]);
       lights[ON_LEDS + i].value = 0.0;
     }
   }
@@ -101,25 +108,23 @@ for (int i = 0 ; i < 4 ; i++)
 
 //////////////////////////////////////////////////////////////////
 struct MentalGatesWidget : ModuleWidget {
-  MentalGatesWidget(MentalGates *module);
-};
+  MentalGatesWidget(MentalGates *module){
 
-MentalGatesWidget::MentalGatesWidget(MentalGates *module) : ModuleWidget(module)
-{
-
-setPanel(SVG::load(assetPlugin(plugin, "res/MentalGates.svg")));
+setModule(module);  
+setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalGates.svg")));
 
   int group_spacing = 85;
   for (int i = 0 ; i < 4 ; i++)
   {
-	  addInput(Port::create<InPort>(Vec(3, group_spacing * i +  60), Port::INPUT, module, MentalGates::INPUT + i));
-    addInput(Port::create<GateInPort>(Vec(3, group_spacing * i +  28), Port::INPUT, module, MentalGates::GATE_INPUT + i));
-    addOutput(Port::create<OutPort>(Vec(32, group_spacing * i +  60), Port::OUTPUT, module, MentalGates::OUTPUT + i));
+	  addInput(createInput<InPort>(Vec(3, group_spacing * i +  60), module, MentalGates::INPUT + i));
+    addInput(createInput<GateInPort>(Vec(3, group_spacing * i +  28), module, MentalGates::GATE_INPUT + i));
+    addOutput(createOutput<OutPort>(Vec(32, group_spacing * i +  60), module, MentalGates::OUTPUT + i));
 
-    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(26, group_spacing * i + 17), module, MentalGates::ON_LEDS + i));
-    addParam(ParamWidget::create<LEDButton>(Vec(35, group_spacing * i +  31), module, MentalGates::BUTTON_PARAM + i, 0.0, 1.0, 0.0));
-	  addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(35+5, group_spacing * i +  31+5), module, MentalGates::BUTTON_LIGHTS + i));  
+    addChild(createLight<MedLight<BlueLED>>(Vec(26, group_spacing * i + 17), module, MentalGates::ON_LEDS + i));
+    addParam(createParam<LEDButton>(Vec(35, group_spacing * i +  31), module, MentalGates::BUTTON_PARAM + i));
+	  addChild(createLight<MedLight<BlueLED>>(Vec(35+5, group_spacing * i +  31+5), module, MentalGates::BUTTON_LIGHTS + i));  
   }
 }
+};
 
-Model *modelMentalGates = Model::create<MentalGates, MentalGatesWidget>("mental", "MentalGates", "Gates", UTILITY_TAG);
+Model *modelMentalGates = createModel<MentalGates, MentalGatesWidget>("MentalGates");

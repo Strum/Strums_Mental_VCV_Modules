@@ -34,21 +34,22 @@ struct MentalSwitch8 : Module {
   
   int one, two, four, decoded;
   
-	MentalSwitch8() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
-	void step() override;  
+	MentalSwitch8() {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);}
+	void process(const ProcessArgs& args) override;  
 };
 
-void MentalSwitch8::step()
+void MentalSwitch8::process(const ProcessArgs& args)
 {
   for ( int i = 0 ; i < 8 ; i ++)
   {
     lights[OUTPUT_LEDS + i].value = 0.0;
-    outputs[OUTPUT + i].value = 0.0;
+    outputs[OUTPUT + i].setVoltage(0.0);
   }
   
-  in_1 = inputs[INPUT_1].value;
-  in_2 = inputs[INPUT_2].value;
-  in_4 = inputs[INPUT_4].value;
+  in_1 = inputs[INPUT_1].getVoltage();
+  in_2 = inputs[INPUT_2].getVoltage();
+  in_4 = inputs[INPUT_4].getVoltage();
   
   if (in_1 > 0.0 ) 
   {
@@ -73,35 +74,35 @@ void MentalSwitch8::step()
   }
   
   decoded = one + two + four;  
-  outputs[OUTPUT + decoded].value = inputs[SIG_INPUT].value;
+  outputs[OUTPUT + decoded].setVoltage(inputs[SIG_INPUT].getVoltage());
   lights[OUTPUT_LEDS + decoded].value = 1.0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 struct MentalSwitch8Widget : ModuleWidget {
-  MentalSwitch8Widget(MentalSwitch8 *module);
-};
-
-MentalSwitch8Widget::MentalSwitch8Widget(MentalSwitch8 *module) : ModuleWidget(module)
+  MentalSwitch8Widget(MentalSwitch8 *module)
 {
 
-  setPanel(SVG::load(assetPlugin(plugin, "res/MentalSwitch8.svg")));
+  setModule(module);
+  
+  setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalSwitch8.svg")));
 	
   int spacing = 25; 
   int top_space = 15;
   
-  addInput(Port::create<GateInPort>(Vec(3, top_space), Port::INPUT, module, MentalSwitch8::INPUT_1));
-  addInput(Port::create<GateInPort>(Vec(3, top_space + spacing), Port::INPUT, module, MentalSwitch8::INPUT_2));
-  addInput(Port::create<GateInPort>(Vec(3, top_space + spacing * 2), Port::INPUT, module, MentalSwitch8::INPUT_4));
+  addInput(createInput<GateInPort>(Vec(3, top_space), module, MentalSwitch8::INPUT_1));
+  addInput(createInput<GateInPort>(Vec(3, top_space + spacing), module, MentalSwitch8::INPUT_2));
+  addInput(createInput<GateInPort>(Vec(3, top_space + spacing * 2), module, MentalSwitch8::INPUT_4));
   
-  addInput(Port::create<InPort>(Vec(3, top_space + spacing * 3 + 15), Port::INPUT, module, MentalSwitch8::SIG_INPUT));
+  addInput(createInput<InPort>(Vec(3, top_space + spacing * 3 + 15), module, MentalSwitch8::SIG_INPUT));
   
   for (int i = 0; i < 8 ; i++)
   {  
-   addOutput(Port::create<OutPort>(Vec(30, top_space + spacing * i), Port::OUTPUT, module, MentalSwitch8::OUTPUT + i));   	 
-   addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(60, top_space +  spacing * i + 8), module,MentalSwitch8::OUTPUT_LEDS + i));
+   addOutput(createOutput<OutPort>(Vec(30, top_space + spacing * i), module, MentalSwitch8::OUTPUT + i));   	 
+   addChild(createLight<MedLight<BlueLED>>(Vec(60, top_space +  spacing * i + 8), module,MentalSwitch8::OUTPUT_LEDS + i));
   }
   
 }
+};
 
-Model *modelMentalSwitch8 = Model::create<MentalSwitch8, MentalSwitch8Widget>("mental", "MentalSwitch8", "8 Way Switch", SWITCH_TAG, UTILITY_TAG);
+Model *modelMentalSwitch8 = createModel<MentalSwitch8, MentalSwitch8Widget>("MentalSwitch8");

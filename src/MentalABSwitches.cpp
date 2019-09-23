@@ -1,46 +1,58 @@
 ///////////////////////////////////////////////////
 //
-//   A/B Switches VCV Module
+//   Mental Plugin
+//   A/B Switches
 //
-//   Strum 2017
+//   Strum 2017-19
+//   strum@softhome.net
 //
 ///////////////////////////////////////////////////
 
 #include "mental.hpp"
 
-#include "dsp/digital.hpp"
-
 /////////////////////////////////////////////////
-struct MentalABSwitches : Module {
-	enum ParamIds {
+struct MentalABSwitches : Module
+{
+	enum ParamIds
+  {
       BUTTON_PARAM,
       NUM_PARAMS = BUTTON_PARAM + 4
 	};
-
-	enum InputIds {
+	enum InputIds
+  {
       INPUT,
       SEL_INPUT = INPUT + 4,
       NUM_INPUTS = SEL_INPUT + 4
 	};
-	enum OutputIds {
+	enum OutputIds
+  {
       OUTPUT_A,
       OUTPUT_B = OUTPUT_A + 4,
       NUM_OUTPUTS = OUTPUT_B + 4
 	};
-  enum LightIds {
+  enum LightIds
+  {
 		BUTTON_LIGHTS,
     A_LEDS = BUTTON_LIGHTS + 4,
     B_LEDS = A_LEDS + 4,
 		NUM_LIGHTS = B_LEDS + 4
 	};
 
-  SchmittTrigger button_triggers[4];
+  dsp::SchmittTrigger button_triggers[4];
   bool button_on[4] = {0,0,0,0};
       
-	MentalABSwitches() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
-	void step() override;
+	MentalABSwitches()
+  {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+    for (int i = 0; i < 4; ++i)
+    {    
+      configParam(MentalABSwitches::BUTTON_PARAM + i, 0.0, 1.0, 0.0, "");
+    }
+  }
+
+	void process(const ProcessArgs& args) override;
   
-  json_t *toJson() override
+  json_t *dataToJson() override
   {
 		json_t *rootJ = json_object();
     
@@ -55,7 +67,7 @@ struct MentalABSwitches : Module {
     return rootJ;
   }
   
-  void fromJson(json_t *rootJ) override
+  void dataFromJson(json_t *rootJ) override
   {
     // button states
 		json_t *button_statesJ = json_object_get(rootJ, "buttons");
@@ -72,29 +84,29 @@ struct MentalABSwitches : Module {
 };
 
 /////////////////////////////////////////////////////
-void MentalABSwitches::step() {
-
+void MentalABSwitches::process(const ProcessArgs& args)
+{
   for (int i = 0 ; i < 4 ; i++)
   {
-    float signal = inputs[INPUT + i].value;
-    float sel = inputs[SEL_INPUT + i].value;
+    float signal = inputs[INPUT + i].getVoltage();
+    float sel = inputs[SEL_INPUT + i].getVoltage();
   
-    if (button_triggers[i].process(params[BUTTON_PARAM + i].value))
+    if (button_triggers[i].process(params[BUTTON_PARAM + i].getValue()))
     {
 	    button_on[i] = !button_on[i];
     }
     if (button_on[i] || ( sel > 0.0))
     {
-      outputs[OUTPUT_A + i].value = 0.0;
-      outputs[OUTPUT_B + i].value = signal;
+      outputs[OUTPUT_A + i].setVoltage(0.0);
+      outputs[OUTPUT_B + i].setVoltage(signal);
       
       lights[B_LEDS + i].value = 1.0;
       lights[A_LEDS + i].value = 0.0;
     }
     else
     {
-      outputs[OUTPUT_A + i].value = signal;
-      outputs[OUTPUT_B + i].value = 0.0;
+      outputs[OUTPUT_A + i].setVoltage(signal);
+      outputs[OUTPUT_B + i].setVoltage(0.0);
       
       lights[B_LEDS + i].value = 0.0;
       lights[A_LEDS + i].value = 1.0;
@@ -103,31 +115,31 @@ void MentalABSwitches::step() {
 }
 
 //////////////////////////////////////////////////////////////////
-struct MentalABSwitchesWidget : ModuleWidget {
-  MentalABSwitchesWidget(MentalABSwitches *module);
+struct MentalABSwitchesWidget : ModuleWidget
+{
+  MentalABSwitchesWidget(MentalABSwitches *module)
+  {
+
+    setModule(module);
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalABSwitches.svg")));
+
+    int group_spacing = 85;
+  
+    for (int i = 0 ; i < 4 ; i++)
+    {
+  	  addInput(createInput<InPort>(Vec(3, group_spacing * i + 25), module, MentalABSwitches::INPUT + i));
+      addInput(createInput<GateInPort>(Vec(3, group_spacing * i + 75), module, MentalABSwitches::SEL_INPUT + i));
+    
+      addOutput(createOutput<OutPort>(Vec(33, group_spacing * i + 25), module, MentalABSwitches::OUTPUT_A + i));
+      addOutput(createOutput<OutPort>(Vec(33, group_spacing * i + 50), module, MentalABSwitches::OUTPUT_B + i));
+
+      addChild(createLight<MedLight<BlueLED>>(Vec(62, group_spacing * i + 34), module, MentalABSwitches::A_LEDS + i ));
+      addChild(createLight<MedLight<BlueLED>>(Vec(62, group_spacing * i + 59), module, MentalABSwitches::B_LEDS + i));
+    
+      addParam(createParam<LEDButton>(Vec(6, group_spacing * i + 54), module, MentalABSwitches::BUTTON_PARAM + i));
+  	  addChild(createLight<MedLight<BlueLED>>(Vec(6+5, group_spacing * i + 54+5), module, MentalABSwitches::BUTTON_LIGHTS + i));
+    }
+  }
 };
 
-MentalABSwitchesWidget::MentalABSwitchesWidget(MentalABSwitches *module) : ModuleWidget(module)
-{
-
-  setPanel(SVG::load(assetPlugin(plugin, "res/MentalABSwitches.svg")));
-
-  int group_spacing = 85;
-  
-  for (int i = 0 ; i < 4 ; i++)
-  {
-	  addInput(Port::create<InPort>(Vec(3, group_spacing * i + 25), Port::INPUT, module, MentalABSwitches::INPUT + i));
-    addInput(Port::create<GateInPort>(Vec(3, group_spacing * i + 75), Port::INPUT, module, MentalABSwitches::SEL_INPUT + i));
-  
-    addOutput(Port::create<OutPort>(Vec(33, group_spacing * i + 25), Port::OUTPUT, module, MentalABSwitches::OUTPUT_A + i));
-    addOutput(Port::create<OutPort>(Vec(33, group_spacing * i + 50), Port::OUTPUT, module, MentalABSwitches::OUTPUT_B + i));
-
-    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(62, group_spacing * i + 34), module, MentalABSwitches::A_LEDS + i ));
-    addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(62, group_spacing * i + 59), module, MentalABSwitches::B_LEDS + i));
-  
-    addParam(ParamWidget::create<LEDButton>(Vec(6, group_spacing * i + 54), module, MentalABSwitches::BUTTON_PARAM + i, 0.0, 1.0, 0.0));
-	  addChild(ModuleLightWidget::create<MedLight<BlueLED>>(Vec(6+5, group_spacing * i + 54+5), module, MentalABSwitches::BUTTON_LIGHTS + i));
-  }
-}
-
-Model *modelMentalABSwitches = Model::create<MentalABSwitches, MentalABSwitchesWidget>("mental", "MentalABSwitches", "A/B Switches", SWITCH_TAG, UTILITY_TAG);
+Model *modelMentalABSwitches = createModel<MentalABSwitches, MentalABSwitchesWidget>("MentalABSwitches");
