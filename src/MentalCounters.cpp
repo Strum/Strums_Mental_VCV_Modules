@@ -1,9 +1,11 @@
 ///////////////////////////////////////////////////
 //
-//   Dual Counter - VCV Module
+//   Mental Plugin
+//   Dual Counter
 //
 //   Strum 2017 - 2019
-//   Thanks to ML for the diaplay code
+//   strum@softhome.net
+//   Thanks to ML for the display code
 //
 ///////////////////////////////////////////////////
 
@@ -12,22 +14,26 @@
 #include <sstream>
 #include <iomanip>
 
-struct MentalCounters : Module {
-	enum ParamIds {
+struct MentalCounters : Module
+{
+	enum ParamIds
+  {
     RST_BUTTON,
     COUNT_NUM_PARAM,
     RST_BUTTON_2,
     COUNT_NUM_PARAM_2,
 		NUM_PARAMS
 	};  
-	enum InputIds {
+	enum InputIds
+  {
     CLK_IN,
    	RESET_IN,
     CLK_IN_2,
    	RESET_IN_2,	  
 		NUM_INPUTS
 	};
-	enum OutputIds {
+	enum OutputIds
+  {
 		OUTPUT,
     OUTPUT_2,    
 		NUM_OUTPUTS
@@ -106,7 +112,8 @@ void MentalCounters::process(const ProcessArgs& args)
 
 
 ////////////////////////////////////
-struct NumberDisplayWidget3 : TransparentWidget {
+struct NumberDisplayWidget3 : TransparentWidget
+{
 
   int *value;
 
@@ -114,7 +121,8 @@ struct NumberDisplayWidget3 : TransparentWidget {
   
   std::shared_ptr<Font> font;
 
-  NumberDisplayWidget3() {
+  NumberDisplayWidget3()
+  {
     font = APP->window->loadFont(asset::plugin(pluginInstance, "res/Segment7Standard.ttf"));
   };
 
@@ -156,49 +164,49 @@ struct NumberDisplayWidget3 : TransparentWidget {
 };
 
 //////////////////////////////////
-struct MentalCountersWidget : ModuleWidget {
-  MentalCountersWidget(MentalCounters *module)
+struct MentalCountersWidget : ModuleWidget
 {
-  setModule(module);
+  MentalCountersWidget(MentalCounters *module)
+  {
+    setModule(module);
 
-  setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalCounters.svg")));
-  
-  int group_offset = 190;
-  
-  addParam(createParam<MedKnob>(Vec(2, 20), module, MentalCounters::COUNT_NUM_PARAM)); 
-  addInput(createInput<GateInPort>(Vec(3, 90), module, MentalCounters::CLK_IN));
-	addInput(createInput<GateInPort>(Vec(3, 120), module, MentalCounters::RESET_IN));
-  
-  addParam(createParam<LEDButton>(Vec(5, 145), module, MentalCounters::RST_BUTTON));
-  
-  addOutput(createOutput<GateOutPort>(Vec(33, 90), module, MentalCounters::OUTPUT));
-  
-  NumberDisplayWidget3 *display = new NumberDisplayWidget3();
-	display->box.pos = Vec(5,50);
-	display->box.size = Vec(50, 20);
-	display->module = module;
-  display->value = &module->count_limit;
-  
-	addChild(display);
-  
-  /////////// counter 2
-  addParam(createParam<MedKnob>(Vec(2, 20 + group_offset), module, MentalCounters::COUNT_NUM_PARAM_2)); 
-  addInput(createInput<GateInPort>(Vec(3, 90 + group_offset), module, MentalCounters::CLK_IN_2));
-	addInput(createInput<GateInPort>(Vec(3, 120 + group_offset), module, MentalCounters::RESET_IN_2));
-  
-  addParam(createParam<LEDButton>(Vec(5, 145 + group_offset), module, MentalCounters::RST_BUTTON_2));
-  
-  addOutput(createOutput<GateOutPort>(Vec(33, 90 + group_offset), module, MentalCounters::OUTPUT_2));
-  
-  NumberDisplayWidget3 *display_2 = new NumberDisplayWidget3();
-	display_2->box.pos = Vec(5,50 + group_offset);
-	display_2->box.size = Vec(50, 20);
-	display_2->module = module;
-  display_2->value = &module->count_limit_2;
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalCounters.svg")));
+    
+    int group_offset = 190;
+    
+    addParam(createParam<MedKnob>(Vec(2, 20), module, MentalCounters::COUNT_NUM_PARAM)); 
+    addInput(createInput<GateInPort>(Vec(3, 90), module, MentalCounters::CLK_IN));
+  	addInput(createInput<GateInPort>(Vec(3, 120), module, MentalCounters::RESET_IN));
+    
+    addParam(createParam<LEDButton>(Vec(5, 145), module, MentalCounters::RST_BUTTON));
+    
+    addOutput(createOutput<GateOutPort>(Vec(33, 90), module, MentalCounters::OUTPUT));
+    
+    NumberDisplayWidget3 *display = new NumberDisplayWidget3();
+  	display->box.pos = Vec(5,50);
+  	display->box.size = Vec(50, 20);
+  	display->module = module;
+    display->value = &module->count_limit;
+    
+  	addChild(display);
+    
+    /////////// counter 2
+    addParam(createParam<MedKnob>(Vec(2, 20 + group_offset), module, MentalCounters::COUNT_NUM_PARAM_2)); 
+    addInput(createInput<GateInPort>(Vec(3, 90 + group_offset), module, MentalCounters::CLK_IN_2));
+  	addInput(createInput<GateInPort>(Vec(3, 120 + group_offset), module, MentalCounters::RESET_IN_2));
+    
+    addParam(createParam<LEDButton>(Vec(5, 145 + group_offset), module, MentalCounters::RST_BUTTON_2));
+    
+    addOutput(createOutput<GateOutPort>(Vec(33, 90 + group_offset), module, MentalCounters::OUTPUT_2));
+    
+    NumberDisplayWidget3 *display_2 = new NumberDisplayWidget3();
+  	display_2->box.pos = Vec(5,50 + group_offset);
+  	display_2->box.size = Vec(50, 20);
+  	display_2->module = module;
+    display_2->value = &module->count_limit_2;
 
-	addChild(display_2);  
-  	  
-}
+  	addChild(display_2);   	  
+  }
 };
 
 Model *modelMentalCounters = createModel<MentalCounters, MentalCountersWidget>("MentalCounters");

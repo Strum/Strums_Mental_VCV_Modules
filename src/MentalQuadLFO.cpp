@@ -1,20 +1,33 @@
+///////////////////////////////////////////////////
+//
+//   Mental Plugin
+//   Quad LFO Mosule based on Batumi
+//
+//   Strum 2017-19
+//   strum@softhome.net
+//
+///////////////////////////////////////////////////
+
 #include "mental.hpp"
 
 
-struct LowFrequencyOscillator {
+struct LowFrequencyOscillator
+{
 	float phase = 0.0;
 	float pw = 0.5;
 	float freq = 1.0;
 	bool offset = false;
 	bool invert = false;
 	dsp::SchmittTrigger resetTrigger;
-	LowFrequencyOscillator() {
+	LowFrequencyOscillator()
+  {
 	}
   void setFreq(float freq_to_set)
   {
     freq = freq_to_set;
   }
-	void setPitch(float pitch) {
+	void setPitch(float pitch)
+  {
 		pitch = fminf(pitch, 8.0);
 		freq = powf(2.0, pitch);
 	}
@@ -23,73 +36,89 @@ struct LowFrequencyOscillator {
     phase = phase_to_set;
   }
   
-	void setPulseWidth(float pw_) {
+	void setPulseWidth(float pw_)
+  {
 		const float pwMin = 0.01;
 		pw = clamp(pw_, pwMin, 1.0f - pwMin);
 	}
-	void setReset(float reset) {
-		if (resetTrigger.process(reset)) {
+	void setReset(float reset)
+  {
+		if (resetTrigger.process(reset))
+    {
 			phase = 0.0;
 		}
 	}
-	void step(float dt) {
+	void step(float dt)
+  {
 		float deltaPhase = fminf(freq * dt, 0.5);
 		phase += deltaPhase;
 		if (phase >= 1.0)
 			phase -= 1.0;
 	}
-	float sin() {
+	float sin()
+  {
 		if (offset)
 			return 1.0 - cosf(2*M_PI * phase) * (invert ? -1.0 : 1.0);
 		else
 			return sinf(2*M_PI * phase) * (invert ? -1.0 : 1.0);
 	}
-	float tri(float x) {
+	float tri(float x)
+  {
 		return 4.0 * fabsf(x - roundf(x));
 	}
-	float tri() {
+	float tri()
+  {
 		if (offset)
 			return tri(invert ? phase - 0.5 : phase);
 		else
 			return -1.0 + tri(invert ? phase - 0.25 : phase - 0.75);
 	}
-	float saw(float x) {
+	float saw(float x)
+  {
 		return 2.0 * (x - roundf(x));
 	}
-	float saw() {
+	float saw()
+  {
 		if (offset)
 			return invert ? 2.0 * (1.0 - phase) : 2.0 * phase;
 		else
 			return saw(phase) * (invert ? -1.0 : 1.0);
 	}
-	float sqr() {
+	float sqr()
+  {
 		float sqr = (phase < pw) ^ invert ? 1.0 : -1.0;
 		return offset ? sqr + 1.0 : sqr;
 	}
-	float light() {
+	float light()
+  {
 		return sinf(2*M_PI * phase);
 	}
 };
 
-struct MentalQuadLFO : Module {
-	enum ParamIds {
+struct MentalQuadLFO : Module
+{
+	enum ParamIds
+  {
     MODE_BUTTON_PARAM,
 		FREQ_PARAM,
 		NUM_PARAMS = FREQ_PARAM + 4
 	};
-	enum InputIds {
+	enum InputIds
+  {
 		FREQ_INPUT,
 		RESET_INPUT = FREQ_INPUT + 4,
 		NUM_INPUTS = RESET_INPUT + 4
 	};
-	enum OutputIds {
+	enum OutputIds
+  {
 		SIN_OUTPUT,
 		TRI_OUTPUT = SIN_OUTPUT + 4,
 		SAW_OUTPUT = TRI_OUTPUT + 4,
 		SQR_OUTPUT = SAW_OUTPUT + 4,
 		NUM_OUTPUTS = SQR_OUTPUT + 4
 	};
-	enum LightIds {
+	enum LightIds
+  {
     PHASE_POS_LIGHT,
 		PHASE_NEG_LIGHT = PHASE_POS_LIGHT + 4,
 		MODE_LIGHTS = PHASE_NEG_LIGHT + 4 ,
@@ -101,12 +130,13 @@ struct MentalQuadLFO : Module {
   dsp::SchmittTrigger mode_button_trigger;
   int mode = 0;
   
-	MentalQuadLFO() {
+	MentalQuadLFO()
+  {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
-    configParam(MentalQuadLFO::MODE_BUTTON_PARAM, 0.0, 1.0, 0.0, "");
-    
+    configParam(MentalQuadLFO::MODE_BUTTON_PARAM, 0.0, 1.0, 0.0, "");    
   }
+
 	void process(const ProcessArgs& args) override;
   
   json_t *dataToJson() override
@@ -219,35 +249,34 @@ void MentalQuadLFO::process(const ProcessArgs& args)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-struct MentalQuadLFOWidget : ModuleWidget {
-	MentalQuadLFOWidget(MentalQuadLFO *module)  
+struct MentalQuadLFOWidget : ModuleWidget
 {
-  setModule(module);
-
-  setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalQuadLFO.svg")));
-
-  int x_offset = 10.10;
-  for (int i = 0 ; i < 4 ; i++)
+	MentalQuadLFOWidget(MentalQuadLFO *module)  
   {
+    setModule(module);
 
-	  //addParam(createParam<BefacoSlidePot>(mm2px(Vec(2.792 + i * x_offset, 3.937)), module,MentalQuadLFO::FREQ_PARAM + i, 0.0, 1.0, 0.0));
-    addParam(createParam<LEDSliderGreen>(mm2px(Vec(2.792 + i * x_offset, 3.937)), module,MentalQuadLFO::FREQ_PARAM + i));
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalQuadLFO.svg")));
 
-	  addInput(createInput<CVInPort>(mm2px(Vec(1.003 + i * x_offset, 61.915)), module, MentalQuadLFO::FREQ_INPUT + i));
-	  addInput(createInput<GateInPort>(mm2px(Vec(1.003 + i * x_offset, 72.858)), module, MentalQuadLFO::RESET_INPUT + i));
+    int x_offset = 10.10;
+    for (int i = 0 ; i < 4 ; i++)
+    {
+  	  addParam(createParam<LEDSliderGreen>(mm2px(Vec(2.792 + i * x_offset, 3.937)), module,MentalQuadLFO::FREQ_PARAM + i));
 
-	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 83.759)), module, MentalQuadLFO::SIN_OUTPUT + i));
-	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 94.173)), module, MentalQuadLFO::TRI_OUTPUT + i));
-	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 105.169)), module, MentalQuadLFO::SAW_OUTPUT + i));
-	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 114.583)), module, MentalQuadLFO::SQR_OUTPUT + i));
-  	
-    addChild(createLight<SmallLight<GreenRedLight>>(Vec(13 + i * 30, 125), module, MentalQuadLFO::PHASE_POS_LIGHT + i));
-  }
-  for (int i = 0 ; i < 5 ; i++)
-  {
-    addChild(createLight<MedLight<BlueLED>>(mm2px(Vec(2.905 + i * 8 , 50.035)), module, MentalQuadLFO::MODE_LIGHTS + i));
-  }
-  addParam(createParam<LEDButton>(Vec(50, 160), module, MentalQuadLFO::MODE_BUTTON_PARAM));
+  	  addInput(createInput<CVInPort>(mm2px(Vec(1.003 + i * x_offset, 61.915)), module, MentalQuadLFO::FREQ_INPUT + i));
+  	  addInput(createInput<GateInPort>(mm2px(Vec(1.003 + i * x_offset, 72.858)), module, MentalQuadLFO::RESET_INPUT + i));
+
+  	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 83.759)), module, MentalQuadLFO::SIN_OUTPUT + i));
+  	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 94.173)), module, MentalQuadLFO::TRI_OUTPUT + i));
+  	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 105.169)), module, MentalQuadLFO::SAW_OUTPUT + i));
+  	  addOutput(createOutput<OutPort>(mm2px(Vec(1.003 + i * x_offset, 114.583)), module, MentalQuadLFO::SQR_OUTPUT + i));
+    	
+      addChild(createLight<SmallLight<GreenRedLight>>(Vec(13 + i * 30, 125), module, MentalQuadLFO::PHASE_POS_LIGHT + i));
+    }
+    for (int i = 0 ; i < 5 ; i++)
+    {
+      addChild(createLight<MedLight<BlueLED>>(mm2px(Vec(2.905 + i * 8 , 50.035)), module, MentalQuadLFO::MODE_LIGHTS + i));
+    }
+    addParam(createParam<LEDButton>(Vec(50, 160), module, MentalQuadLFO::MODE_BUTTON_PARAM));
   }
 };
 

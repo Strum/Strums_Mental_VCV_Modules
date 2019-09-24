@@ -1,32 +1,37 @@
 ///////////////////////////////////////////////////
 //
-//   Radio Buttons VCV Module
+//   Mental Plugin
+//   Radio Buttons
 //
-//   Strum 2017
+//   Strum 2017-19
+//   strum@softhome.net
 //
-///////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "mental.hpp"
 
-
-
-struct MentalRadioButtons : Module {
-	enum ParamIds {
+struct MentalRadioButtons : Module
+{
+	enum ParamIds
+  {
     BUTTON2,
     BUTTON_PARAM = BUTTON2 + 7,
 		NUM_PARAMS = BUTTON_PARAM + 7
 	};  
-	enum InputIds {
+	enum InputIds
+  {
     INS1,
     INS2 = INS1 +	7,	  
 		NUM_INPUTS = INS2 + 7
 	};
-	enum OutputIds {
+	enum OutputIds
+  {
     BUTTON2_OUT,
 		OUTPUT = BUTTON2_OUT +7,    
 		NUM_OUTPUTS = OUTPUT + 7
 	};
-  enum LightIds {
+  enum LightIds
+  {
 		BUTTON_LEDS,
     BUTTON2_LEDS = BUTTON_LEDS + 7,
 		NUM_LIGHTS = BUTTON2_LEDS + 7
@@ -37,7 +42,8 @@ struct MentalRadioButtons : Module {
   bool button_states[7] = {1,0,0,0,0,0,0};
   bool button2_states[7] = {1,0,0,0,0,0,0};
   
-	MentalRadioButtons() {
+	MentalRadioButtons()
+  {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
     for (int i = 0; i < 7; ++i)
     {    
@@ -126,31 +132,31 @@ void MentalRadioButtons::process(const ProcessArgs& args)
 }
 
 /////////////////////////////////////////////////////////////////////////
-struct MentalRadioButtonsWidget : ModuleWidget {
-  MentalRadioButtonsWidget(MentalRadioButtons *module)
+struct MentalRadioButtonsWidget : ModuleWidget
 {
-  setModule(module);
-	
-  setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalRadioButtons.svg")));
+  MentalRadioButtonsWidget(MentalRadioButtons *module)
+  {
+    setModule(module);
+  	
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalRadioButtons.svg")));
 
-  int spacing = 25; 
-  int group_offset = 184;
-  int top_space = 15;
-  for (int i = 0; i < 7 ; i++)
-  {  
-    addInput(createInput<GateInPort>(Vec(3, top_space + spacing * i), module, MentalRadioButtons::INS1 + i));
-    addOutput(createOutput<GateOutPort>(Vec(63, top_space + spacing * i), module, MentalRadioButtons::OUTPUT + i));
-    addParam(createParam<LEDButton>(Vec(35, top_space + 3 + spacing * i), module, MentalRadioButtons::BUTTON_PARAM +i));
-    addChild(createLight<MedLight<BlueLED>>(Vec(40, top_space + 8 + spacing * i), module, MentalRadioButtons::BUTTON_LEDS + i));
-  
-	  /// group 2
-   addInput(createInput<GateInPort>(Vec(3, 10 + group_offset + spacing * i), module, MentalRadioButtons::INS2 + i)); 
-   addOutput(createOutput<GateOutPort>(Vec(63, 10 + group_offset +  spacing * i), module, MentalRadioButtons::BUTTON2_OUT + i));
-   addParam(createParam<LEDButton>(Vec(35, 10 + 3 + group_offset +  spacing * i), module, MentalRadioButtons::BUTTON2 + i));
-   addChild(createLight<MedLight<BlueLED>>(Vec(40,10 + 8 + group_offset +  spacing * i), module, MentalRadioButtons::BUTTON2_LEDS + i));
+    int spacing = 25; 
+    int group_offset = 184;
+    int top_space = 15;
+    for (int i = 0; i < 7 ; i++)
+    {  
+      addInput(createInput<GateInPort>(Vec(3, top_space + spacing * i), module, MentalRadioButtons::INS1 + i));
+      addOutput(createOutput<GateOutPort>(Vec(63, top_space + spacing * i), module, MentalRadioButtons::OUTPUT + i));
+      addParam(createParam<LEDButton>(Vec(35, top_space + 3 + spacing * i), module, MentalRadioButtons::BUTTON_PARAM +i));
+      addChild(createLight<MedLight<BlueLED>>(Vec(40, top_space + 8 + spacing * i), module, MentalRadioButtons::BUTTON_LEDS + i));
+    
+  	  /// group 2
+     addInput(createInput<GateInPort>(Vec(3, 10 + group_offset + spacing * i), module, MentalRadioButtons::INS2 + i)); 
+     addOutput(createOutput<GateOutPort>(Vec(63, 10 + group_offset +  spacing * i), module, MentalRadioButtons::BUTTON2_OUT + i));
+     addParam(createParam<LEDButton>(Vec(35, 10 + 3 + group_offset +  spacing * i), module, MentalRadioButtons::BUTTON2 + i));
+     addChild(createLight<MedLight<BlueLED>>(Vec(40,10 + 8 + group_offset +  spacing * i), module, MentalRadioButtons::BUTTON2_LEDS + i));
+    }  
   }
-  
-}
 };
 
 Model *modelMentalRadioButtons = createModel<MentalRadioButtons, MentalRadioButtonsWidget>("MentalRadioButtons");

@@ -1,8 +1,10 @@
 ///////////////////////////////////////////////////
 //
-//   Gates VCV Module
+//   Mental Plugin
+//   Gates (mutes)
 //
-//   Strum 2017
+//   Strum 2017-19
+//   strum@softhome.net
 //
 ///////////////////////////////////////////////////
 
@@ -10,22 +12,27 @@
 
 /////////////////////////////////////////////////
 
-struct MentalGates : Module {
-	enum ParamIds {
+struct MentalGates : Module
+{
+	enum ParamIds
+  {
       BUTTON_PARAM,
       NUM_PARAMS = BUTTON_PARAM + 4
 	};
 
-	enum InputIds {
+	enum InputIds
+  {
       INPUT,
       GATE_INPUT = INPUT + 4,
       NUM_INPUTS = GATE_INPUT + 4
 	};
-	enum OutputIds {
+	enum OutputIds
+  {
       OUTPUT,
       NUM_OUTPUTS = OUTPUT + 4
 	};
-  enum LightIds {
+  enum LightIds
+  {
 		BUTTON_LIGHTS,
     ON_LEDS = BUTTON_LIGHTS + 4,
 		NUM_LIGHTS = ON_LEDS + 4
@@ -36,7 +43,8 @@ struct MentalGates : Module {
   float signal[4] = {0.0,0.0,0.0};
   float on[4] = {0.0,0.0,0.0};
   
-	MentalGates() {
+	MentalGates()
+  {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
     for (int i = 0; i < 4; ++i)
     {
@@ -80,7 +88,8 @@ struct MentalGates : Module {
 
 /////////////////////////////////////////////////////
 
-void MentalGates::process(const ProcessArgs& args) {
+void MentalGates::process(const ProcessArgs& args)
+{
 
 for (int i = 0 ; i < 4 ; i++)
   {
@@ -107,24 +116,26 @@ for (int i = 0 ; i < 4 ; i++)
 }
 
 //////////////////////////////////////////////////////////////////
-struct MentalGatesWidget : ModuleWidget {
-  MentalGatesWidget(MentalGates *module){
-
-setModule(module);  
-setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalGates.svg")));
-
-  int group_spacing = 85;
-  for (int i = 0 ; i < 4 ; i++)
+struct MentalGatesWidget : ModuleWidget
+{
+  MentalGatesWidget(MentalGates *module)
   {
-	  addInput(createInput<InPort>(Vec(3, group_spacing * i +  60), module, MentalGates::INPUT + i));
-    addInput(createInput<GateInPort>(Vec(3, group_spacing * i +  28), module, MentalGates::GATE_INPUT + i));
-    addOutput(createOutput<OutPort>(Vec(32, group_spacing * i +  60), module, MentalGates::OUTPUT + i));
 
-    addChild(createLight<MedLight<BlueLED>>(Vec(26, group_spacing * i + 17), module, MentalGates::ON_LEDS + i));
-    addParam(createParam<LEDButton>(Vec(35, group_spacing * i +  31), module, MentalGates::BUTTON_PARAM + i));
-	  addChild(createLight<MedLight<BlueLED>>(Vec(35+5, group_spacing * i +  31+5), module, MentalGates::BUTTON_LIGHTS + i));  
+    setModule(module);  
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalGates.svg")));
+
+    int group_spacing = 85;
+    for (int i = 0 ; i < 4 ; i++)
+    {
+  	  addInput(createInput<InPort>(Vec(3, group_spacing * i +  60), module, MentalGates::INPUT + i));
+      addInput(createInput<GateInPort>(Vec(3, group_spacing * i +  28), module, MentalGates::GATE_INPUT + i));
+      addOutput(createOutput<OutPort>(Vec(32, group_spacing * i +  60), module, MentalGates::OUTPUT + i));
+
+      addChild(createLight<MedLight<BlueLED>>(Vec(26, group_spacing * i + 17), module, MentalGates::ON_LEDS + i));
+      addParam(createParam<LEDButton>(Vec(35, group_spacing * i +  31), module, MentalGates::BUTTON_PARAM + i));
+  	  addChild(createLight<MedLight<BlueLED>>(Vec(35+5, group_spacing * i +  31+5), module, MentalGates::BUTTON_LIGHTS + i));  
+    }
   }
-}
 };
 
 Model *modelMentalGates = createModel<MentalGates, MentalGatesWidget>("MentalGates");

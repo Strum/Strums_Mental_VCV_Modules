@@ -1,16 +1,20 @@
 ///////////////////////////////////////////////////
 //
-//   Mixer VCV Module
+//   Mental Plugin
+//   Mixer - 12 channel stereo mixer with 2 auxiliaries
 //
-//   Strum 2017
+//   Strum 2017-19
+//   strum@softhome.net
 //
 ///////////////////////////////////////////////////
 
 #include "mental.hpp"
 
 ///////////////////////////////////////////////////
-struct MentalMixer : Module {
-	enum ParamIds {
+struct MentalMixer : Module
+{
+	enum ParamIds
+  {
 		MIX_PARAM,
     AUX_SEND_1_PARAM,
     AUX_SEND_2_PARAM,
@@ -23,7 +27,8 @@ struct MentalMixer : Module {
     MUTE_PARAM = AUX_2_PARAM + 12,		
 		NUM_PARAMS = MUTE_PARAM + 12
 	};
-	enum InputIds {
+	enum InputIds
+  {
     CH_INPUT,
 		CH_VOL_INPUT = CH_INPUT + 12,
     CH_PAN_INPUT = CH_VOL_INPUT + 12,
@@ -34,14 +39,16 @@ struct MentalMixer : Module {
     RETURN_2_R_INPUT,
 		NUM_INPUTS
 	};  
-	enum OutputIds {
+	enum OutputIds
+  {
 		MIX_OUTPUT_L,
     MIX_OUTPUT_R,
     SEND_1_OUTPUT,
     SEND_2_OUTPUT,				
 		NUM_OUTPUTS
 	};
-  enum LightIds {
+  enum LightIds
+  {
 		MUTE_LIGHTS,    
 		NUM_LIGHTS = MUTE_LIGHTS + 12
 	};
@@ -60,7 +67,8 @@ struct MentalMixer : Module {
   float left_sum = 0.0;
   float right_sum = 0.0;
   
-	MentalMixer() {
+	MentalMixer()
+  {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
     configParam(MentalMixer::MIX_PARAM, 0.0, 1.0, 0.5, "");
@@ -112,9 +120,8 @@ struct MentalMixer : Module {
 };
 
 ///////////////////////////////////////////////////////////////////
-void MentalMixer::process(const ProcessArgs& args) {
-
-  //clampf(inputs[CH1_CV_INPUT].normalize(10.0) / 10.0, 0.0, 1.0);
+void MentalMixer::process(const ProcessArgs& args)
+{
   send_1_sum = 0.0;
   send_2_sum = 0.0;
   left_sum = 0.0;
@@ -152,8 +159,7 @@ void MentalMixer::process(const ProcessArgs& args) {
     send_2_sum += channel_sends_2[i];
     left_sum += channel_outs_l[i];
     right_sum += channel_outs_r[i];    
-  }
-	
+  }	
 
   // get returns
   float return_1_l = inputs[RETURN_1_L_INPUT].getVoltage() * params[AUX_RETURN_1_PARAM].getValue();
@@ -166,71 +172,69 @@ void MentalMixer::process(const ProcessArgs& args) {
 
   float send_1_mix = (send_1_sum) * params[AUX_SEND_1_PARAM].getValue();
   float send_2_mix = (send_2_sum) * params[AUX_SEND_2_PARAM].getValue();
-
 		
 	outputs[MIX_OUTPUT_L].setVoltage(mix_l);
   outputs[MIX_OUTPUT_R].setVoltage(mix_r);
 
   outputs[SEND_1_OUTPUT].setVoltage(send_1_mix);
   outputs[SEND_2_OUTPUT].setVoltage(send_2_mix);
-
 }
 
 /////////////////////////////////////////////////////////////////////////////
-struct MentalMixerWidget : ModuleWidget {
-  MentalMixerWidget(MentalMixer *module){
-
+struct MentalMixerWidget : ModuleWidget
+{
+  MentalMixerWidget(MentalMixer *module)
+  {
     setModule(module);
     
-  setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Mixer.svg")));
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Mixer.svg")));
 
-  int port_col = 8;
-  int pots_col = port_col + 3;
+    int port_col = 8;
+    int pots_col = port_col + 3;
 
-  int top_row = 117;
-  int row_spacing = 28;
-  int column_spacing = 29;
+    int top_row = 117;
+    int row_spacing = 28;
+    int column_spacing = 29;
 
+    // master volume
+    addParam(createParam<LrgKnob>(Vec(port_col + column_spacing * 8, 32), module, MentalMixer::MIX_PARAM));
+    addOutput(createOutput<OutPort>(Vec(port_col + column_spacing * 10, 30), module, MentalMixer::MIX_OUTPUT_L));
+    addOutput(createOutput<OutPort>(Vec(port_col + column_spacing * 10, 58), module, MentalMixer::MIX_OUTPUT_R));
 
-  // master volume
-  addParam(createParam<LrgKnob>(Vec(port_col + column_spacing * 8, 32), module, MentalMixer::MIX_PARAM));
-  addOutput(createOutput<OutPort>(Vec(port_col + column_spacing * 10, 30), module, MentalMixer::MIX_OUTPUT_L));
-  addOutput(createOutput<OutPort>(Vec(port_col + column_spacing * 10, 58), module, MentalMixer::MIX_OUTPUT_R));
+    // sends 
+    addOutput(createOutput<OutPort>(Vec(port_col + column_spacing , 30), module, MentalMixer::SEND_1_OUTPUT));
+    addParam(createParam<SmlKnob>(Vec(pots_col + column_spacing , 58), module, MentalMixer::AUX_SEND_1_PARAM));
+    
+    addOutput(createOutput<OutPort>(Vec(port_col + column_spacing * 4, 30), module, MentalMixer::SEND_2_OUTPUT));
+    addParam(createParam<SmlKnob>(Vec(pots_col + column_spacing * 4, 58), module, MentalMixer::AUX_SEND_2_PARAM));
+    
+    // returns
+    addInput(createInput<InPort>(Vec(port_col + column_spacing * 2, 30), module, MentalMixer::RETURN_1_L_INPUT));
+    addInput(createInput<InPort>(Vec(port_col + column_spacing * 2, 58), module, MentalMixer::RETURN_1_R_INPUT));
+    addParam(createParam<SmlKnob>(Vec(pots_col + column_spacing * 2, 86), module, MentalMixer::AUX_RETURN_1_PARAM));
 
-  // sends 
-  addOutput(createOutput<OutPort>(Vec(port_col + column_spacing , 30), module, MentalMixer::SEND_1_OUTPUT));
-  addParam(createParam<SmlKnob>(Vec(pots_col + column_spacing , 58), module, MentalMixer::AUX_SEND_1_PARAM));
-  
-  addOutput(createOutput<OutPort>(Vec(port_col + column_spacing * 4, 30), module, MentalMixer::SEND_2_OUTPUT));
-  addParam(createParam<SmlKnob>(Vec(pots_col + column_spacing * 4, 58), module, MentalMixer::AUX_SEND_2_PARAM));
-  
-  // returns
-  addInput(createInput<InPort>(Vec(port_col + column_spacing * 2, 30), module, MentalMixer::RETURN_1_L_INPUT));
-  addInput(createInput<InPort>(Vec(port_col + column_spacing * 2, 58), module, MentalMixer::RETURN_1_R_INPUT));
-  addParam(createParam<SmlKnob>(Vec(pots_col + column_spacing * 2, 86), module, MentalMixer::AUX_RETURN_1_PARAM));
+    addInput(createInput<InPort>(Vec(port_col + column_spacing * 5, 30), module, MentalMixer::RETURN_2_L_INPUT));
+    addInput(createInput<InPort>(Vec(port_col + column_spacing * 5, 58), module, MentalMixer::RETURN_2_R_INPUT));
+    addParam(createParam<SmlKnob>(Vec(pots_col + column_spacing * 5, 86), module, MentalMixer::AUX_RETURN_2_PARAM));
 
-  addInput(createInput<InPort>(Vec(port_col + column_spacing * 5, 30), module, MentalMixer::RETURN_2_L_INPUT));
-  addInput(createInput<InPort>(Vec(port_col + column_spacing * 5, 58), module, MentalMixer::RETURN_2_R_INPUT));
-  addParam(createParam<SmlKnob>(Vec(pots_col + column_spacing * 5, 86), module, MentalMixer::AUX_RETURN_2_PARAM));
-
-  // channel strips
-  for (int i = 0 ; i < 12 ; i++)
-  {
-    addInput(createInput<InPort>(Vec(port_col+column_spacing*i, top_row), module, MentalMixer::CH_INPUT + i));
-    // volume
-	addParam(createParam<SmlKnob>(Vec(pots_col+column_spacing*i, top_row + row_spacing + 6), module, MentalMixer::VOL_PARAM + i));
-    addInput(createInput<CVInPort>(Vec(port_col+column_spacing*i, top_row + row_spacing * 2), module, MentalMixer::CH_VOL_INPUT + i));
-    // panning
-    addParam(createParam<SmlKnob>(Vec(pots_col+column_spacing*i, top_row + row_spacing * 3 + 6), module, MentalMixer::PAN_PARAM + i));
-    addInput(createInput<CVInPort>(Vec(port_col+column_spacing*i, top_row + row_spacing * 4), module, MentalMixer::CH_PAN_INPUT + i));
-    // sends
-    addParam(createParam<SmlKnob>(Vec(pots_col+column_spacing*i, top_row + row_spacing * 5 + 6), module, MentalMixer::AUX_1_PARAM + i));
-    addParam(createParam<SmlKnob>(Vec(pots_col+column_spacing*i, top_row + row_spacing * 6 + 6), module, MentalMixer::AUX_2_PARAM + i));
-    // mutes
-    addParam(createParam<LEDButton>(Vec(pots_col+column_spacing*i,top_row + row_spacing * 7 + 6), module, MentalMixer::MUTE_PARAM + i));
-    addChild(createLight<MedLight<BlueLED>>(Vec(pots_col+column_spacing*i + 4.25, top_row + row_spacing * 7 + 10.25), module, MentalMixer::MUTE_LIGHTS + i));
-    addInput(createInput<GateInPort>(Vec(port_col+column_spacing*i, top_row + row_spacing * 8), module, MentalMixer::CH_MUTE_INPUT + i));
-	}
+    // channel strips
+    for (int i = 0 ; i < 12 ; i++)
+    {
+     addInput(createInput<InPort>(Vec(port_col+column_spacing*i, top_row), module, MentalMixer::CH_INPUT + i));
+      // volume
+  	 addParam(createParam<SmlKnob>(Vec(pots_col+column_spacing*i, top_row + row_spacing + 6), module, MentalMixer::VOL_PARAM + i));
+     addInput(createInput<CVInPort>(Vec(port_col+column_spacing*i, top_row + row_spacing * 2), module, MentalMixer::CH_VOL_INPUT + i));
+      // panning
+     addParam(createParam<SmlKnob>(Vec(pots_col+column_spacing*i, top_row + row_spacing * 3 + 6), module, MentalMixer::PAN_PARAM + i));
+     addInput(createInput<CVInPort>(Vec(port_col+column_spacing*i, top_row + row_spacing * 4), module, MentalMixer::CH_PAN_INPUT + i));
+      // sends
+     addParam(createParam<SmlKnob>(Vec(pots_col+column_spacing*i, top_row + row_spacing * 5 + 6), module, MentalMixer::AUX_1_PARAM + i));
+     addParam(createParam<SmlKnob>(Vec(pots_col+column_spacing*i, top_row + row_spacing * 6 + 6), module, MentalMixer::AUX_2_PARAM + i));
+      // mutes
+     addParam(createParam<LEDButton>(Vec(pots_col+column_spacing*i,top_row + row_spacing * 7 + 6), module, MentalMixer::MUTE_PARAM + i));
+     addChild(createLight<MedLight<BlueLED>>(Vec(pots_col+column_spacing*i + 4.25, top_row + row_spacing * 7 + 10.25), module, MentalMixer::MUTE_LIGHTS + i));
+     addInput(createInput<GateInPort>(Vec(port_col+column_spacing*i, top_row + row_spacing * 8), module, MentalMixer::CH_MUTE_INPUT + i));
+  	}
   }
 };
 

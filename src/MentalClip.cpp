@@ -1,32 +1,39 @@
 ///////////////////////////////////////////////////
 //
-//   Wave Folder VCV Module
+//   Mental Plugin
+//   Dual Wave Clipper
 //
-//   Strum 2017
+//   Strum 2017-19
+//   strum@softhome.net
 //
 ///////////////////////////////////////////////////
 
 #include "mental.hpp"
 
 //////////////////////////////////////////////////////
-struct MentalClip : Module {
-  enum ParamIds {
+struct MentalClip : Module
+{
+  enum ParamIds
+  {
     THRESH1_PARAM, GAIN1_PARAM,
     THRESH2_PARAM, GAIN2_PARAM,
     NUM_PARAMS
   };
-  enum InputIds {
+  enum InputIds
+  {
     INPUT1, THRESH1_CV_INPUT, GAIN1_CV_INPUT,
     INPUT2, THRESH2_CV_INPUT, GAIN2_CV_INPUT,
     NUM_INPUTS
   };
-  enum OutputIds {
+  enum OutputIds
+  {
     OUTPUT1,
     OUTPUT2,
     NUM_OUTPUTS
   };
 
-  MentalClip() {
+  MentalClip()
+  {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS);
     configParam(MentalClip::THRESH1_PARAM, 0.0, 1.0, 1.0, "");
     configParam(MentalClip::GAIN1_PARAM, 0.0, 1.0, 0.5, "");
@@ -37,7 +44,8 @@ struct MentalClip : Module {
 };
 
 /////////////////////////////////////////////////////
-void MentalClip::process(const ProcessArgs& args) {
+void MentalClip::process(const ProcessArgs& args)
+{
 
   float signal_in1 = inputs[INPUT1].getVoltage();
   float threshold1 = params[THRESH1_PARAM].getValue() * 6 + inputs[THRESH1_CV_INPUT].getVoltage()/2;
@@ -77,34 +85,34 @@ void MentalClip::process(const ProcessArgs& args) {
 }
 
 //////////////////////////////////////////////////////////////////
-struct MentalClipWidget : ModuleWidget {
-  MentalClipWidget(MentalClip *module){
+struct MentalClipWidget : ModuleWidget
+{
+  MentalClipWidget(MentalClip *module)
+  {
+    setModule(module);  
+    
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalClip.svg")));
 
-  setModule(module);  
-  
-  setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalClip.svg")));
-
-  // label
-  addParam(createParam<SmlKnob>(Vec(6, box.size.y / 2 - 169), module, MentalClip::THRESH1_PARAM));
-  addInput(createInput<CVInPort>(Vec(3, box.size.y / 2 - 148), module, MentalClip::THRESH1_CV_INPUT));
-  // label
-  addParam(createParam<SmlKnob>(Vec(6, box.size.y / 2 - 112), module, MentalClip::GAIN1_PARAM));
-  addInput(createInput<CVInPort>(Vec(3, box.size.y / 2 - 91), module, MentalClip::GAIN1_CV_INPUT));
-  // output  
-  addInput(createInput<InPort>(Vec(3, box.size.y / 2 - 55), module, MentalClip::INPUT1));
-  addOutput(createOutput<OutPort>(Vec(3, box.size.y / 2 - 28), module, MentalClip::OUTPUT1));
-
-  
-  // label
-  addParam(createParam<SmlKnob>(Vec(6, box.size.y - 175), module, MentalClip::THRESH2_PARAM));
-  addInput(createInput<CVInPort>(Vec(3, box.size.y - 154), module, MentalClip::THRESH2_CV_INPUT));
-  // label
-  addParam(createParam<SmlKnob>(Vec(6, box.size.y - 122), module, MentalClip::GAIN2_PARAM));
-  addInput(createInput<CVInPort>(Vec(3, box.size.y - 101), module, MentalClip::GAIN2_CV_INPUT));
-  // output  
-  addInput(createInput<InPort>(Vec(3, box.size.y - 65), module, MentalClip::INPUT2));
-  addOutput(createOutput<OutPort>(Vec(3, box.size.y - 38), module, MentalClip::OUTPUT2));
-}
+    
+    addParam(createParam<SmlKnob>(Vec(6, box.size.y / 2 - 169), module, MentalClip::THRESH1_PARAM));
+    addInput(createInput<CVInPort>(Vec(3, box.size.y / 2 - 148), module, MentalClip::THRESH1_CV_INPUT));
+    
+    addParam(createParam<SmlKnob>(Vec(6, box.size.y / 2 - 112), module, MentalClip::GAIN1_PARAM));
+    addInput(createInput<CVInPort>(Vec(3, box.size.y / 2 - 91), module, MentalClip::GAIN1_CV_INPUT));
+    // output  
+    addInput(createInput<InPort>(Vec(3, box.size.y / 2 - 55), module, MentalClip::INPUT1));
+    addOutput(createOutput<OutPort>(Vec(3, box.size.y / 2 - 28), module, MentalClip::OUTPUT1));
+    
+    
+    addParam(createParam<SmlKnob>(Vec(6, box.size.y - 175), module, MentalClip::THRESH2_PARAM));
+    addInput(createInput<CVInPort>(Vec(3, box.size.y - 154), module, MentalClip::THRESH2_CV_INPUT));
+    
+    addParam(createParam<SmlKnob>(Vec(6, box.size.y - 122), module, MentalClip::GAIN2_PARAM));
+    addInput(createInput<CVInPort>(Vec(3, box.size.y - 101), module, MentalClip::GAIN2_CV_INPUT));
+    
+    addInput(createInput<InPort>(Vec(3, box.size.y - 65), module, MentalClip::INPUT2));
+    addOutput(createOutput<OutPort>(Vec(3, box.size.y - 38), module, MentalClip::OUTPUT2));
+  }
 };
 
 Model *modelMentalClip = createModel<MentalClip, MentalClipWidget>("MentalClip");

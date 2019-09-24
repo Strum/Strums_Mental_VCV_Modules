@@ -1,28 +1,34 @@
-///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////
 //
-//  Patch Matrix Module for VCV
+//   Mental Plugin
+//   Patch Matrix 10 in 10 out summing matrix
 //
-//  Strum 2017
-//  strum@softhome.net
+//   Strum 2017-19
+//   strum@softhome.net
 //
-///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////
 
 #include "mental.hpp"
 
-struct MentalPatchMatrix : Module {
-	enum ParamIds {
+struct MentalPatchMatrix : Module
+{
+	enum ParamIds
+  {
     SWITCHES,
 		NUM_PARAMS = SWITCHES + 100
 	};  
-	enum InputIds {		
+	enum InputIds
+  {		
 		INPUTS,
     NUM_INPUTS = INPUTS + 10
 	};
-	enum OutputIds {
+	enum OutputIds
+  {
 		OUTPUTS,    
 		NUM_OUTPUTS = OUTPUTS + 10
 	};
-  enum LightIds {
+  enum LightIds
+  {
 		SWITCH_LIGHTS,
     NUM_LIGHTS = SWITCH_LIGHTS + 100
 	};
@@ -44,7 +50,8 @@ struct MentalPatchMatrix : Module {
   float input_values[10] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
   float sums[10] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}; 
   
-	MentalPatchMatrix() {
+	MentalPatchMatrix()
+  {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
     for (int i = 0; i < 10; ++i)
@@ -53,9 +60,9 @@ struct MentalPatchMatrix : Module {
       {
         configParam(MentalPatchMatrix::SWITCHES + i + j * 10, 0.0, 1.0, 0.0, "");   
       }
-    }    
-
+    }
   }
+
 	void process(const ProcessArgs& args) override;
   
   json_t *dataToJson() override
@@ -97,8 +104,8 @@ struct MentalPatchMatrix : Module {
 };
 
 ////// Step function
-void MentalPatchMatrix::process(const ProcessArgs& args) {
-	
+void MentalPatchMatrix::process(const ProcessArgs& args)
+{
   for ( int i = 0 ; i < 10 ; i++)
   {
    sums[i] = 0.0;
@@ -138,30 +145,29 @@ void MentalPatchMatrix::process(const ProcessArgs& args) {
 }
 
 ///// Gui
-struct MentalPatchMatrixWidget : ModuleWidget {
-  MentalPatchMatrixWidget(MentalPatchMatrix *module)
-
+struct MentalPatchMatrixWidget : ModuleWidget
 {
-
-  setModule(module);
-
-  setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalPatchMatrix.svg")));
-
-  int top_row = 75;
-  int row_spacing = 25; 
-  int column_spacing = 25;
-
-	for (int i = 0 ; i < 10 ; i++)
+  MentalPatchMatrixWidget(MentalPatchMatrix *module)
   {
-	 addInput(createInput<InPort>(Vec(3, i * row_spacing + top_row), module, MentalPatchMatrix::INPUTS + i));  
-   addOutput(createOutput<OutPort>(Vec(33 + i * column_spacing , top_row + 10 * row_spacing), module, MentalPatchMatrix::OUTPUTS + i));
-   for(int j = 0 ; j < 10 ; j++ )
-   {
-     addParam(createParam<LEDButton>(Vec(35 + column_spacing * j, top_row + row_spacing * i), module, MentalPatchMatrix::SWITCHES + i + j * 10));
-     addChild(createLight<MedLight<BlueLED>>(Vec(35 + column_spacing * j + 5, top_row + row_spacing * i + 5), module, MentalPatchMatrix::SWITCH_LIGHTS  + i + j * 10));
-   }
-	}  
-}
+    setModule(module);
+
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalPatchMatrix.svg")));
+
+    int top_row = 75;
+    int row_spacing = 25; 
+    int column_spacing = 25;
+
+  	for (int i = 0 ; i < 10 ; i++)
+    {
+  	 addInput(createInput<InPort>(Vec(3, i * row_spacing + top_row), module, MentalPatchMatrix::INPUTS + i));  
+     addOutput(createOutput<OutPort>(Vec(33 + i * column_spacing , top_row + 10 * row_spacing), module, MentalPatchMatrix::OUTPUTS + i));
+     for(int j = 0 ; j < 10 ; j++ )
+     {
+       addParam(createParam<LEDButton>(Vec(35 + column_spacing * j, top_row + row_spacing * i), module, MentalPatchMatrix::SWITCHES + i + j * 10));
+       addChild(createLight<MedLight<BlueLED>>(Vec(35 + column_spacing * j + 5, top_row + row_spacing * i + 5), module, MentalPatchMatrix::SWITCH_LIGHTS  + i + j * 10));
+     }
+  	}  
+  }
 };
 
 Model *modelMentalPatchMatrix = createModel<MentalPatchMatrix, MentalPatchMatrixWidget>("MentalPatchMatrix");

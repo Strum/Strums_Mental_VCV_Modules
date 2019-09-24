@@ -1,33 +1,38 @@
 ///////////////////////////////////////////////////
 //
-//   Pitch Quantiser VCV Module
+//   Mental Plugin
+//   Quantiser
 //
-//   Strum 2017
+//   Strum 2017-19
+//   strum@softhome.net
 //
-///////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "mental.hpp"
 
-
 /////////////////////////////////////////////////
-struct MentalQuantiser : Module {
-	enum ParamIds {
+struct MentalQuantiser : Module
+{
+	enum ParamIds
+  {
       PITCH_PARAM,
       BUTTON_PARAM,      
       NUM_PARAMS = BUTTON_PARAM + 12
 	};
-
-	enum InputIds {
+	enum InputIds
+  {
       INPUT,
       PITCH_INPUT,
       NUM_INPUTS
 	};
-	enum OutputIds {
+	enum OutputIds
+  {
       OUTPUT,
       REF_OUT,
       NUM_OUTPUTS = REF_OUT + 12
 	};
-  enum LightIds {
+  enum LightIds
+  {
 		BUTTON_LIGHTS,
     OUTPUT_LIGHTS = BUTTON_LIGHTS + 12,
 		NUM_LIGHTS = OUTPUT_LIGHTS + 12
@@ -40,16 +45,17 @@ struct MentalQuantiser : Module {
   bool found = false;
   int last_found = 0;
    
-  MentalQuantiser() {
+  MentalQuantiser()
+  {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
     configParam(MentalQuantiser::PITCH_PARAM, -6.5, 6.5, 0.0, "");
     for (int i = 0; i < 12; ++i)
     {
       configParam(MentalQuantiser::BUTTON_PARAM + i, 0.0, 1.0, 0.0, ""); 
-    }
-    
+    }    
   }
+
 	void process(const ProcessArgs& args) override;
   
   json_t *dataToJson() override
@@ -85,8 +91,8 @@ struct MentalQuantiser : Module {
 
 
 /////////////////////////////////////////////////////
-void MentalQuantiser::process(const ProcessArgs& args) {
-
+void MentalQuantiser::process(const ProcessArgs& args)
+{
   ////// handle button presses
   for  (int i = 0 ; i < 12 ; i++)
   {
@@ -130,29 +136,30 @@ void MentalQuantiser::process(const ProcessArgs& args) {
 }
 
 //////////////////////////////////////////////////////////////////
-struct MentalQuantiserWidget : ModuleWidget {
-  MentalQuantiserWidget(MentalQuantiser *module){
-
+struct MentalQuantiserWidget : ModuleWidget
+{
+  MentalQuantiserWidget(MentalQuantiser *module)
+  {
     setModule(module);
 
-  setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalQuantiser.svg")));
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalQuantiser.svg")));
 
-  int top_row = 40;
-  int row_spacing = 25; 
-	
-  addParam(createParam<MedKnob>(Vec(62, 15), module, MentalQuantiser::PITCH_PARAM));
-  addInput(createInput<CVInPort>(Vec(63, 45), module, MentalQuantiser::PITCH_INPUT));
-  
-  addInput(createInput<CVInPort>(Vec(3, top_row), module, MentalQuantiser::INPUT));
-  addOutput(createOutput<CVOutPort>(Vec(32, top_row), module, MentalQuantiser::OUTPUT));
-  
-  for (int i = 0; i < 12 ; i++)
-  {  
-    addParam(createParam<LEDButton>(Vec(3, top_row + 30 + row_spacing * i), module, MentalQuantiser::BUTTON_PARAM + i));
-	  addChild(createLight<MedLight<BlueLED>>(Vec(3+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::BUTTON_LIGHTS + i));
-    addChild(createLight<MedLight<BlueLED>>(Vec(30+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::OUTPUT_LIGHTS + i));
-    addOutput(createOutput<CVOutPort>(Vec(63, top_row + 40 + row_spacing * i), module, MentalQuantiser::REF_OUT + i));    
-  }
+    int top_row = 40;
+    int row_spacing = 25; 
+  	
+    addParam(createParam<MedKnob>(Vec(62, 15), module, MentalQuantiser::PITCH_PARAM));
+    addInput(createInput<CVInPort>(Vec(63, 45), module, MentalQuantiser::PITCH_INPUT));
+    
+    addInput(createInput<CVInPort>(Vec(3, top_row), module, MentalQuantiser::INPUT));
+    addOutput(createOutput<CVOutPort>(Vec(32, top_row), module, MentalQuantiser::OUTPUT));
+    
+    for (int i = 0; i < 12 ; i++)
+    {  
+      addParam(createParam<LEDButton>(Vec(3, top_row + 30 + row_spacing * i), module, MentalQuantiser::BUTTON_PARAM + i));
+  	  addChild(createLight<MedLight<BlueLED>>(Vec(3+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::BUTTON_LIGHTS + i));
+      addChild(createLight<MedLight<BlueLED>>(Vec(30+5, top_row + 30 + row_spacing * i + 5), module, MentalQuantiser::OUTPUT_LIGHTS + i));
+      addOutput(createOutput<CVOutPort>(Vec(63, top_row + 40 + row_spacing * i), module, MentalQuantiser::REF_OUT + i));    
+    }
   }
 };
 

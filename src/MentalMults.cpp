@@ -1,58 +1,75 @@
+///////////////////////////////////////////////////
+//
+//   Mental Plugin
+//   Multiples - dual 1 in 5 out multiples
+//
+//   Strum 2017-19
+//   strum@softhome.net
+//
+///////////////////////////////////////////////////
+
 #include "mental.hpp"
 
-struct MentalMults : Module {
-	enum ParamIds {
+struct MentalMults : Module
+{
+	enum ParamIds
+	{
 		NUM_PARAMS
 	};
   
-	enum InputIds {		
+	enum InputIds
+	{		
 		INPUT_1,
-    INPUT_2,
+    	INPUT_2,
 		NUM_INPUTS
 	};
-	enum OutputIds {
+	enum OutputIds
+	{
 		OUTPUT_1,
-    OUTPUT_2,
+    	OUTPUT_2,
 		OUTPUT_3,
 		OUTPUT_4,
 		OUTPUT_5,
-    OUTPUT_2_1,
-    OUTPUT_2_2,
+    	OUTPUT_2_1,
+    	OUTPUT_2_2,
 		OUTPUT_2_3,
 		OUTPUT_2_4,
 		OUTPUT_2_5,
 		NUM_OUTPUTS
 	};
 
-	MentalMults() {
-		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS);}
+	MentalMults()
+	{
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS);
+	}
+
 	void process(const ProcessArgs& args) override;
 };
 
-void MentalMults::process(const ProcessArgs& args) {
-	
+void MentalMults::process(const ProcessArgs& args)
+{
+  	float signal_in_1 = inputs[INPUT_1].getVoltage();
   
-  float signal_in_1 = inputs[INPUT_1].getVoltage();
-  
-  outputs[OUTPUT_1].setVoltage(signal_in_1);
+  	outputs[OUTPUT_1].setVoltage(signal_in_1);
 	outputs[OUTPUT_2].setVoltage(signal_in_1);
 	outputs[OUTPUT_3].setVoltage(signal_in_1);
 	outputs[OUTPUT_4].setVoltage(signal_in_1);
-  outputs[OUTPUT_5].setVoltage(signal_in_1);
+  	outputs[OUTPUT_5].setVoltage(signal_in_1);
   
-  float signal_in_2 = inputs[INPUT_2].getVoltage();
+ 	float signal_in_2 = inputs[INPUT_2].getVoltage();
   
-  outputs[OUTPUT_2_1].setVoltage(signal_in_2);
+  	outputs[OUTPUT_2_1].setVoltage(signal_in_2);
 	outputs[OUTPUT_2_2].setVoltage(signal_in_2);
 	outputs[OUTPUT_2_3].setVoltage(signal_in_2);
 	outputs[OUTPUT_2_4].setVoltage(signal_in_2);
-  outputs[OUTPUT_2_5].setVoltage(signal_in_2);
+  	outputs[OUTPUT_2_5].setVoltage(signal_in_2);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
-struct MentalMultsWidget : ModuleWidget {
-	MentalMultsWidget(MentalMults *module){
-
+struct MentalMultsWidget : ModuleWidget
+{
+	MentalMultsWidget(MentalMults *module)
+	{
 		setModule(module);
 
 		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalMults.svg")));

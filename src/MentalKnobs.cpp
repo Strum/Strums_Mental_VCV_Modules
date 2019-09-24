@@ -1,9 +1,10 @@
 ///////////////////////////////////////////////////
 //
-//   
-//   Knobs - VCV Module outputs 3 constants of different types and ranges
+//   Mental Plugin
+//   Knobs - outputs constants
 //
-//   Strum 2017
+//   Strum 2017-19
+//   strum@softhome.net
 //
 ///////////////////////////////////////////////////
 
