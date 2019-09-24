@@ -1,0 +1,148 @@
+{
+  "slug": "Mental",
+  "name": "Mental",
+  "version": "1.0.0",
+  "license": "BSD-3-Clause",
+  "brand": "Strum's VCV Modules",
+  "author": "Strum",
+  "authorEmail": "strum@softhome.net",
+  "authorUrl": "https://github.com/Strum",
+  "pluginUrl": "https://github.com/Strum/Strums_Mental_VCV_Modules",
+  "manualUrl": "https://github.com/Strum/Strums_Mental_VCV_Modules/wiki/Mental-Modules-WIKI",
+  "sourceUrl": "https://github.com/Strum/Strums_Mental_VCV_Modules",
+  "donateUrl": "",
+  "modules": [    
+    {
+      "slug": "MentalMults",
+      "name": "MentalMults",
+      "description": "Dual multiple",
+      "tags": ["Multiple"]
+    },
+    {
+      "slug": "MentalMixer",
+      "name": "MentalMixer",
+      "description": "12 channel stereo mixer with 2 auxiliaries",
+      "tags": ["Mixer","Stereo"]
+    },
+    {
+      "slug": "MentalSubMixer",
+      "name": "MentalSubMixer",
+      "description": "Simple 4 channel stereo mixer",
+      "tags": ["Mixer","Stereo"]
+    },
+    {
+      "slug": "MentalFold",
+      "name": "MentalFold",
+      "description": "Wave Folder",
+      "tags": ["Effect","Fold"]
+    },
+    {
+      "slug": "MentalClip",
+      "name": "MentalClip",
+      "description": "Wave clipper",
+      "tags": ["Effect", "Clip"]
+    },
+    {
+      "slug": "MentalGates",
+      "name": "MentalGates",
+      "description": "Gates or Mutes",
+      "tags": ["Gate", "Mute"]
+    },
+    {
+      "slug": "MentalABSwitches",
+      "name": "MentalABSwitches",
+      "description": "A/B Switches, select A or B output",
+      "tags": ["Switch", "Utility"]
+    },
+    {
+      "slug": "MentalQuantiser",
+      "name": "MentalQuantiser",
+      "description": "",
+      "tags": ["Quantiser", "Tuner"]
+    },
+    {
+      "slug": "MentalChord",
+      "name": "MentalChord",
+      "description": "Generates chords based on input pitch CV",
+      "tags": ["Chord", "Harmony"]
+    },
+    {
+      "slug": "MentalMuxes",
+      "name": "MentalMuxes",
+      "description": "Multiplexers",
+      "tags": ["Switch", "Utility"]
+    },
+    {
+      "slug": "MentalLogic",
+      "name": "MentalLogic",
+      "description": "And, Or, Not logic gates",
+      "tags": ["Logic", "Utility"]
+    },
+    {
+      "slug": "MentalButtons",
+      "name": "MentalButtons",
+      "description": "Control buttons and switches",
+      "tags": ["Control", "Button", "Switch"]
+    },
+    {
+      "slug": "MentalSums",
+      "name": "MentalSums",
+      "description": "Dual 4 channel summing mixer",
+      "tags": ["Sum", "Mixer"]
+    },
+    {
+      "slug": "MentalPitchShift",
+      "name": "MentalPitchShift",
+      "description": "Shift CVs by octaves or semitones",
+      "tags": ["Pitch Shift"]
+    },
+    {
+      "slug": "MentalCartesian",
+      "name": "MentalCartesian",
+      "description": "Grid Sequencer based on Make Noise's Rene",
+      "tags": ["Sequencer"]
+    },
+    {
+      "slug": "MentalPatchMatrix",
+      "name": "MentalPatchMatrix",
+      "description": "10 * 10 switched summing matrix",
+      "tags": ["Switch", "Utility"]
+    },
+    {
+      "slug": "MentalBinaryDecoder",
+      "name": "MentalBinaryDecoder",
+      "description": "",
+      "tags": ["Utility", "Logic"]
+    },
+    {
+      "slug": "MentalSwitch8",
+      "name": "MentalSwitch8",
+      "description": "Send one input and a selected output",
+      "tags": ["Switch"]
+    },
+    {
+      "slug": "MentalMux8",
+      "name": "MentalMux8",
+      "description": "8 input Multiplexer",
+      "tags": ["Multiplexer"]
+    },
+    {
+      "slug": "MentalCounters",
+      "name": "MentalCounters",
+      "description": "Clocked Counters",
+      "tags": ["Counters"]
+    },
+    {
+      "slug": "MentalQuadLFO",
+      "name": "MentalQuadLFO",
+      "description": "Quad LFO based on Batumi",
+      "tags": ["LFO"]
+    },
+    {
+      "slug": "MentalRadioButtons",
+      "name": "MentalRadioButtons",
+      "description": "Radio Buttons",
+      "tags": ["Switch", "Button"]
+    }
+  ]
+}
