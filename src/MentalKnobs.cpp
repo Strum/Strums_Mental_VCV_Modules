@@ -46,8 +46,11 @@ struct MentalKnobs : Module {
                             
   int octaves[3] = {0,0,0};
   int semitones[3] = {0,0,0};
-  MentalKnobs() {
+
+  MentalKnobs()
+  {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+    
     for (int i = 0; i < 3; ++i)
     {
       configParam(MentalKnobs::KNOB_PARAM + i, -1.0, 1.0, 0.0, "");

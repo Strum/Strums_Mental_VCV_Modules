@@ -106,10 +106,12 @@ struct MentalMasterClock : Module {
 /////////////////////////////////////////////////////////////////////////
 MentalMasterClock::MentalMasterClock()
 {
-  params.resize(NUM_PARAMS);
-	inputs.resize(NUM_INPUTS);
-	outputs.resize(NUM_OUTPUTS);
-  lights.resize(NUM_LIGHTS); 
+  //params.resize(NUM_PARAMS);
+	//inputs.resize(NUM_INPUTS);
+	//outputs.resize(NUM_OUTPUTS);
+  //lights.resize(NUM_LIGHTS); 
+
+  config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
   configParam(MentalMasterClock::TEMPO_PARAM, 40.0, 250.0, 120.0, "");
   configParam(MentalMasterClock::TIMESIGTOP_PARAM,2.0, 15.0, 4.0, "");
