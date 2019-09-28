@@ -34,7 +34,7 @@ struct MentalClockDivider : Module
 		OUT8,
 		OUT16,
 		OUT32,
-    OUT3,
+    	OUT3,
 		OUT5,
 		OUT7,
 		OUT12,
@@ -69,6 +69,17 @@ struct MentalClockDivider : Module
 
 	dsp::SchmittTrigger reset_trig;
 
+	int divider2 = 2;
+	int divider4 = 4;
+	int divider8 = 8;
+	int divider16 = 16;
+	int divider32 = 32;
+
+	int divider3 = 3;
+	int divider5 = 5;
+	int divider7 = 7;
+	int divider12 = 12;
+
 	MentalClockDivider();
 	void process(const ProcessArgs& args) override;
 };
@@ -77,23 +88,15 @@ struct MentalClockDivider : Module
 
 MentalClockDivider::MentalClockDivider()
 {
-	params.resize(NUM_PARAMS);
-	inputs.resize(NUM_INPUTS);
-	outputs.resize(NUM_OUTPUTS);
-  	lights.resize(NUM_LIGHTS);
+	//params.resize(NUM_PARAMS);
+	//inputs.resize(NUM_INPUTS);
+	//outputs.resize(NUM_OUTPUTS);
+  	//lights.resize(NUM_LIGHTS);
+  	config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 	configParam(MentalClockDivider::RESET_PARAM, 0.0, 1.0, 0.0, "");
 }
 
-int divider2 = 2;
-int divider4 = 4;
-int divider8 = 8;
-int divider16 = 16;
-int divider32 = 32;
 
-int divider3 = 3;
-int divider5 = 5;
-int divider7 = 7;
-int divider12 = 12;
 
 //////////////////////////////////////////////////////////////////////////////////
 void MentalClockDivider::process(const ProcessArgs& args)

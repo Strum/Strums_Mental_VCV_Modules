@@ -15,132 +15,182 @@
     {
       "slug": "MentalMults",
       "name": "MentalMults",
+      "disabled": "false",
       "description": "Dual multiple",
       "tags": ["Multiple"]
     },
     {
       "slug": "MentalMixer",
       "name": "MentalMixer",
+      "disabled": "false",
       "description": "12 channel stereo mixer with 2 auxiliaries",
       "tags": ["Mixer","Stereo"]
     },
     {
       "slug": "MentalSubMixer",
       "name": "MentalSubMixer",
+      "disabled": "false",
       "description": "Simple 4 channel stereo mixer",
       "tags": ["Mixer","Stereo"]
     },
     {
       "slug": "MentalFold",
       "name": "MentalFold",
+      "disabled": "false",
       "description": "Wave Folder",
       "tags": ["Effect","Fold"]
     },
     {
       "slug": "MentalClip",
       "name": "MentalClip",
+      "disabled": "false",
       "description": "Wave clipper",
       "tags": ["Effect", "Clip"]
     },
     {
       "slug": "MentalGates",
       "name": "MentalGates",
+      "disabled": "false",
       "description": "Gates or Mutes",
       "tags": ["Gate", "Mute"]
     },
     {
       "slug": "MentalABSwitches",
       "name": "MentalABSwitches",
+      "disabled": "false",
       "description": "A/B Switches, select A or B output",
       "tags": ["Switch", "Utility"]
     },
     {
       "slug": "MentalQuantiser",
       "name": "MentalQuantiser",
+      "disabled": "false",
       "description": "",
       "tags": ["Quantiser", "Tuner"]
     },
     {
       "slug": "MentalChord",
       "name": "MentalChord",
+      "disabled": "false",
       "description": "Generates chords based on input pitch CV",
       "tags": ["Chord", "Harmony"]
     },
     {
       "slug": "MentalMuxes",
       "name": "MentalMuxes",
+      "disabled": "false",
       "description": "Multiplexers",
       "tags": ["Switch", "Utility"]
     },
     {
       "slug": "MentalLogic",
       "name": "MentalLogic",
+      "disabled": "false",
       "description": "And, Or, Not logic gates",
       "tags": ["Logic", "Utility"]
     },
     {
       "slug": "MentalButtons",
       "name": "MentalButtons",
+      "disabled": "false",
       "description": "Control buttons and switches",
       "tags": ["Control", "Button", "Switch"]
     },
     {
       "slug": "MentalSums",
       "name": "MentalSums",
+      "disabled": "false",
       "description": "Dual 4 channel summing mixer",
       "tags": ["Sum", "Mixer"]
     },
     {
       "slug": "MentalPitchShift",
       "name": "MentalPitchShift",
+      "disabled": "false",
       "description": "Shift CVs by octaves or semitones",
       "tags": ["Pitch Shift"]
     },
     {
       "slug": "MentalCartesian",
       "name": "MentalCartesian",
+      "disabled": "false",
       "description": "Grid Sequencer based on Make Noise's Rene",
       "tags": ["Sequencer"]
     },
     {
       "slug": "MentalPatchMatrix",
       "name": "MentalPatchMatrix",
+      "disabled": "false",
       "description": "10 * 10 switched summing matrix",
       "tags": ["Switch", "Utility"]
     },
     {
       "slug": "MentalBinaryDecoder",
       "name": "MentalBinaryDecoder",
+      "disabled": "false",
       "description": "",
       "tags": ["Utility", "Logic"]
     },
     {
       "slug": "MentalSwitch8",
       "name": "MentalSwitch8",
+      "disabled": "false",
       "description": "Send one input and a selected output",
       "tags": ["Switch"]
     },
     {
+      "slug": "MentalClockDivider",
+      "name": "MentalClockDivider",
+      "disabled": "true",
+      "description": "Clock divider with odd number division outputs",
+      "tags": ["Clock"]
+    },
+    {
       "slug": "MentalMux8",
       "name": "MentalMux8",
+      "disabled": "false",
       "description": "8 input Multiplexer",
       "tags": ["Multiplexer"]
     },
     {
       "slug": "MentalCounters",
       "name": "MentalCounters",
+      "disabled": "false",
       "description": "Clocked Counters",
       "tags": ["Counters"]
     },
     {
+      "slug": "MentalKnobs",
+      "name": "MentalKnobs",
+      "disabled": "true",
+      "description": "Outputs Constant CVs",
+      "tags": ["Control","Utility"]
+    },
+    {
+      "slug": "MentalMasterClock",
+      "name": "MentalMasterClock",
+      "disabled": "true",
+      "description": "BPM setable clock with division outputs",
+      "tags": ["Clock"]
+    },
+    {
+      "slug": "MentalGateMaker",
+      "name": "MentalGateMaker",
+      "disabled": "true",
+      "description": "triggerable clocekd gate with delay and tail",
+      "tags": ["LFO"]
+    },
+    {
       "slug": "MentalQuadLFO",
       "name": "MentalQuadLFO",
+      "disabled": "false",
       "description": "Quad LFO based on Batumi",
       "tags": ["LFO"]
     },
     {
       "slug": "MentalRadioButtons",
       "name": "MentalRadioButtons",
+      "disabled": "false",
       "description": "Radio Buttons",
       "tags": ["Switch", "Button"]
     }

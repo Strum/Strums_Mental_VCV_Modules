@@ -243,8 +243,11 @@ void MentalQuadLFO::process(const ProcessArgs& args)
 	  outputs[SAW_OUTPUT + i].setVoltage(5.0 * oscillator[i].saw());
 	  outputs[SQR_OUTPUT + i].setVoltage(5.0 * oscillator[i].sqr());
 
-	  lights[PHASE_POS_LIGHT + i].setBrightnessSmooth(fmaxf(0.0, oscillator[i].light()));
-	  lights[PHASE_NEG_LIGHT + i].setBrightnessSmooth(fmaxf(0.0, -oscillator[i].light()));
+	  //lights[PHASE_POS_LIGHT + i].setBrightnessSmooth(fmaxf(0.0, oscillator[i].light()));
+	  //lights[PHASE_NEG_LIGHT + i].setBrightnessSmooth(fmaxf(0.0, -oscillator[i].light()));
+    lights[PHASE_NEG_LIGHT + i].setSmoothBrightness(fmaxf(0.0, -oscillator[i].light()), 0.02f);
+    lights[PHASE_POS_LIGHT + i].setSmoothBrightness(fmaxf(0.0, oscillator[i].light()), 0.02f);
+
   } 
 }
 

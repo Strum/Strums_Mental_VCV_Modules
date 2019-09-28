@@ -65,7 +65,8 @@ void MentalSubMixer::process(const ProcessArgs& args)
 
 	for (int i = 0 ; i < 4 ; i++)
 	{
-		channel_ins[i] = inputs[CH_INPUT + i].getVoltage() * params[CH_VOL_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
+		//channel_ins[i] = inputs[CH_INPUT + i].getVoltage() * params[CH_VOL_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
+		channel_ins[i] = inputs[CH_INPUT + i].getVoltage() * params[CH_VOL_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].getNormalVoltage(10.0f) / 10.0f, 0.0f, 1.0f);
 		
     	pan_cv_ins[i] = inputs[CH_PAN_INPUT + i].getVoltage()/5;
     	pan_positions[i] = pan_cv_ins[i] + params[CH_PAN_PARAM + i].getValue();   
@@ -78,8 +79,10 @@ void MentalSubMixer::process(const ProcessArgs& args)
     	right_sum += channel_outs_r[i];
     }
     
-    float mix_l = left_sum * params[MIX_PARAM].getValue() * clamp(inputs[MIX_CV_INPUT].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
-    float mix_r = right_sum * params[MIX_PARAM].getValue() * clamp(inputs[MIX_CV_INPUT].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
+    //float mix_l = left_sum * params[MIX_PARAM].getValue() * clamp(inputs[MIX_CV_INPUT].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
+    //float mix_r = right_sum * params[MIX_PARAM].getValue() * clamp(inputs[MIX_CV_INPUT].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
+	float mix_l = left_sum * params[MIX_PARAM].getValue() * clamp(inputs[MIX_CV_INPUT].getNormalVoltage(10.0f) / 10.0f, 0.0f, 1.0f);
+    float mix_r = right_sum * params[MIX_PARAM].getValue() * clamp(inputs[MIX_CV_INPUT].getNormalVoltage(10.0f) / 10.0f, 0.0f, 1.0f);
 
     outputs[MIX_OUTPUT_L].setVoltage(mix_l);
     outputs[MIX_OUTPUT_R].setVoltage(mix_r);

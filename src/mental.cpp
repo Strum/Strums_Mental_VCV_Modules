@@ -38,7 +38,7 @@ void init(rack::Plugin *p)
     p->addModel(modelMentalMux8);
     p->addModel(modelMentalCounters);
     p->addModel(modelMentalKnobs);
-    //p->addModel(modelMentalGateMaker); //stops loading, back in jail
+    p->addModel(modelMentalGateMaker); //stops loading, back in jail
     p->addModel(modelMentalMasterClock);
     p->addModel(modelMentalQuadLFO);
     p->addModel(modelMentalRadioButtons);         

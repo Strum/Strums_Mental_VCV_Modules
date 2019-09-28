@@ -216,14 +216,17 @@ void MentalMasterClock::process(const ProcessArgs& args)
 }
 
 ////////////////////////////////////
-struct NumberDisplayWidget2 : TransparentWidget {
+
+struct NumberDisplayWidget2 : TransparentWidget
+{
 
   int *value;
 
   MentalMasterClock *module;
   std::shared_ptr<Font> font;
 
-  NumberDisplayWidget2() {
+  NumberDisplayWidget2()
+  {
     font = APP->window->loadFont(asset::plugin(pluginInstance, "res/Segment7Standard.ttf"));
   };
 

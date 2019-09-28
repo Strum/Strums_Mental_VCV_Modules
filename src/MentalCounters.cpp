@@ -109,15 +109,47 @@ void MentalCounters::process(const ProcessArgs& args)
     outputs[OUTPUT_2].setVoltage(0); 
   }  
 }
+///////////////////////////////////////////////////////////////////
+// AS display widget
+///////////////////////////////////
+/*struct NumberDisplayWidget : TransparentWidget {
+
+  int *value = NULL;
+  std::shared_ptr<Font> font;
+
+  NumberDisplayWidget() {
+    font = APP->window->loadFont(asset::plugin(pluginInstance, "res/Segment7Standard.ttf"));
+  };
+
+  void draw(const DrawArgs &args) override{
+    if (!value) {
+      return;
+    }  
+    // text 
+    nvgFontSize(args.vg, 18);
+    nvgFontFaceId(args.vg, font->handle);
+    nvgTextLetterSpacing(args.vg, 2.5);
+
+    std::stringstream to_display;   
+    to_display << std::right  << std::setw(2) << *value;
+
+    Vec textPos = Vec(4.0f, 17.0f); 
+
+    NVGcolor textColor = nvgRGB(0xf0, 0x00, 0x00);
+    nvgFillColor(args.vg, textColor);
+    nvgText(args.vg, textPos.x, textPos.y, to_display.str().c_str(), NULL);
+  }
+}; */
+////////////////////////////////////
 
 
 ////////////////////////////////////
 struct NumberDisplayWidget3 : TransparentWidget
 {
-
-  int *value;
-
-  MentalCounters *module;
+  
+  //int *value;
+  int *value = 0;
+  //MentalCounters *module;
   
   std::shared_ptr<Font> font;
 
@@ -127,10 +159,15 @@ struct NumberDisplayWidget3 : TransparentWidget
   };
 
   void draw(const DrawArgs& args) override
+  //void draw(NVGcontext *vg) override
   {
+    //if (!value) {
+    //  return;
+    //}
     // Background
     NVGcolor backgroundColor = nvgRGB(0x00, 0x00, 0x00);
     NVGcolor StrokeColor = nvgRGB(0x00, 0x47, 0x7e);
+
     nvgBeginPath(args.vg);
     nvgRoundedRect(args.vg, -1.0, -1.0, box.size.x+2, box.size.y+2, 4.0);
     nvgFillColor(args.vg, StrokeColor);
@@ -143,27 +180,39 @@ struct NumberDisplayWidget3 : TransparentWidget
     // text 
     nvgFontSize(args.vg, 18);
     nvgFontFaceId(args.vg, font->handle);
-    nvgTextLetterSpacing(args.vg, 2.5);
+    nvgTextLetterSpacing(args.vg, 2.5);    
 
-    std::stringstream to_display;
 
+    //std::stringstream to_display;
+    //std::string to_display = std::to_string(*value);
+    std::string to_display = "";
+
+    if(value) {to_display = std::to_string(*value);}
+    
     //to_display << std::setw(3) << *value;
-    if(module) {
-        to_display << std::setw(3) << *value;
-      }
-      else {
-        to_display << std::setw(3) << "00";
-      }
 
+    while(to_display.length()<3) to_display = ' ' + to_display;
+    
+    //if(module) {
+    //   to_display << std::setw(3) << *value;
+    //  }
+    //  else {
+    //    to_display << std::setw(3) << "00";
+    //  }
 
-    Vec textPos = Vec(6.0f, 17.0f);   
+    Vec textPos = Vec(6.0f, 17.0f);
+
     NVGcolor textColor = nvgRGB(0x00, 0x47, 0x7e);
+    //nvgFillColor(vg, textColor);
     nvgFillColor(args.vg, textColor);
-    nvgText(args.vg, textPos.x, textPos.y, to_display.str().c_str(), NULL);
+    //nvgText(args.vg, textPos.x, textPos.y, to_display.str().c_str(), NULL);
+    nvgText(args.vg, textPos.x, textPos.y, to_display.c_str(), NULL);
+    //nvgText(vg, textPos.x, textPos.y, to_display.c_str(), NULL);
   }
 };
 
 //////////////////////////////////
+
 struct MentalCountersWidget : ModuleWidget
 {
   MentalCountersWidget(MentalCounters *module)
@@ -185,8 +234,9 @@ struct MentalCountersWidget : ModuleWidget
     NumberDisplayWidget3 *display = new NumberDisplayWidget3();
   	display->box.pos = Vec(5,50);
   	display->box.size = Vec(50, 20);
-  	display->module = module;
-    display->value = &module->count_limit;
+  	//display->module = module;
+    //display->value = &module->count_limit;
+    if (module) { display->value = &module->count_limit; }
     
   	addChild(display);
     
@@ -202,8 +252,9 @@ struct MentalCountersWidget : ModuleWidget
     NumberDisplayWidget3 *display_2 = new NumberDisplayWidget3();
   	display_2->box.pos = Vec(5,50 + group_offset);
   	display_2->box.size = Vec(50, 20);
-  	display_2->module = module;
-    display_2->value = &module->count_limit_2;
+  	//display_2->module = module;
+    //display_2->value = &module->count_limit_2;
+    if (module) { display_2->value = &module->count_limit_2; }
 
   	addChild(display_2);   	  
   }
