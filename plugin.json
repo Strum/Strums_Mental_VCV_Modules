@@ -141,7 +141,7 @@
     {
       "slug": "MentalClockDivider",
       "name": "MentalClockDivider",
-      "disabled": "true",
+      "disabled": "false",
       "description": "Clock divider with odd number division outputs",
       "tags": ["Clock"]
     },
@@ -162,21 +162,21 @@
     {
       "slug": "MentalKnobs",
       "name": "MentalKnobs",
-      "disabled": "true",
+      "disabled": "false",
       "description": "Outputs Constant CVs",
       "tags": ["Control","Utility"]
     },
     {
       "slug": "MentalMasterClock",
       "name": "MentalMasterClock",
-      "disabled": "true",
+      "disabled": "false",
       "description": "BPM setable clock with division outputs",
       "tags": ["Clock"]
     },
     {
       "slug": "MentalGateMaker",
       "name": "MentalGateMaker",
-      "disabled": "true",
+      "disabled": "false",
       "description": "triggerable clocekd gate with delay and tail",
       "tags": ["LFO"]
     },
