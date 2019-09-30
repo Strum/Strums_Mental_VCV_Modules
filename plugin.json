@@ -24,35 +24,35 @@
       "name": "MentalMixer",
       "disabled": "false",
       "description": "12 channel stereo mixer with 2 auxiliaries",
-      "tags": ["Mixer","Stereo"]
+      "tags": ["Mixer"]
     },
     {
       "slug": "MentalSubMixer",
       "name": "MentalSubMixer",
       "disabled": "false",
       "description": "Simple 4 channel stereo mixer",
-      "tags": ["Mixer","Stereo"]
+      "tags": ["Mixer"]
     },
     {
       "slug": "MentalFold",
       "name": "MentalFold",
       "disabled": "false",
       "description": "Wave Folder",
-      "tags": ["Effect","Fold"]
+      "tags": ["Effect"]
     },
     {
       "slug": "MentalClip",
       "name": "MentalClip",
       "disabled": "false",
       "description": "Wave clipper",
-      "tags": ["Effect", "Clip"]
+      "tags": ["Effect"]
     },
     {
       "slug": "MentalGates",
       "name": "MentalGates",
       "disabled": "false",
       "description": "Gates or Mutes",
-      "tags": ["Gate", "Mute"]
+      "tags": ["Switch", "Utility"]
     },
     {
       "slug": "MentalABSwitches",
@@ -66,14 +66,14 @@
       "name": "MentalQuantiser",
       "disabled": "false",
       "description": "",
-      "tags": ["Quantiser", "Tuner"]
+      "tags": ["Quantizer", "Tuner"]
     },
     {
       "slug": "MentalChord",
       "name": "MentalChord",
       "disabled": "false",
       "description": "Generates chords based on input pitch CV",
-      "tags": ["Chord", "Harmony"]
+      "tags": ["Controller"]
     },
     {
       "slug": "MentalMuxes",
@@ -94,21 +94,21 @@
       "name": "MentalButtons",
       "disabled": "false",
       "description": "Control buttons and switches",
-      "tags": ["Control", "Button", "Switch"]
+      "tags": ["Controller", "Switch"]
     },
     {
       "slug": "MentalSums",
       "name": "MentalSums",
       "disabled": "false",
       "description": "Dual 4 channel summing mixer",
-      "tags": ["Sum", "Mixer"]
+      "tags": ["Mixer"]
     },
     {
       "slug": "MentalPitchShift",
       "name": "MentalPitchShift",
       "disabled": "false",
       "description": "Shift CVs by octaves or semitones",
-      "tags": ["Pitch Shift"]
+      "tags": ["Utility"]
     },
     {
       "slug": "MentalCartesian",
@@ -150,21 +150,21 @@
       "name": "MentalMux8",
       "disabled": "false",
       "description": "8 input Multiplexer",
-      "tags": ["Multiplexer"]
+      "tags": ["Utility", "Switch"]
     },
     {
       "slug": "MentalCounters",
       "name": "MentalCounters",
       "disabled": "false",
       "description": "Clocked Counters",
-      "tags": ["Counters"]
+      "tags": ["Clock", "Utility"]
     },
     {
       "slug": "MentalKnobs",
       "name": "MentalKnobs",
       "disabled": "false",
       "description": "Outputs Constant CVs",
-      "tags": ["Control","Utility"]
+      "tags": ["Controller","Utility"]
     },
     {
       "slug": "MentalMasterClock",
@@ -177,22 +177,22 @@
       "slug": "MentalGateMaker",
       "name": "MentalGateMaker",
       "disabled": "false",
-      "description": "triggerable clocekd gate with delay and tail",
-      "tags": ["LFO"]
+      "description": "triggerable clocked gate with delay and tail",
+      "tags": ["Utility"]
     },
     {
       "slug": "MentalQuadLFO",
       "name": "MentalQuadLFO",
       "disabled": "false",
       "description": "Quad LFO based on Batumi",
-      "tags": ["LFO"]
+      "tags": ["LFO", "Quad"]
     },
     {
       "slug": "MentalRadioButtons",
       "name": "MentalRadioButtons",
       "disabled": "false",
       "description": "Radio Buttons",
-      "tags": ["Switch", "Button"]
+      "tags": ["Switch", "Controller"]
     }
   ]
 }
