@@ -14,7 +14,7 @@ developers and learned various ways of doing things from the other suites of mod
 The modules are mostly utilities, which you can never have enough of, and I have
 focused on keeping them small to pack a lot of functionality into as little possible screen area.
 
-Jack sockets are now colour coded, hopefully this should make using them more intitutive. 
+Jack sockets are now colour coded, hopefully this should make using them more intuitive. 
 
 Module List
 
@@ -38,7 +38,7 @@ Quantiser -
   Also functions as a pitch reference
 
 SubMixer - 
-  4 Channel stereo mixer with pan based on fundametal VCMixer
+  4 Channel stereo mixer with pan based on fundamental VCMixer
 
 A/B Switches - 
   A/B switches
@@ -63,7 +63,7 @@ Sums -
   2 * 5 into 1 summing mixers, useful for adding cvs for pitch and modulation   
 
 Clock Divider - 
-  Based on autodafe's clock divider but I've simplified the code, made the gui
+  Based on Autodafe's clock divider but I've simplified the code, made the gui
   smaller and added extra divisions 3,5,7 and 12
   
 Cartesian Sequencer - 
@@ -81,7 +81,7 @@ Binary decoder -
 
 Dual Counters - for euclidean rhythms
 
-Knobs - Outputs constants continous or stepped by integer ro semitone, uni or bipolar
+Knobs - Outputs constants continous or stepped by integer or semitone, uni or bipolar
 
 Gate Maker - Counter with delay before opening and after closing, cycle or one shot mode - BETA
 
