@@ -137,32 +137,31 @@ void MentalMixer::process(const ProcessArgs& args)
   }
   for (int i = 0 ; i < 12 ; i++)
   {  
-    // from current fundamental float cv = clamp(inputs[CV_INPUT + i].getPolyVoltage(c) / 10.f, 0.f, 1.f);
-    //channel_ins[i] = inputs[CH_INPUT + i].getVoltage() * params[VOL_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
-    channel_ins[i] = inputs[CH_INPUT + i].getVoltage() * params[VOL_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].getNormalVoltage(10.0f) / 10.0f, 0.0f, 1.0f);
-    
-    if (!mute_states[i] || inputs[CH_MUTE_INPUT + i].getVoltage() > 0.0 )
+    if (inputs[CH_INPUT + i].isConnected())
     {
-      channel_ins[i] = 0.0;
-      lights[MUTE_LIGHTS + i ].value = 0.0;      
-    }
-    
-    //channel_sends_1[i] = channel_ins[i] * params[AUX_1_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
-    //channel_sends_2[i] = channel_ins[i] * params[AUX_2_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
-    channel_sends_1[i] = channel_ins[i] * params[AUX_1_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].getNormalVoltage(10.0f) / 10.0f, 0.0f, 1.0f);
-    channel_sends_2[i] = channel_ins[i] * params[AUX_2_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].getNormalVoltage(10.0f) / 10.0f, 0.0f, 1.0f);
+      channel_ins[i] = inputs[CH_INPUT + i].getVoltage() * params[VOL_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].getNormalVoltage(10.0f) / 10.0f, 0.0f, 1.0f);
 
-    pan_cv_ins[i] = inputs[CH_PAN_INPUT + i].getVoltage()/5;
-    pan_positions[i] = pan_cv_ins[i] + params[PAN_PARAM+i].getValue();   
-    if (pan_positions[i] < 0) pan_positions[i] = 0;
-    if (pan_positions[i] > 1) pan_positions[i] = 1;    
-    channel_outs_l[i]= channel_ins[i] * (1-pan_positions[i])* 2;
-    channel_outs_r[i]= channel_ins[i] * pan_positions[i] * 2;      
-    
-    send_1_sum += channel_sends_1[i];
-    send_2_sum += channel_sends_2[i];
-    left_sum += channel_outs_l[i];
-    right_sum += channel_outs_r[i];    
+      if (!mute_states[i] || inputs[CH_MUTE_INPUT + i].getVoltage() > 0.0 )
+      {
+        channel_ins[i] = 0.0;
+        lights[MUTE_LIGHTS + i ].value = 0.0;      
+      }    
+      
+      channel_sends_1[i] = channel_ins[i] * params[AUX_1_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].getNormalVoltage(10.0f) / 10.0f, 0.0f, 1.0f);
+      channel_sends_2[i] = channel_ins[i] * params[AUX_2_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].getNormalVoltage(10.0f) / 10.0f, 0.0f, 1.0f);
+
+      pan_cv_ins[i] = inputs[CH_PAN_INPUT + i].getVoltage()/5;
+      pan_positions[i] = pan_cv_ins[i] + params[PAN_PARAM+i].getValue();   
+      if (pan_positions[i] < 0) pan_positions[i] = 0;
+      if (pan_positions[i] > 1) pan_positions[i] = 1;    
+      channel_outs_l[i]= channel_ins[i] * (1-pan_positions[i])* 2;
+      channel_outs_r[i]= channel_ins[i] * pan_positions[i] * 2;      
+      
+      send_1_sum += channel_sends_1[i];
+      send_2_sum += channel_sends_2[i];
+      left_sum += channel_outs_l[i];
+      right_sum += channel_outs_r[i]; 
+    }   
   }	
 
   // get returns
@@ -191,7 +190,7 @@ struct MentalMixerWidget : ModuleWidget
   {
     setModule(module);
     
-    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Mixer.svg")));
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalMixer.svg")));
 
     int port_col = 8;
     int pots_col = port_col + 3;

@@ -42,8 +42,8 @@ struct MentalQuantiser : Module
   
   bool button_states[12] = {true,true,true,true,true,true,true,true,true,true,true,true};
   float quantised = 0.0;
-  bool found = false;
-  int last_found = 0;
+  //bool found = false;
+  //int last_found = 0;
    
   MentalQuantiser()
   {
@@ -129,7 +129,7 @@ void MentalQuantiser::process(const ProcessArgs& args)
   // quantise to scale selected by buttons
   if (button_states[semitone])
   {    
-    found = true;    
+    //found = true;    
     outputs[OUTPUT].setVoltage(quantised);
     lights[OUTPUT_LIGHTS + semitone].value  = 1.0;
   }     

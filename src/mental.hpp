@@ -6,11 +6,9 @@
 //   strum@softhome.net
 //
 ///////////////////////////////////////////////////
-//
 // still to do
-// fix modules that use display 
-// fix clock divider
-// fix depreceated warnings
+// fix master clock, sequencer
+// redo guis
 
 #include "rack.hpp"
 
@@ -45,8 +43,8 @@ extern Model *modelMentalSwitch8;
 extern Model *modelMentalMux8;
 extern Model *modelMentalCounters;
 extern Model *modelMentalKnobs; 
-extern Model *modelMentalGateMaker; //stops whole module loading, back in jail
-extern Model *modelMentalMasterClock; // crashes browser, back in jail
+extern Model *modelMentalGateMaker;
+extern Model *modelMentalMasterClock;
 extern Model *modelMentalQuadLFO; 
 extern Model *modelMentalRadioButtons;
 

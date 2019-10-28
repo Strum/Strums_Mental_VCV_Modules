@@ -86,30 +86,57 @@ struct MentalABSwitches : Module
 /////////////////////////////////////////////////////
 void MentalABSwitches::process(const ProcessArgs& args)
 {
-  for (int i = 0 ; i < 4 ; i++)
+  for (int i = 0 ; i < 4 ; i++) // loop through switches
   {
-    float signal = inputs[INPUT + i].getVoltage();
-    float sel = inputs[SEL_INPUT + i].getVoltage();
-  
     if (button_triggers[i].process(params[BUTTON_PARAM + i].getValue()))
     {
-	    button_on[i] = !button_on[i];
+      button_on[i] = !button_on[i];
     }
-    if (button_on[i] || ( sel > 0.0))
+    if (inputs[INPUT + i].isConnected())
     {
-      outputs[OUTPUT_A + i].setVoltage(0.0);
-      outputs[OUTPUT_B + i].setVoltage(signal);
-      
-      lights[B_LEDS + i].value = 1.0;
-      lights[A_LEDS + i].value = 0.0;
-    }
-    else
-    {
-      outputs[OUTPUT_A + i].setVoltage(signal);
-      outputs[OUTPUT_B + i].setVoltage(0.0);
-      
-      lights[B_LEDS + i].value = 0.0;
-      lights[A_LEDS + i].value = 1.0;
+      float signal = inputs[INPUT + i].getVoltage();     
+
+      if (inputs[SEL_INPUT + i].isConnected())
+      {
+        //float sel = inputs[SEL_INPUT + i].getVoltage();
+        if (inputs[SEL_INPUT + i].getVoltage() > 0.0)          
+        {
+          outputs[OUTPUT_A + i].setVoltage(0.0);
+          outputs[OUTPUT_B + i].setVoltage(signal);
+          
+          lights[B_LEDS + i].value = 1.0;
+          lights[A_LEDS + i].value = 0.0;
+        }
+        else
+        {
+          outputs[OUTPUT_A + i].setVoltage(signal);
+          outputs[OUTPUT_B + i].setVoltage(0.0);
+          
+          lights[B_LEDS + i].value = 0.0;
+          lights[A_LEDS + i].value = 1.0;
+        }
+      }
+      else
+      {      
+        if (button_on[i])
+        {
+          outputs[OUTPUT_A + i].setVoltage(0.0);
+          outputs[OUTPUT_B + i].setVoltage(signal);
+          
+          lights[B_LEDS + i].value = 1.0;
+          lights[A_LEDS + i].value = 0.0;
+          lights[BUTTON_LIGHTS + i].value = 1.0;
+        }
+        else
+        {
+          outputs[OUTPUT_A + i].setVoltage(signal);
+          outputs[OUTPUT_B + i].setVoltage(0.0);
+          
+          lights[B_LEDS + i].value = 0.0;
+          lights[A_LEDS + i].value = 1.0;
+          lights[BUTTON_LIGHTS + i].value = 0.0;
+        }
+      }
     }
   }
 }

@@ -63,34 +63,41 @@ void MentalSubMixer::process(const ProcessArgs& args)
 	left_sum = 0.0;
 	right_sum = 0.0;
 
-	for (int i = 0 ; i < 4 ; i++)
+	for (int i = 0 ; i < 4 ; i++)		
 	{
-		//channel_ins[i] = inputs[CH_INPUT + i].getVoltage() * params[CH_VOL_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
-		channel_ins[i] = inputs[CH_INPUT + i].getVoltage() * params[CH_VOL_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].getNormalVoltage(10.0f) / 10.0f, 0.0f, 1.0f);
-		
-    	pan_cv_ins[i] = inputs[CH_PAN_INPUT + i].getVoltage()/5;
-    	pan_positions[i] = pan_cv_ins[i] + params[CH_PAN_PARAM + i].getValue();   
-    	if (pan_positions[i] < 0) pan_positions[i] = 0;
-    	if (pan_positions[i] > 1) pan_positions[i] = 1;
-    	channel_outs_l[i]= channel_ins[i] * (1-pan_positions[i])* 2;
-    	channel_outs_r[i]= channel_ins[i] * pan_positions[i] * 2;      
-        
-    	left_sum += channel_outs_l[i];
-    	right_sum += channel_outs_r[i];
-    }
+		if (inputs[CH_INPUT + i].isConnected())
+		{			
+			channel_ins[i] = inputs[CH_INPUT + i].getVoltage() * params[CH_VOL_PARAM + i].getValue() * clamp(inputs[CH_VOL_INPUT + i].getNormalVoltage(10.0f) / 10.0f, 0.0f, 1.0f);
+			
+	    	pan_cv_ins[i] = inputs[CH_PAN_INPUT + i].getVoltage()/5;
+	    	pan_positions[i] = pan_cv_ins[i] + params[CH_PAN_PARAM + i].getValue();   
+	    	if (pan_positions[i] < 0) pan_positions[i] = 0;
+	    	if (pan_positions[i] > 1) pan_positions[i] = 1;
+	    	channel_outs_l[i]= channel_ins[i] * (1-pan_positions[i])* 2;
+	    	channel_outs_r[i]= channel_ins[i] * pan_positions[i] * 2;      
+	        
+	    	left_sum += channel_outs_l[i];
+	    	right_sum += channel_outs_r[i];
+    	} 
+    	else
+    	{
+    		channel_ins[i] = 0;
+    	}
+    }    
     
-    //float mix_l = left_sum * params[MIX_PARAM].getValue() * clamp(inputs[MIX_CV_INPUT].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
-    //float mix_r = right_sum * params[MIX_PARAM].getValue() * clamp(inputs[MIX_CV_INPUT].normalize(10.0f) / 10.0f, 0.0f, 1.0f);
 	float mix_l = left_sum * params[MIX_PARAM].getValue() * clamp(inputs[MIX_CV_INPUT].getNormalVoltage(10.0f) / 10.0f, 0.0f, 1.0f);
     float mix_r = right_sum * params[MIX_PARAM].getValue() * clamp(inputs[MIX_CV_INPUT].getNormalVoltage(10.0f) / 10.0f, 0.0f, 1.0f);
 
     outputs[MIX_OUTPUT_L].setVoltage(mix_l);
     outputs[MIX_OUTPUT_R].setVoltage(mix_r);
 
-   	outputs[CH_OUTPUT ].setVoltage(channel_ins[0]);
-	outputs[CH_OUTPUT + 1].setVoltage(channel_ins[1]);
-	outputs[CH_OUTPUT + 2].setVoltage(channel_ins[2]);
-	outputs[CH_OUTPUT + 3].setVoltage(channel_ins[3]);
+    for (int i = 0; i < 4; ++i)
+    {
+    	if (outputs[CH_OUTPUT + i ].isConnected())
+    	{
+    		outputs[CH_OUTPUT + i ].setVoltage(channel_ins[i]);
+    	}
+    }   	
 }
 
 ////////////////////////////////////////////////////////////

@@ -37,7 +37,8 @@ struct MentalKnobs : Module {
   float knob_value[3] = {0.0,0.0,0.0};
   float scale_value[3] = {0.0,0.0,0.0};
   float output_value[3] = {0.0,0.0,0.0};
-  int display_value[3] = {0,0,0};
+  //int display_value[3] = {0,0,0};
+  float display_value[3] = {0.0,0.0,0.0};
   dsp::SchmittTrigger step_switch_trigger[3],bi_switch_trigger[3],stepsize_switch_trigger[3];
   bool switch_states[3][3] = {{0,0,0},
                              {0,0,0},
@@ -144,7 +145,7 @@ void MentalKnobs::process(const ProcessArgs& args)
     } else output_value[i] = std::round(output_value[i]);
   }  
   
-  display_value[i] = std::round(output_value[i]);
+  //display_value[i] = std::round(output_value[i]);
   outputs[OUTPUT + i].setVoltage(output_value[i]);
   }  
 }
@@ -153,7 +154,8 @@ void MentalKnobs::process(const ProcessArgs& args)
 
 struct NumberDisplayWidget4 : TransparentWidget {
 
-  int *value;
+  //int *value;
+  float *value; 
 
   MentalKnobs *module;
   std::shared_ptr<Font> font;
@@ -177,21 +179,21 @@ struct NumberDisplayWidget4 : TransparentWidget {
     nvgFill(args.vg);    
     
     // text 
-    nvgFontSize(args.vg, 18);
+    nvgFontSize(args.vg, 14);
     nvgFontFaceId(args.vg, font->handle);
-    nvgTextLetterSpacing(args.vg, 2.5);
+    nvgTextLetterSpacing(args.vg, 1.75);
 
     std::stringstream to_display;
 
     //to_display << std::setw(3) << *value;
     if(module) {
-        to_display << std::setw(3) << *value;
+        to_display << std::setw(5) << *value;
       }
       else {
-        to_display << std::setw(3) << "00";
+        to_display << std::setw(5) << "0.000";
       }
 
-    Vec textPos = Vec(6.0f, 17.0f);   
+    Vec textPos = Vec(6.0f, 16.0f);   
     NVGcolor textColor = nvgRGB(0x00, 0x47, 0x7e);
     nvgFillColor(args.vg, textColor);
     nvgText(args.vg, textPos.x, textPos.y, to_display.str().c_str(), NULL);
@@ -224,24 +226,24 @@ struct MentalKnobsWidget : ModuleWidget {
   }
   
   NumberDisplayWidget4 *display = new NumberDisplayWidget4();
-	display->box.pos = Vec(5,105);
-	display->box.size = Vec(50, 20);
+	display->box.pos = Vec(4,105);
+	display->box.size = Vec(53, 20);
   display->module = module;
-	display->value = &module->display_value[0];
+	display->value = &module->output_value[0];
 	addChild(display); 
     
   NumberDisplayWidget4 *display2 = new NumberDisplayWidget4();
-	display2->box.pos = Vec(5,105+group_offset);
-	display2->box.size = Vec(50, 20);
+	display2->box.pos = Vec(4,105+group_offset);
+	display2->box.size = Vec(53, 20);
   display2->module = module;
-	display2->value = &module->display_value[1];
+	display2->value = &module->output_value[1];
 	addChild(display2); 
   
   NumberDisplayWidget4 *display3 = new NumberDisplayWidget4();
-	display3->box.pos = Vec(5,105+group_offset * 2);
-	display3->box.size = Vec(50, 20);
+	display3->box.pos = Vec(4,105+group_offset * 2);
+	display3->box.size = Vec(53, 20);
   display3->module = module;
-	display3->value = &module->display_value[2];
+	display3->value = &module->output_value[2];
 	addChild(display3); 
  
 }
