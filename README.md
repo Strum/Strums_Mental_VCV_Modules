@@ -4,9 +4,9 @@ strum@softhome.net
 
 Simple but useful modules for VCVRack
 
-Version : v1.0.0
+Version : v1.0.1
 
-Date : 22nd September 2019
+Date : 28th October 2019
 
 Based largely on the fundamental modules but I have also used some code from other module
 developers and learned various ways of doing things from the other suites of modules as well.
@@ -31,7 +31,7 @@ Logic -
 Mults - 
   Simple 2*5 Multiples
 Muxes - 
-  2 * 2 into 1 muxes and 1 4 into 1 mux
+  2*2 into 1 muxes and 1 4 into 1 mux
 
 Quantiser - 
   Takes inputs pitchs and quantises to scale selected by buttons for each pitch
