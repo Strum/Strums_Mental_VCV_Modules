@@ -14,3 +14,7 @@
 	Made Knobs display floating point
 	Fixed Clock Divider
 	Grouped and layered background panels, aligned names, logos and some text.
+
+## Version 1.0.3
+	Names changed to suit Andrew's requests and make better organised
+	Buttons background image typo fixed
