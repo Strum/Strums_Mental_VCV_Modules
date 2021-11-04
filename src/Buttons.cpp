@@ -3,29 +3,29 @@
 //   Mental Plugin
 //   Buttons
 //
-//   Strum 2017-19
+//   Strum 2017-21
 //   strum@softhome.net
 //
 ///////////////////////////////////////////////////
 
 #include "mental.hpp"
 
-struct MentalButtons : Module
+struct Buttons : Module
 {
 	enum ParamIds
   {
     MOMENT,
     BUTTON_PARAM = MOMENT + 7,
 		NUM_PARAMS = BUTTON_PARAM + 7
-	};  
+	};
 	enum InputIds
-  {		  
+  {
 		NUM_INPUTS
 	};
 	enum OutputIds
   {
     MOMENT_OUT,
-		OUTPUT = MOMENT_OUT +7,    
+		OUTPUT = MOMENT_OUT +7,
 		NUM_OUTPUTS = OUTPUT + 7
 	};
   enum LightIds
@@ -37,24 +37,24 @@ struct MentalButtons : Module
 
   dsp::SchmittTrigger button_triggers[7];
   bool button_states[7] = {0,0,0,0,0,0,0};
-  
-	MentalButtons()
+
+	Buttons()
   {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
     for (int i = 0; i < 7; ++i)
     {
-      configParam(MentalButtons::BUTTON_PARAM +i, 0.0, 1.0, 0.0, "");
-      configParam(MentalButtons::MOMENT + i, 0.0, 1.0, 0.0, "");
+      configParam(Buttons::BUTTON_PARAM +i, 0.0, 1.0, 0.0, "");
+      configParam(Buttons::MOMENT + i, 0.0, 1.0, 0.0, "");
     }
-    
+
   }
 
 	void process(const ProcessArgs& args) override;
-  
+
   json_t *dataToJson() override
   {
 		json_t *rootJ = json_object();
-    
+
     // button states
 		json_t *button_statesJ = json_array();
 		for (int i = 0; i < 7; i++)
@@ -62,10 +62,10 @@ struct MentalButtons : Module
 			json_t *button_stateJ = json_integer((int) button_states[i]);
 			json_array_append_new(button_statesJ, button_stateJ);
 		}
-		json_object_set_new(rootJ, "buttons", button_statesJ);    
+		json_object_set_new(rootJ, "buttons", button_statesJ);
     return rootJ;
   }
-  
+
   void dataFromJson(json_t *rootJ) override
   {
     // button states
@@ -78,11 +78,11 @@ struct MentalButtons : Module
 				if (button_stateJ)
 					button_states[i] = !!json_integer_value(button_stateJ);
 			}
-		}  
+		}
   }
 };
 
-void MentalButtons::process(const ProcessArgs& args)
+void Buttons::process(const ProcessArgs& args)
 {
   for  (int i = 0 ; i < 7 ; i++)
   {
@@ -102,33 +102,33 @@ void MentalButtons::process(const ProcessArgs& args)
       lights[MOMENT_LEDS + i ].value  = 0.0;
       outputs[MOMENT_OUT + i].setVoltage(0.0);
 	  }
-  }  
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
-struct MentalButtonsWidget : ModuleWidget
+struct ButtonsWidget : ModuleWidget
 {
-  MentalButtonsWidget(MentalButtons *module)
+  ButtonsWidget(Buttons *module)
   {
     setModule(module);
 
-    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalBUttons.svg")));
-  	
-    int spacing = 25; 
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Buttons.svg")));
+
+    int spacing = 25;
     int group_offset = 184;
     int top_space = 15;
     for (int i = 0; i < 7 ; i++)
-    {  
-      addOutput(createOutput<GateOutPort>(Vec(33, top_space + spacing * i), module, MentalButtons::OUTPUT + i));
-      addParam(createParam<LEDButton>(Vec(5, top_space + 3 + spacing * i), module, MentalButtons::BUTTON_PARAM +i));
-      addChild(createLight<MedLight<BlueLED>>(Vec(10, top_space + 8 + spacing * i), module, MentalButtons::BUTTON_LEDS + i));
-    
+    {
+      addOutput(createOutput<GateOutPort>(Vec(33, top_space + spacing * i), module, Buttons::OUTPUT + i));
+      addParam(createParam<LEDButton>(Vec(5, top_space + 3 + spacing * i), module, Buttons::BUTTON_PARAM +i));
+      addChild(createLight<MedLight<BlueLED>>(Vec(10, top_space + 8 + spacing * i), module, Buttons::BUTTON_LEDS + i));
+
   	  /// momentarys
-     addOutput(createOutput<GateOutPort>(Vec(33, 10 + group_offset +  spacing * i), module, MentalButtons::MOMENT_OUT + i));
-     addParam(createParam<LEDButton>(Vec(5, 10 + 3 + group_offset +  spacing * i), module, MentalButtons::MOMENT + i));
-     addChild(createLight<MedLight<BlueLED>>(Vec(10,10 + 8 + group_offset +  spacing * i), module, MentalButtons::MOMENT_LEDS + i));
+     addOutput(createOutput<GateOutPort>(Vec(33, 10 + group_offset +  spacing * i), module, Buttons::MOMENT_OUT + i));
+     addParam(createParam<LEDButton>(Vec(5, 10 + 3 + group_offset +  spacing * i), module, Buttons::MOMENT + i));
+     addChild(createLight<MedLight<BlueLED>>(Vec(10,10 + 8 + group_offset +  spacing * i), module, Buttons::MOMENT_LEDS + i));
     }
   }
 };
 
-Model *modelMentalButtons = createModel<MentalButtons, MentalButtonsWidget>("MentalButtons");
+Model *modelButtons = createModel<Buttons, ButtonsWidget>("Buttons");

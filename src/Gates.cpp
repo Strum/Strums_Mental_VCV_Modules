@@ -3,7 +3,7 @@
 //   Mental Plugin
 //   Gates (mutes)
 //
-//   Strum 2017-19
+//   Strum 2017-21
 //   strum@softhome.net
 //
 ///////////////////////////////////////////////////
@@ -12,7 +12,7 @@
 
 /////////////////////////////////////////////////
 
-struct MentalGates : Module
+struct Gates : Module
 {
 	enum ParamIds
   {
@@ -42,23 +42,23 @@ struct MentalGates : Module
   bool button_on[4] = {0,0,0,0};
   float signal[4] = {0.0,0.0,0.0};
   float on[4] = {0.0,0.0,0.0};
-  
-	MentalGates()
+
+	Gates()
   {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
     for (int i = 0; i < 4; ++i)
     {
-      configParam(MentalGates::BUTTON_PARAM + i, 0.0, 1.0, 0.0, "");
+      configParam(Gates::BUTTON_PARAM + i, 0.0, 1.0, 0.0, "");
     }
-    
+
   }
 
 	void process(const ProcessArgs& args) override;
-  
+
   json_t *dataToJson() override
   {
 		json_t *rootJ = json_object();
-    
+
     // button states
 		json_t *button_statesJ = json_array();
 		for (int i = 0; i < 4; i++)
@@ -66,10 +66,10 @@ struct MentalGates : Module
 			json_t *button_stateJ = json_integer((int) button_on[i]);
 			json_array_append_new(button_statesJ, button_stateJ);
 		}
-		json_object_set_new(rootJ, "buttons", button_statesJ);    
+		json_object_set_new(rootJ, "buttons", button_statesJ);
     return rootJ;
   }
-  
+
   void dataFromJson(json_t *rootJ) override
   {
     // button states
@@ -82,20 +82,20 @@ struct MentalGates : Module
 				if (button_stateJ)
 					button_on[i] = !!json_integer_value(button_stateJ);
 			}
-		}  
+		}
   }
 };
 
 /////////////////////////////////////////////////////
 
-void MentalGates::process(const ProcessArgs& args)
+void Gates::process(const ProcessArgs& args)
 {
 
 for (int i = 0 ; i < 4 ; i++)
   {
     signal[i] = inputs[INPUT + i].getVoltage();
     on[i] = inputs[GATE_INPUT + i].getVoltage();
-  
+
     if (button_triggers[i].process(params[BUTTON_PARAM + i].getValue()))
     {
 	    button_on[i] = !button_on[i];
@@ -116,26 +116,26 @@ for (int i = 0 ; i < 4 ; i++)
 }
 
 //////////////////////////////////////////////////////////////////
-struct MentalGatesWidget : ModuleWidget
+struct GatesWidget : ModuleWidget
 {
-  MentalGatesWidget(MentalGates *module)
+  GatesWidget(Gates *module)
   {
 
-    setModule(module);  
-    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalGates.svg")));
+    setModule(module);
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Gates.svg")));
 
     int group_spacing = 85;
     for (int i = 0 ; i < 4 ; i++)
     {
-  	  addInput(createInput<InPort>(Vec(3, group_spacing * i +  60), module, MentalGates::INPUT + i));
-      addInput(createInput<GateInPort>(Vec(3, group_spacing * i +  28), module, MentalGates::GATE_INPUT + i));
-      addOutput(createOutput<OutPort>(Vec(32, group_spacing * i +  60), module, MentalGates::OUTPUT + i));
+  	  addInput(createInput<InPort>(Vec(3, group_spacing * i +  60), module, Gates::INPUT + i));
+      addInput(createInput<GateInPort>(Vec(3, group_spacing * i +  28), module, Gates::GATE_INPUT + i));
+      addOutput(createOutput<OutPort>(Vec(32, group_spacing * i +  60), module, Gates::OUTPUT + i));
 
-      addChild(createLight<MedLight<BlueLED>>(Vec(26, group_spacing * i + 17), module, MentalGates::ON_LEDS + i));
-      addParam(createParam<LEDButton>(Vec(35, group_spacing * i +  31), module, MentalGates::BUTTON_PARAM + i));
-  	  addChild(createLight<MedLight<BlueLED>>(Vec(35+5, group_spacing * i +  31+5), module, MentalGates::BUTTON_LIGHTS + i));  
+      addChild(createLight<MedLight<BlueLED>>(Vec(26, group_spacing * i + 17), module, Gates::ON_LEDS + i));
+      addParam(createParam<LEDButton>(Vec(35, group_spacing * i +  31), module, Gates::BUTTON_PARAM + i));
+  	  addChild(createLight<MedLight<BlueLED>>(Vec(35+5, group_spacing * i +  31+5), module, Gates::BUTTON_LIGHTS + i));
     }
   }
 };
 
-Model *modelMentalGates = createModel<MentalGates, MentalGatesWidget>("MentalGates");
+Model *modelGates = createModel<Gates, GatesWidget>("Gates");

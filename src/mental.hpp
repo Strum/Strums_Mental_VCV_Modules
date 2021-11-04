@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////////
 //
-//   Mental Plugin for VCV Version 1
+//    Plugin for VCV Version 1
 //
-//   Strum 2018-19
+//   Strum 2017-21
 //   strum@softhome.net
 //
 ///////////////////////////////////////////////////
@@ -21,32 +21,32 @@ extern Plugin *pluginInstance;
 ////////////////////
 
 
-extern Model *modelMentalMults;
-extern Model *modelMentalSubMixer;
-extern Model *modelMentalMixer;
-extern Model *modelMentalFold;
-extern Model *modelMentalClip;
-extern Model *modelMentalGates;
-extern Model *modelMentalABSwitches;
-extern Model *modelMentalQuantiser;
-extern Model *modelMentalChord;
-extern Model *modelMentalMuxes;
-extern Model *modelMentalLogic;
-extern Model *modelMentalButtons;
-extern Model *modelMentalSums;
-extern Model *modelMentalPitchShift;
-extern Model *modelMentalClockDivider;
-extern Model *modelMentalCartesian;
-extern Model *modelMentalPatchMatrix;
-extern Model *modelMentalBinaryDecoder;
-extern Model *modelMentalSwitch8;
-extern Model *modelMentalMux8;
-extern Model *modelMentalCounters;
-extern Model *modelMentalKnobs; 
-extern Model *modelMentalGateMaker;
-extern Model *modelMentalMasterClock;
-extern Model *modelMentalQuadLFO; 
-extern Model *modelMentalRadioButtons;
+extern Model *modelMults;
+extern Model *modelSubMixer;
+extern Model *modelMixer;
+extern Model *modelFold;
+extern Model *modelClip;
+extern Model *modelGates;
+extern Model *modelABSwitches;
+extern Model *modelQuantiser;
+extern Model *modelChord;
+extern Model *modelMuxes;
+extern Model *modelLogic;
+extern Model *modelButtons;
+extern Model *modelSums;
+extern Model *modelPitchShift;
+extern Model *modelClockDivider;
+extern Model *modelCartesian;
+extern Model *modelPatchMatrix;
+extern Model *modelBinaryDecoder;
+extern Model *modelSwitch8;
+extern Model *modelMux8;
+extern Model *modelCounters;
+extern Model *modelKnobs;
+extern Model *modelGateMaker;
+extern Model *modelMasterClock;
+extern Model *modelQuadLFO;
+extern Model *modelRadioButtons;
 
 
 /////////////////////////////////////////////

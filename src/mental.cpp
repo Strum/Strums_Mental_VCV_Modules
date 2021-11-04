@@ -2,7 +2,7 @@
 //
 //   Mental Plugin for VCV Version 1
 //
-//   Strum 2018-19
+//   Strum 2017-21
 //   strum@softhome.net
 //
 ///////////////////////////////////////////////////
@@ -15,31 +15,31 @@ Plugin *pluginInstance;
 void init(rack::Plugin *p)
 {
     pluginInstance = p;
-    
-    p->addModel(modelMentalMults);
-    p->addModel(modelMentalSubMixer);
-    p->addModel(modelMentalMixer);
-    p->addModel(modelMentalFold);
-    p->addModel(modelMentalClip);
-    p->addModel(modelMentalGates);
-    p->addModel(modelMentalABSwitches);
-    p->addModel(modelMentalQuantiser);
-    p->addModel(modelMentalChord);
-    p->addModel(modelMentalMuxes);
-    p->addModel(modelMentalLogic);
-    p->addModel(modelMentalButtons);
-    p->addModel(modelMentalSums);
-    p->addModel(modelMentalPitchShift);
-    p->addModel(modelMentalClockDivider);
-    p->addModel(modelMentalCartesian);
-    p->addModel(modelMentalPatchMatrix);
-    p->addModel(modelMentalBinaryDecoder);
-    p->addModel(modelMentalSwitch8);
-    p->addModel(modelMentalMux8);
-    p->addModel(modelMentalCounters);
-    p->addModel(modelMentalKnobs);
-    p->addModel(modelMentalGateMaker);
-    p->addModel(modelMentalMasterClock);
-    p->addModel(modelMentalQuadLFO);
-    p->addModel(modelMentalRadioButtons);         
+
+    p->addModel(modelMults);
+    p->addModel(modelSubMixer);
+    p->addModel(modelMixer);
+    p->addModel(modelFold);
+    p->addModel(modelClip);
+    p->addModel(modelGates);
+    p->addModel(modelABSwitches);
+    p->addModel(modelQuantiser);
+    p->addModel(modelChord);
+    p->addModel(modelMuxes);
+    p->addModel(modelLogic);
+    p->addModel(modelButtons);
+    p->addModel(modelSums);
+    p->addModel(modelPitchShift);
+    p->addModel(modelClockDivider);
+    p->addModel(modelCartesian);
+    p->addModel(modelPatchMatrix);
+    p->addModel(modelBinaryDecoder);
+    p->addModel(modelSwitch8);
+    p->addModel(modelMux8);
+    p->addModel(modelCounters);
+    p->addModel(modelKnobs);
+    p->addModel(modelGateMaker);
+    p->addModel(modelMasterClock);
+    p->addModel(modelQuadLFO);
+    p->addModel(modelRadioButtons);
 }
