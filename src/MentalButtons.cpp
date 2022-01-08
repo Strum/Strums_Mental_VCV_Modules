@@ -112,7 +112,7 @@ struct MentalButtonsWidget : ModuleWidget
   {
     setModule(module);
 
-    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalBUttons.svg")));
+    setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MentalButtons.svg")));
   	
     int spacing = 25; 
     int group_offset = 184;
