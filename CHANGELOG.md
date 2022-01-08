@@ -1,7 +1,7 @@
 # Mental Modules for VCV Rack Change Log
 
 	Strum - strum@softhome.net
-	2017-2019
+	2017-2022
 
 ## Version 1.0.0
 	Update .062 code to version 1
@@ -14,3 +14,6 @@
 	Made Knobs display floating point
 	Fixed Clock Divider
 	Grouped and layered background panels, aligned names, logos and some text.
+
+## Version 1.0.4
+	Fixed typo in buttons background filename
