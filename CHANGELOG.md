@@ -17,3 +17,6 @@
 
 ## Version 1.0.4
 	Fixed typo in buttons background filename
+
+## Version 2.0.0
+	Changed json file and changelog, working for V2 as for V1
