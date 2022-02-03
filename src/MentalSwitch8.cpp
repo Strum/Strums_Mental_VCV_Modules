@@ -3,8 +3,8 @@
 //   Mental Plugin
 //   8 way switch with Binary Decoder selector VCV Module
 //
-//   Strum 2017-19
-//   strum@softhome.net
+//   Strum 2017-22
+//   strum@sodaisland.net
 //
 ///////////////////////////////////////////////////
 

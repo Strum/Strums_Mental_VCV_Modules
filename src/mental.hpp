@@ -2,8 +2,8 @@
 //
 //   Mental Plugin for VCV Version 1
 //
-//   Strum 2018-19
-//   strum@softhome.net
+//   Strum 2018-22
+//   strum@sodaisland.net
 //
 ///////////////////////////////////////////////////
 // still to do

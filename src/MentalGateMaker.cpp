@@ -157,12 +157,6 @@ struct NumberDisplayWidget : TransparentWidget {
 
   MentalGateMaker *module;
 
-  std::shared_ptr<Font> font;
-
-  NumberDisplayWidget() {
-    font = APP->window->loadFont(asset::plugin(pluginInstance, "res/Segment7Standard.ttf"));
-  };
-
   void draw(const DrawArgs& args) override
   {
     // Background
@@ -178,9 +172,13 @@ struct NumberDisplayWidget : TransparentWidget {
     nvgFill(args.vg);    
     
     // text 
-    nvgFontSize(args.vg, 18);
-    nvgFontFaceId(args.vg, font->handle);
-    nvgTextLetterSpacing(args.vg, 2.5);
+    std::shared_ptr<Font> font = APP->window->loadFont(asset::plugin(pluginInstance, "res/Segment7Standard.ttf"));
+    if (font)
+    {
+      nvgFontSize(args.vg, 18);
+      nvgFontFaceId(args.vg, font->handle);
+      nvgTextLetterSpacing(args.vg, 2.5);
+    }
 
     std::stringstream to_display;   
     //to_display << std::setw(3) << *value;

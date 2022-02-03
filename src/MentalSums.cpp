@@ -3,8 +3,8 @@
 //   Mental Plugin
 //   Dual 5 in 1 out summing mixers
 //
-//   Strum 2017-19
-//   strum@softhome.net
+//   Strum 2017-22
+//   strum@sodaisland.net
 //
 ///////////////////////////////////////////////////
 

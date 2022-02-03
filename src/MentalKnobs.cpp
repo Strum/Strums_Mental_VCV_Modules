@@ -3,8 +3,8 @@
 //   Mental Plugin
 //   Knobs - outputs constants
 //
-//   Strum 2017-19
-//   strum@softhome.net
+//   Strum 2017-22
+//   strum@sodaisland.net
 //
 ///////////////////////////////////////////////////
 
@@ -158,12 +158,7 @@ struct NumberDisplayWidget4 : TransparentWidget {
   float *value; 
 
   MentalKnobs *module;
-  std::shared_ptr<Font> font;
-
-  NumberDisplayWidget4() {
-    font = APP->window->loadFont(asset::plugin(pluginInstance, "res/Segment7Standard.ttf"));
-  };
-
+  
   void draw(const DrawArgs& args) override
   {
     // Background
@@ -179,9 +174,13 @@ struct NumberDisplayWidget4 : TransparentWidget {
     nvgFill(args.vg);    
     
     // text 
-    nvgFontSize(args.vg, 14);
-    nvgFontFaceId(args.vg, font->handle);
-    nvgTextLetterSpacing(args.vg, 1.75);
+    std::shared_ptr<Font> font = APP->window->loadFont(asset::plugin(pluginInstance, "res/Segment7Standard.ttf"));
+    if (font)
+    {
+      nvgFontSize(args.vg, 14);
+      nvgFontFaceId(args.vg, font->handle);
+      nvgTextLetterSpacing(args.vg, 1.75);
+    }
 
     std::stringstream to_display;
 

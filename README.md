@@ -1,12 +1,12 @@
 # Strum's Mental VCV Module Suite
 
-strum@softhome.net
+strum@sodaisland.net
 
 Simple but useful modules for VCVRack
 
-Version : v1.0.1
+Version : v2.0.0
 
-Date : 28th October 2019
+Date : 3rd February 2022
 
 Based largely on the fundamental modules but I have also used some code from other module
 developers and learned various ways of doing things from the other suites of modules as well.

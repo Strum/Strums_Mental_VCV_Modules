@@ -3,8 +3,8 @@
 //   Mental Plugin
 //   Mixer - 12 channel stereo mixer with 2 auxiliaries
 //
-//   Strum 2017-19
-//   strum@softhome.net
+//   Strum 2017-22
+//   strum@sodaisland.net
 //
 ///////////////////////////////////////////////////
 

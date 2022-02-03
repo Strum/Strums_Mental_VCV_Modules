@@ -3,8 +3,8 @@
 //   Mental Plugin
 //   Multiples - dual 1 in 5 out multiples
 //
-//   Strum 2017-19
-//   strum@softhome.net
+//   Strum 2017-22
+//   strum@sodaisland.net
 //
 ///////////////////////////////////////////////////
 

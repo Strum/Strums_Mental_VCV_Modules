@@ -3,8 +3,8 @@
 //   Mental Plugin
 //   Patch Matrix 10 in 10 out summing matrix
 //
-//   Strum 2017-19
-//   strum@softhome.net
+//   Strum 2017-22
+//   strum@sodaisland.net
 //
 ///////////////////////////////////////////////////
 
