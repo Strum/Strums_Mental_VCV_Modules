@@ -3,7 +3,8 @@
 //   
 //   Gate maker, make gates by clock - VCV Module
 //
-//   Strum 2017
+//   Strum 2017-22
+//   strum@sodaisland.net
 //
 ///////////////////////////////////////////////////
 
